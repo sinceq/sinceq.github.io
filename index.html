@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="你活着，是为了证明傻逼的存在么？">
+<meta name="description" content="远方除了遥远一无所有。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Destination.nowhere">
-<meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Destination.nowhere">
-<meta property="og:description" content="你活着，是为了证明傻逼的存在么？">
+<meta property="og:title" content="destination.nowhere">
+<meta property="og:url" content="http://sinceq.com/index.html">
+<meta property="og:site_name" content="destination.nowhere">
+<meta property="og:description" content="远方除了遥远一无所有。">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Destination.nowhere">
-<meta name="twitter:description" content="你活着，是为了证明傻逼的存在么？">
+<meta name="twitter:title" content="destination.nowhere">
+<meta name="twitter:description" content="远方除了遥远一无所有。">
 
 
 
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://sinceq.com/"/>
 
 
 
 
 
-  <title>Destination.nowhere</title>
+  <title>destination.nowhere</title>
   
 
 
@@ -155,7 +155,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Destination.nowhere</span>
+        <span class="site-title">destination.nowhere</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -262,16 +262,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/21/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2017/04/24/tree-traversal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Imperfect">
+      <meta itemprop="name" content="一">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Destination.nowhere">
+      <meta itemprop="name" content="destination.nowhere">
     </span>
 
     
@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/21/hello-world/" itemprop="url">Hello World</a></h1>
+                <a class="post-title-link" href="/2017/04/24/tree-traversal/" itemprop="url">Tree traversal</a></h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T16:14:37+08:00">
-                2018-03-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-24T22:57:53+08:00">
+                2017-04-24
               </time>
             
 
@@ -304,6 +304,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/datastructure/" itemprop="url" rel="index">
+                    <span itemprop="name">datastructure</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -312,9 +334,344 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/21/hello-world/#comments" itemprop="discussionUrl">
+                <a href="/2017/04/24/tree-traversal/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/03/21/hello-world/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/04/24/tree-traversal/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="树的遍历"><a href="#树的遍历" class="headerlink" title="树的遍历"></a>树的遍历</h3><ul>
+<li>前序（preorder），我们访问该几点，然后访问该节点的左子树和右子树；</li>
+<li>中序（inoder），我们访问该节点的左子树，然后访问该节点，再访问该节点的右子树；</li>
+<li>后序（postorder），我们访问该节点的左子树和右子树，再访问该节点。</li>
+</ul>
+<h4 id="递归遍历"><a href="#递归遍历" class="headerlink" title="递归遍历"></a>递归遍历</h4><figure class="highlight c"><figcaption><span>preorder.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">void traverse(link h, void(*visit)(link))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(h == <span class="literal">NULL</span>) <span class="keyword">return</span>;</span><br><span class="line">    (*visit) (h);</span><br><span class="line">    traverse(h-&gt;l, visit);</span><br><span class="line">    traverse(h-&gt;r, visit);</span><br><span class="line">&#125; </span><br><span class="line">``` </span><br><span class="line">#### 非递归遍历</span><br><span class="line"></span><br><span class="line">&gt;所有的递归都可以用迭代来实现么？</span><br><span class="line"></span><br><span class="line">``` c preorder.c</span><br><span class="line">void traverse(link h, void(*visit)(link))</span><br><span class="line">&#123;</span><br><span class="line">    STACKinit(max);</span><br><span class="line">    STACKpush(h);</span><br><span class="line">    <span class="keyword">while</span>(!STACKempty())</span><br><span class="line">    &#123;</span><br><span class="line">        (*visit)(h = STACKpop());</span><br><span class="line">        <span class="keyword">if</span> (h-&gt;r != <span class="literal">NULL</span>) STACKpush(h-&gt;r);</span><br><span class="line">        <span class="keyword">if</span> (h-&gt;l != <span class="literal">NULL</span>) STACKpush(h-&gt;l);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/04/24/tree-traversal/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/04/26/优化程序性能/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="destination.nowhere">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/04/26/优化程序性能/" itemprop="url">优化程序性能</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-26T23:07:37+08:00">
+                2016-04-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cs/" itemprop="url" rel="index">
+                    <span itemprop="name">cs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/04/26/优化程序性能/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/04/26/优化程序性能/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="编写高校程序需要几类活动：第一，我们必须选择一组合适的算法和数据结构。第二，我们必须编写出编译器能够有效优化以转换成高效可执行代码的源代码。第三、针对处理运算量特别大的计算，将一个任务分成多个部分，这些部分可以在多核和多处理器的某种组合上并行地计算。"><a href="#编写高校程序需要几类活动：第一，我们必须选择一组合适的算法和数据结构。第二，我们必须编写出编译器能够有效优化以转换成高效可执行代码的源代码。第三、针对处理运算量特别大的计算，将一个任务分成多个部分，这些部分可以在多核和多处理器的某种组合上并行地计算。" class="headerlink" title="编写高校程序需要几类活动：第一，我们必须选择一组合适的算法和数据结构。第二，我们必须编写出编译器能够有效优化以转换成高效可执行代码的源代码。第三、针对处理运算量特别大的计算，将一个任务分成多个部分，这些部分可以在多核和多处理器的某种组合上并行地计算。"></a>编写高校程序需要几类活动：第一，我们必须选择一组合适的算法和数据结构。第二，我们必须编写出编译器能够有效优化以转换成高效可执行代码的源代码。第三、针对处理运算量特别大的计算，将一个任务分成多个部分，这些部分可以在多核和多处理器的某种组合上并行地计算。</h3><p>程序优化步骤：</p>
+<ul>
+<li>消除不必要的内容，让代码尽可能有效地执行它期望的工作。这包括消除不必要的函数调用、条件测试和存储器引用。这些优化不依赖于目标机器的任何具体属性</li>
+<li>利用处理器提供的指令级并行（instruction-level parallelism）能力，同时执行多条指令。</li>
+</ul>
+<h3 id="优化编译器的能力和局限性"><a href="#优化编译器的能力和局限性" class="headerlink" title="优化编译器的能力和局限性"></a>优化编译器的能力和局限性</h3><ul>
+<li>两个指针可能指向同一个存储器位置的情况称为存储器别名使用（memory aliasing）</li>
+<li>函数调用</li>
+</ul>
+<h3 id="表示程序性能"><a href="#表示程序性能" class="headerlink" title="表示程序性能"></a>表示程序性能</h3><p>度量标准每元素的周期数（Cycles Per Element, CPE）作为一种表示程序性能并指导我们改进代码的方法。<br>处理器活动的顺序是由时钟控制的，时钟提供了某个频率的规律信号，通常用千兆赫兹（GHz）,即十亿周期每秒来表示。</p>
+<h4 id="什么是最小乘方拟合？"><a href="#什么是最小乘方拟合？" class="headerlink" title="什么是最小乘方拟合？"></a>什么是最小乘方拟合？</h4><p>对于一个数据点$$（x_1,y_1）…(x_n,y_n)$$的集合，我们常常试图画一条线，它能最接近于这些数据代表的X-Y趋势。使得最小二乘方拟合，寻找一条形如y=mx+b的线，使得下面的这个误差度量最小：</p>
+<p>$$E(m, b) = \Sigma(mx_i+b-y_i)^{2}<br>$$</p>
+<p>将E(m,b)分别对m和b求导，把两个导数函数设置为0，进行推导就能得出计算m和b的算法。</p>
+<h3 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h3><h3 id="消除循环的低效率"><a href="#消除循环的低效率" class="headerlink" title="消除循环的低效率"></a>消除循环的低效率</h3><ul>
+<li>代码移动（code motion）这类优化包括识别要执行多次但是计算结果不会改变的计算。因此可以将计算移动到代码前面不会被多次求值的部分。</li>
+</ul>
+<p>隐藏的渐近低效率（asymptotic inefficiency）<br>例子循环使用strlen判断字符串长度的问题。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/04/26/优化程序性能/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/02/03/程序的机器级表示/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="destination.nowhere">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/03/程序的机器级表示/" itemprop="url">程序的机器级表示</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-03T00:01:45+08:00">
+                2016-02-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cs/" itemprop="url" rel="index">
+                    <span itemprop="name">cs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/02/03/程序的机器级表示/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/02/03/程序的机器级表示/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -344,15 +701,510 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+            <h3 id="基于两种相关的机器语言：Intel-IA32-和-x86-64。"><a href="#基于两种相关的机器语言：Intel-IA32-和-x86-64。" class="headerlink" title="基于两种相关的机器语言：Intel IA32 和 x86-64。"></a>基于两种相关的机器语言：Intel IA32 和 x86-64。</h3><p>32位机器只能使用大概 4GB (2^32字节) 的随机访问存储器（即内存），而目前64位机器能够使用多达 256TB（2^48字节）的内存空间。</p>
+<p>Intel 处理器系列俗称 x86, 经历了一个长期的、不断进化的发展过程。</p>
+<p>Linux 使用了平坦寻址方式（flat addressing）。</p>
+<p>对于机器级编程来说，其中两种抽象尤为重要。第一种是机器级程序的格式和行为，定义为指令集体系结构（Instrucion set architecture，ISA），它定义了处理器状态、指令的格式，以及每条指令对状态的影响。第二种抽象是，机器级程序使用的存储器地址是虚拟地址，提供的存储器模型是一个非常大的字节数组。</p>
+<p>IA32 机器代码和原始的C代码差别非常大。一些通常对C语言程序猿隐蔽的处理器状态是可见的：</p>
+<ul>
+<li>程序计数器（在 IA32 中，通常称为“PC”，用%eip表示）指示将要执行的下一条指令在存储器中的地址。</li>
+<li>整数寄存器文件包含8个命名的位置，分别存储32位的值。这些寄存器可以存储地址（对英语C语言的指针）或整数数据。有的寄存器被用来记录某些重要的程序状态，而其他的寄存器则用来保存临时数据，例如过程的局部变量和函数的返回值。</li>
+<li>条件码寄存去保存着最近执行的算数或逻辑指令的状态信息。它们用来实现控制或数据流中的变化，比如说用来实现if和while语句。</li>
+<li>一组浮点寄存器存放浮点数据。</li>
+</ul>
+<p>程序存储器（program momery）包含：程序的可执行机器代码，操作系统需要的一些信息，用来管理过程调用和返回的运行时栈，以及用户分配的存储器块（比如malloc库函数分配的）。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/01/30/信息的表示和处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="destination.nowhere">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/30/信息的表示和处理/" itemprop="url">信息的表示和处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-30T14:29:01+08:00">
+                2016-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cs/" itemprop="url" rel="index">
+                    <span itemprop="name">cs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/01/30/信息的表示和处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/30/信息的表示和处理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>三种最重要的数字表示：</p>
+<ol>
+<li><p>无符号（unsigned）编码基于传统的二进制表示法，表示大于或者等于0的数字。</p>
+</li>
+<li><p>补码（two’s-complement）编码是表示有符号整数的最常见的方式，有符号整数就是可以为正或者为负的数字。</p>
+</li>
+<li><p>浮点数（floating-point）编码是表示实数的科学记数法的以二为基数的版本。</p>
+</li>
+</ol>
+<blockquote>
+<p>计算机的表示法是用有限数量的位来对一个数字编码，因此，当结果太大以致不能表示时，某些运算就会溢出（overflow）。</p>
+</blockquote>
+<p>在C语言中，以0x或者0X开头的数字常量被认为是十六进制的值。</p>
+<p>十进制和十六进制表示之间的转换需要使用乘法或者除法来处理一般情况。将一个十进制数x转换为十六进制，可以反复地用16除x，得到一个商q和一个余数r，也就是x=qx16+r。然后，我们用十六进制数字表示的r作为最低位数字，并且通过对q反复进行这个过程得到剩下的数字。</p>
+<p>反过来，将一个十六进制数字转换为十进制数字，我们用相应的16的幂乘以每个十六进制数字。</p>
+<figure class="highlight perl"><figcaption><span>d2h.pl</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env perl</span></span><br><span class="line"><span class="comment">#Convert list of decimal numbers into hex</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>($i = <span class="number">0</span>; $i &lt; @ARGV; $i++)&#123;</span><br><span class="line">	<span class="keyword">printf</span>(<span class="string">"%d\t=0x%x\n"</span>, $ARGV[$i], $ARGV[$i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/30/信息的表示和处理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/01/24/计算机漫游/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="destination.nowhere">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/24/计算机漫游/" itemprop="url">计算机系统漫游</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-24T23:35:34+08:00">
+                2016-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cs/" itemprop="url" rel="index">
+                    <span itemprop="name">cs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/01/24/计算机漫游/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/24/计算机漫游/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>计算机系统</strong>是由硬件和软件组成的，它们共同工作来运行应用程序。</p>
+<p><b>源程序</b>实际上就是一个由值0和1组成的位（bit）序列，8个位被组织成一组，成为字节。每个字节表示程序中某个文本字符。</p>
+<p>大部分的现代系统都使用ASCII标准来表示文本字符，这种方式实际上就是一个唯一的单字节大小的整数值来表示每个字符。</p>
+<p>系统中所有的信息——包括磁盘文件、存储器中的程序、存储器中存放的用户数据以及网络上传送的数据，都是由一串位表示的。区别不同数据对象的唯一方法是我们读到这些数据对象时的上下文。</p>
+<h4 id="编译系统（compilation-syste）"><a href="#编译系统（compilation-syste）" class="headerlink" title="编译系统（compilation syste）"></a>编译系统（compilation syste）</h4><ol>
+<li>预处理阶段。预处理器（cpp）根据以字符#开头的命令，修改原始的C程序。</li>
+<li>编译阶段。编译器（ccl）将文本文件hello.i翻译成文本文件hello.s它包含一个汇编语言程序。</li>
+<li>汇编阶段。接下来，汇编器（as）将hello.s翻译成机器语言指令，把这些指令打包成一种叫做可重定位目标程序的格式。并将结果保存在目标文件hello.o中。</li>
+<li>链接阶段。请注意，hello程序调用了printf函数，它是每个C编译器都会提供的标准C库中的一个函数。printf函数存在于一个名为printf.o的单独的预编译好了的目标文件中，而这个文件必须以某种方式合并到我们的hello.o程序中。连接器（ld）就负责处理这种合并。结果就得到hello文件，它是一个可执行目标文件，可以被加载到内存中，由系统执行。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/24/计算机漫游/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/01/24/62/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="destination.nowhere">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/24/62/" itemprop="url">62</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-24T22:00:16+08:00">
+                2016-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/revolution/" itemprop="url" rel="index">
+                    <span itemprop="name">revolution</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/01/24/62/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/24/62/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>很多人在二三十岁的时候就死去了。因为一旦过了那个年龄，他们只是自己的影子，余生都会在模仿自己中度过。 ——罗曼·罗兰《约翰·克里斯多夫》</p>
+</blockquote>
 
           
         
@@ -424,11 +1276,11 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpeg"
-                alt="Imperfect" />
+                src="/uploads/avatar.jpg"
+                alt="一" />
             
-              <p class="site-author-name" itemprop="name">Imperfect</p>
-              <p class="site-description motion-element" itemprop="description">你活着，是为了证明傻逼的存在么？</p>
+              <p class="site-author-name" itemprop="name">一</p>
+              <p class="site-description motion-element" itemprop="description">远方除了遥远一无所有。</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -438,12 +1290,21 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
             
 
             
@@ -483,7 +1344,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Imperfect</span>
+  <span class="author" itemprop="copyrightHolder">一</span>
 
   
 </div>
@@ -497,7 +1358,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
 
 
 
@@ -651,6 +1512,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 
