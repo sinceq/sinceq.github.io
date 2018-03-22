@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="编写高校程序需要几类活动：第一，我们必须选择一组合适的算法和数据结构。第二，我们必须编写出编译器能够有效优化以转换成高效可执行代码的源代码。第三、针对处理运算量特别大的计算，将一个任务分成多个部分，这些部分可以在多核和多处理器的某种组合上并行地计算。程序优化步骤：  消除不必要的内容，让代码尽可能有效地执行它期望的工作。这包括消除不必要的函数调用、条件测试和存储器引用。这些优化不依赖于目标机器的任">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T13:31:09.354Z">
+<meta property="og:updated_time" content="2018-03-22T15:30:33.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="优化程序性能">
 <meta name="twitter:description" content="编写高校程序需要几类活动：第一，我们必须选择一组合适的算法和数据结构。第二，我们必须编写出编译器能够有效优化以转换成高效可执行代码的源代码。第三、针对处理运算量特别大的计算，将一个任务分成多个部分，这些部分可以在多核和多处理器的某种组合上并行地计算。程序优化步骤：  消除不必要的内容，让代码尽可能有效地执行它期望的工作。这包括消除不必要的函数调用、条件测试和存储器引用。这些优化不依赖于目标机器的任">
@@ -392,7 +392,7 @@
 </ul>
 <h3 id="表示程序性能"><a href="#表示程序性能" class="headerlink" title="表示程序性能"></a>表示程序性能</h3><p>度量标准每元素的周期数（Cycles Per Element, CPE）作为一种表示程序性能并指导我们改进代码的方法。<br>处理器活动的顺序是由时钟控制的，时钟提供了某个频率的规律信号，通常用千兆赫兹（GHz）,即十亿周期每秒来表示。</p>
 <h4 id="什么是最小乘方拟合？"><a href="#什么是最小乘方拟合？" class="headerlink" title="什么是最小乘方拟合？"></a>什么是最小乘方拟合？</h4><p>对于一个数据点$$（x_1,y_1）…(x_n,y_n)$$的集合，我们常常试图画一条线，它能最接近于这些数据代表的X-Y趋势。使得最小二乘方拟合，寻找一条形如y=mx+b的线，使得下面的这个误差度量最小：</p>
-<p>$$E(m, b) = \Sigma(mx_i+b-y_i)^{2}<br>$$</p>
+<p>$$E(m, b) = \Sigma(mx_i+b-y_i)^{2}$$</p>
 <p>将E(m,b)分别对m和b求导，把两个导数函数设置为0，进行推导就能得出计算m和b的算法。</p>
 <h3 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h3><h3 id="消除循环的低效率"><a href="#消除循环的低效率" class="headerlink" title="消除循环的低效率"></a>消除循环的低效率</h3><ul>
 <li>代码移动（code motion）这类优化包括识别要执行多次但是计算结果不会改变的计算。因此可以将计算移动到代码前面不会被多次求值的部分。</li>
@@ -572,7 +572,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -583,7 +583,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
