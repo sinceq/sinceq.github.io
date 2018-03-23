@@ -281,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2018/03/22/计算机系统概述/">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2018/03/01/Lazy-initializtion-and-double-checked-locking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="一">
@@ -300,7 +300,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/22/计算机系统概述/" itemprop="url">计算机系统概述</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Lazy-initializtion-and-double-checked-locking/" itemprop="url">Lazy initialization and double-checked locking</a></h1>
         
 
         <div class="post-meta">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T23:42:30+08:00">
-                2018-03-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T15:07:10+08:00">
+                2018-03-01
               </time>
             
 
@@ -335,8 +335,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/操作系统/" itemprop="url" rel="index">
-                    <span itemprop="name">操作系统</span>
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
                   </a>
                 </span>
 
@@ -353,9 +353,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/22/计算机系统概述/#comments" itemprop="discussionUrl">
+                <a href="/2018/03/01/Lazy-initializtion-and-double-checked-locking/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/03/22/计算机系统概述/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/03/01/Lazy-initializtion-and-double-checked-locking/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,27 +384,13 @@
 
       
         
-          <h3 id="基本构成"><a href="#基本构成" class="headerlink" title="基本构成"></a>基本构成</h3><p>计算机有4个主要的结构化部件：</p>
-<ul>
-<li><strong>处理器（processor）:</strong> 控制计算机的操作，执行数据处理能力。当只有一个处理器时，它通常指中央处理单元（CPU）。</li>
-<li><strong>内存（main memory）:</strong> 存储数据和程序。此类存储器通常是易失的，即当计算机关机时，存储器的内容会丢失。相反，当计算机关机时，磁盘存储器的内容不会丢失。内存通常也称为 <strong>实存储器（real memory）</strong> 或者<strong>主存储器（primary memory）</strong>。</li>
-<li><strong>输出/输出模块（I/O module）:</strong> 在计算机和外部环境之间移动数据。外部环境由各种外部设备组成，包括辅助存储器设备（如硬盘）、通信设备和终端。</li>
-<li><strong>系统总线（system bus）：</strong> 为处理器、内存和输入/输出模块间提供通讯的设施。</li>
-</ul>
-<h3 id="处理器寄存器"><a href="#处理器寄存器" class="headerlink" title="处理器寄存器"></a>处理器寄存器</h3><ul>
-<li><strong>用户可见寄存器：</strong> 优先使用这些寄存器，可以减少使用机器语言或汇编语言的程序员对内存的访问次数。</li>
-<li><strong>控制和状态寄存器：</strong> 用以控制处理器的操作，且主要被具有特权的操作系统例程使用，以控制程序的执行。</li>
-</ul>
-<h4 id="用户可见寄存器"><a href="#用户可见寄存器" class="headerlink" title="用户可见寄存器"></a>用户可见寄存器</h4><p><strong>数据寄存器（data register）</strong>可以被程序员分配给各种函数。</p>
-<p><strong>地址寄存器（address register）</strong> 存放数据和指令的内存地址，或者存放用于计算完整地址或有效地址的部分地址。</p>
-<ul>
-<li><strong>变址寄存器（index register）：</strong> 变址地址是一种最常见的寻址方式，它通常给一个基值加一个索引来获得有效地址。</li>
-<li><strong>段指针（segment pointer）：</strong> 对于分段寻址方式，存储器被划分成段，这些段由长度不同的字块组成，段由若干长度的字组成。</li>
-<li><strong>栈指针（stack pointer）：</strong> 如果对用户可见的栈进行寻址，则应该有一个专门的寄存器指向栈顶。这样就可以使用不包含地址域的指令，如入栈（push）和出栈（pop）。</li>
-</ul>
+          <h4 id="Lazy-initialization"><a href="#Lazy-initialization" class="headerlink" title="Lazy initialization"></a>Lazy initialization</h4><p>在程序设计中，<strong>惰性初始</strong>是一种拖延战术。在第一次需求出现以前，先延迟创建物件、计算值或其他昂贵程序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Fruit</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;String,Fruit&gt; types = <span class="keyword">new</span> HashMap&lt;String,Fruit&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String type;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// using a private constructor to force use of the factory method.</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Fruit</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>.type = type;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Lazy Factory method, gets the Fruit instance associated with a</span></span><br><span class="line"><span class="comment">     * certain type. Instantiates new ones as needed.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> type Any string that describes a fruit type, e.g. "apple"</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> The Fruit instance associated with that type.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Fruit <span class="title">getFruit</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(!types.containsKey(type))</span><br><span class="line">        types.put(type, <span class="keyword">new</span> Fruit(type)); <span class="comment">// Lazy initialization</span></span><br><span class="line">      <span class="keyword">return</span> types.get(type);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fruit</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, type)</span>:</span></span><br><span class="line">        self.type = type</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fruits</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.types = &#123;&#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_fruit</span><span class="params">(self, type)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> type <span class="keyword">not</span> <span class="keyword">in</span> self.types:</span><br><span class="line">            self.types[type] = Fruit(type)</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> self.types[type]</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    fruits = Fruits()</span><br><span class="line">    <span class="keyword">print</span> fruits.get_fruit(<span class="string">'Apple'</span>)</span><br><span class="line">    <span class="keyword">print</span> fruits.get_fruit(<span class="string">'Lime’)</span></span><br></pre></td></tr></table></figure>
+<h4 id="Double-checked-locking"><a href="#Double-checked-locking" class="headerlink" title="Double-checked locking"></a>Double-checked locking</h4><p>In software engineering, double-checked locking (also known as “double-checked locking optimization”) is a software design pattern used to reduce the overhead of acquiring a lock by first testing the locking criterion (the “lock hint”) without actually acquiring the lock. Only if the locking criterion check indicates that locking is required does the actual locking logic proceed.</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/22/计算机系统概述/#more" rel="contents">
+            <a class="btn" href="/2018/03/01/Lazy-initializtion-and-double-checked-locking/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -567,6 +553,180 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/04/24/tree-traversal/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2017/03/22/计算机系统概述/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/22/计算机系统概述/" itemprop="url">计算机系统概述</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-22T23:42:30+08:00">
+                2017-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/22/计算机系统概述/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/03/22/计算机系统概述/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="基本构成"><a href="#基本构成" class="headerlink" title="基本构成"></a>基本构成</h3><p>计算机有4个主要的结构化部件：</p>
+<ul>
+<li><strong>处理器（processor）:</strong> 控制计算机的操作，执行数据处理能力。当只有一个处理器时，它通常指中央处理单元（CPU）。</li>
+<li><strong>内存（main memory）:</strong> 存储数据和程序。此类存储器通常是易失的，即当计算机关机时，存储器的内容会丢失。相反，当计算机关机时，磁盘存储器的内容不会丢失。内存通常也称为 <strong>实存储器（real memory）</strong> 或者<strong>主存储器（primary memory）</strong>。</li>
+<li><strong>输出/输出模块（I/O module）:</strong> 在计算机和外部环境之间移动数据。外部环境由各种外部设备组成，包括辅助存储器设备（如硬盘）、通信设备和终端。</li>
+<li><strong>系统总线（system bus）：</strong> 为处理器、内存和输入/输出模块间提供通讯的设施。</li>
+</ul>
+<h3 id="处理器寄存器"><a href="#处理器寄存器" class="headerlink" title="处理器寄存器"></a>处理器寄存器</h3><ul>
+<li><strong>用户可见寄存器：</strong> 优先使用这些寄存器，可以减少使用机器语言或汇编语言的程序员对内存的访问次数。</li>
+<li><strong>控制和状态寄存器：</strong> 用以控制处理器的操作，且主要被具有特权的操作系统例程使用，以控制程序的执行。</li>
+</ul>
+<h4 id="用户可见寄存器"><a href="#用户可见寄存器" class="headerlink" title="用户可见寄存器"></a>用户可见寄存器</h4><p><strong>数据寄存器（data register）</strong>可以被程序员分配给各种函数。</p>
+<p><strong>地址寄存器（address register）</strong> 存放数据和指令的内存地址，或者存放用于计算完整地址或有效地址的部分地址。</p>
+<ul>
+<li><strong>变址寄存器（index register）：</strong> 变址地址是一种最常见的寻址方式，它通常给一个基值加一个索引来获得有效地址。</li>
+<li><strong>段指针（segment pointer）：</strong> 对于分段寻址方式，存储器被划分成段，这些段由长度不同的字块组成，段由若干长度的字组成。</li>
+<li><strong>栈指针（stack pointer）：</strong> 如果对用户可见的栈进行寻址，则应该有一个专门的寄存器指向栈顶。这样就可以使用不包含地址域的指令，如入栈（push）和出栈（pop）。</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/22/计算机系统概述/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1345,8 +1505,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/百感交集/" itemprop="url" rel="index">
-                    <span itemprop="name">百感交集</span>
+                  <a href="/categories/1llusion/" itemprop="url" rel="index">
+                    <span itemprop="name">1llusion</span>
                   </a>
                 </span>
 
@@ -1483,7 +1643,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1494,7 +1654,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

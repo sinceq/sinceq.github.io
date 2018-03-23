@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Lazy initialization在程序设计中，惰性初始是一种拖延战术。在第一次需求出现以前，先延迟创建物件、计算值或其他昂贵程序。 123456789101112131415161718192021222324import java.util.*; public class Fruit&amp;#123;    private static final Map&amp;lt;String,Fruit&amp;gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lazy initialization and double-checked locking">
+<meta property="og:url" content="http://sinceq.com/2018/03/01/Lazy-initializtion-and-double-checked-locking/index.html">
+<meta property="og:site_name" content="1llusion">
+<meta property="og:description" content="Lazy initialization在程序设计中，惰性初始是一种拖延战术。在第一次需求出现以前，先延迟创建物件、计算值或其他昂贵程序。 123456789101112131415161718192021222324import java.util.*; public class Fruit&amp;#123;    private static final Map&amp;lt;String,Fruit&amp;gt;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-23T07:21:55.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lazy initialization and double-checked locking">
+<meta name="twitter:description" content="Lazy initialization在程序设计中，惰性初始是一种拖延战术。在第一次需求出现以前，先延迟创建物件、计算值或其他昂贵程序。 123456789101112131415161718192021222324import java.util.*; public class Fruit&amp;#123;    private static final Map&amp;lt;String,Fruit&amp;gt;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sinceq.com/2018/03/01/Lazy-initializtion-and-double-checked-locking/"/>
+
+
+
+
+
+  <title>Lazy initialization and double-checked locking | 1llusion</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-116144054-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6a5ae1f5c5c7844b2dba26e66383316b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">1llusion</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2018/03/01/Lazy-initializtion-and-double-checked-locking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Lazy initialization and double-checked locking</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T15:07:10+08:00">
+                2018-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/01/Lazy-initializtion-and-double-checked-locking/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/03/01/Lazy-initializtion-and-double-checked-locking/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Lazy-initialization"><a href="#Lazy-initialization" class="headerlink" title="Lazy initialization"></a>Lazy initialization</h4><p>在程序设计中，<strong>惰性初始</strong>是一种拖延战术。在第一次需求出现以前，先延迟创建物件、计算值或其他昂贵程序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Fruit</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;String,Fruit&gt; types = <span class="keyword">new</span> HashMap&lt;String,Fruit&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String type;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// using a private constructor to force use of the factory method.</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Fruit</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>.type = type;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Lazy Factory method, gets the Fruit instance associated with a</span></span><br><span class="line"><span class="comment">     * certain type. Instantiates new ones as needed.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> type Any string that describes a fruit type, e.g. "apple"</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> The Fruit instance associated with that type.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Fruit <span class="title">getFruit</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(!types.containsKey(type))</span><br><span class="line">        types.put(type, <span class="keyword">new</span> Fruit(type)); <span class="comment">// Lazy initialization</span></span><br><span class="line">      <span class="keyword">return</span> types.get(type);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fruit</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, type)</span>:</span></span><br><span class="line">        self.type = type</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fruits</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.types = &#123;&#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_fruit</span><span class="params">(self, type)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> type <span class="keyword">not</span> <span class="keyword">in</span> self.types:</span><br><span class="line">            self.types[type] = Fruit(type)</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> self.types[type]</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    fruits = Fruits()</span><br><span class="line">    <span class="keyword">print</span> fruits.get_fruit(<span class="string">'Apple'</span>)</span><br><span class="line">    <span class="keyword">print</span> fruits.get_fruit(<span class="string">'Lime’)</span></span><br></pre></td></tr></table></figure>
+<h4 id="Double-checked-locking"><a href="#Double-checked-locking" class="headerlink" title="Double-checked locking"></a>Double-checked locking</h4><p>In software engineering, double-checked locking (also known as “double-checked locking optimization”) is a software design pattern used to reduce the overhead of acquiring a lock by first testing the locking criterion (the “lock hint”) without actually acquiring the lock. Only if the locking criterion check indicates that locking is required does the actual locking logic proceed.</p>
+<a id="more"></a>
+<p>It is typically used to reduce locking overhead when implementing “lazy initialization” in a multi-threaded environment, especially as part of the Singleton pattern. Lazy initialization avoids initializing a value until the first time it is accessed.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Single-threaded version</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Helper helper;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Helper <span class="title">getHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (helper == <span class="keyword">null</span>) &#123;</span><br><span class="line">            helper = <span class="keyword">new</span> Helper();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> helper;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// other functions and members...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>多线程情况下上述例子就无法工作了。这时候可以通过加锁来处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Correct but possibly expensive multithreaded version</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Helper helper;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Helper <span class="title">getHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (helper == <span class="keyword">null</span>) &#123;</span><br><span class="line">            helper = <span class="keyword">new</span> Helper();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> helper;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// other functions and members...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但每次调用方法的时候都要请求和释放锁，这看起来没必要，而且会很大程度的降低性能。许多开发者尝试用下面的方法来优化这个问题：</p>
+<ol>
+<li>检查变量是否初始化（没有用到锁哦），如果初始化了，立即返回。</li>
+<li>获得锁</li>
+<li>双重检查变量是否已经被初始化：如果另外一个线程首先初始化，它可能已经完成了初始化。如果是这样，返回初始化后的变量。</li>
+<li>反之，初始化然后返回变量</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken multithreaded version</span></span><br><span class="line"><span class="comment">// "Double-Checked Locking" idiom</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Helper helper;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Helper <span class="title">getHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (helper == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (helper == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    helper = <span class="keyword">new</span> Helper();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> helper;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// other functions and members...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直觉上，这个算法看起来像是该问题的有效解决方案。然而，这一技术还有许多需要避免的细微问题。例如，考虑下面的事件序列：</p>
+<ol>
+<li>线程A发现变量没有被初始化, 然后它获取锁并开始变量的初始化。</li>
+<li>由于某些编程语言的语义，编译器生成的代码允许在线程A执行完变量的初始化之前，更新变量并将其指向部分初始化的对象。</li>
+<li>线程B发现共享变量已经被初始化，并返回变量。由于线程B确信变量已被初始化，它没有获取锁。如果在A完成初始化之前共享变量对B可见（这是由于A没有完成初始化或者因为一些初始化的值还没有穿过B使用的内存(缓存一致性)），程序很可能会崩溃。</li>
+</ol>
+<p>在J2SE 1.4或更早的版本中使用双重检查锁有潜在的危险，有时会正常工作：区分正确实现和有小问题的实现是很困难的。取决于编译器，线程的调度和其他并发系统活动，不正确的实现双重检查锁导致的异常结果可能会间歇性出现。重现异常是十分困难的。</p>
+<p>在J2SE 5.0中，这一问题被修正了。<strong>volatile关键字保证多个线程可以正确处理单件实例。</strong>描述了这一新的语言特性:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Works with acquire/release semantics for volatile</span></span><br><span class="line"><span class="comment">// Broken under Java 1.4 and earlier semantics for volatile</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> Helper helper = <span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Helper <span class="title">getHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Helper result = helper;</span><br><span class="line">        <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">                result = helper;</span><br><span class="line">                <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    helper = result = <span class="keyword">new</span> Helper();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// other functions and members...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意局部变量result的使用看起来是不必要的。对于某些版本的Java虚拟机，这会使代码提速25%，</strong>而对其他的版本则无关痛痒。</p>
+<p>如果helper对象是静态的(每个类只有一个), 可以使用双重检查锁的替代模式惰性初始化模式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Correct lazy initialization in Java</span></span><br><span class="line"><span class="meta">@ThreadSafe</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">HelperHolder</span> </span>&#123;</span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">static</span> Helper helper = <span class="keyword">new</span> Helper();</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Helper <span class="title">getHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> HelperHolder.helper;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是因为内部类直到他们被引用时才会加载。</p>
+<p><strong>Java 5中的final语义可以不使用volatile关键字实现安全的创建对象:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalWrapper</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> T value;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FinalWrapper</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">   <span class="keyword">private</span> FinalWrapper&lt;Helper&gt; helperWrapper = <span class="keyword">null</span>;</span><br><span class="line"> </span><br><span class="line">   <span class="function"><span class="keyword">public</span> Helper <span class="title">getHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      FinalWrapper&lt;Helper&gt; wrapper = helperWrapper;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">if</span> (wrapper == <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">              <span class="keyword">if</span> (helperWrapper == <span class="keyword">null</span>) &#123;</span><br><span class="line">                  helperWrapper = <span class="keyword">new</span> FinalWrapper&lt;Helper&gt;(<span class="keyword">new</span> Helper());</span><br><span class="line">              &#125;</span><br><span class="line">              wrapper = helperWrapper;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> wrapper.value;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了正确性，局部变量wrapper是必须的。这一实现的性能不一定比使用volatile的性能更高。</p>
+<p><strong>Effective Java中第48条：对共享可变数据的同步访问</strong></p>
+<p>synchronized关键字可以保证在同一时刻，只有一个线程在执行一条语句，或者一段代码块。</p>
+<p>同步不仅可以阻止一个线程看到对象处于不一致的状态中，它还可以保证通过一系列看似顺序执行的状态转变序列，对象从一种一致的状态变迁到另一种一致的状态。</p>
+<p>Java语言保证读或者写一个变量是原子的（atomic），除非这个变量的类型为long或double。换句话说，读入一个非long或double类型的变量，可以保证返回的值一定是某个线程保存在该变量中的，即使多个线程在没有同步的情况下并发地改变这个变量，也是如此。</p>
+<p>为了提高性能，在读或写原子数据的时候，如果避免使用同步，这是非常危险的。</p>
+<p>为了在线程之间可靠地通信，以及为了互斥访问，同步时需要的。</p>
+<p>volatile修饰符可以保证任何一个线程在读取一个域的时候都将会看到最近刚刚写入的值。</p>
+<p>使用延迟初始化的双重检查</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The double-check idiom for lazy initialization - broken</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Foo foo = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Foo <span class="title">getFoo</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(foo == <span class="keyword">null</span>) &#123;</span><br><span class="line">          sychronized(Foo.class) &#123;</span><br><span class="line">               <span class="keyword">if</span> (foo == <span class="keyword">null</span>)</span><br><span class="line">                    foo = <span class="keyword">new</span> Foo();</span><br><span class="line">          &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> foo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该模式的思想是：在域被初始化后，再要访问该域时无需同步，从而避免多数情形下的同步开销。同步只是被用来避免多个线程对该域做初始化。这种模式保证了该域将至多被初始化一次，所有调用getFoo的线程都将会得到正确的对象引用值。不幸的是，该对象引用并不能保证可以正常地工作。如果一个线程在不使用同步的情况下读入该引用，并调用该对象上的方法，那么这个方法可能会看到对象被部分初始化的状态，从而导致灾难性的失败。</p>
+<p>一般情况下，双重检查模型并不能正确地工作。</p>
+<p>下面有几种方法来修正这个问题。最容易的办法是完全省区迟缓初始化：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Normal static initialization (not lazy)</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Foo foo = <span class="keyword">new</span> Foo();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Foo <span class="title">getFoo</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> foo;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Properly synchronised lay initialization</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Foo foo = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> sychronized Foo <span class="title">getFoo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (foo == <span class="keyword">null</span>)</span><br><span class="line">          foo = <span class="keyword">new</span> Foo();</span><br><span class="line">     <span class="keyword">return</span> foo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法可以保证正常工作，但是它会招致在每个调用上的同步开销。</p>
+<p>如果一个静态域的初始化非常昂贵，并且它也不见得会被调用到，但一旦需要则会被充分地使用，那么，在这样的情况下，按需初始化容器类（initialize-on-demand holder class）模式是非常合适的。下面的代码演示了这种模式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The initialize-on-demand holder class idiom</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">FooHolder</span> </span>&#123;</span><br><span class="line">     <span class="keyword">static</span> <span class="keyword">final</span> Foo foo = <span class="keyword">new</span> Foo();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Foo <span class="title">getFoo</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> FooHolder.foo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该模式充分利用了Java语言中“只有当一个类被用到的时候它才被初始化”。</p>
+<p>这种模式的缺点在于，它不能用于实例域，只能用于静态域。</p>
+<p>简而言之，无论何时当多个线程共享可变数据的时候，每个读或写数据的线程必须获得一把锁。</p>
+<h4 id="非原子的64位操作"><a href="#非原子的64位操作" class="headerlink" title="非原子的64位操作"></a>非原子的64位操作</h4><p>当线程在没有同步的情况下读取变量时，可能会得到一个失效值，但至少这个值是由之前某个线程设置的值，而不是一个随机值。这种安全性保证称为最低安全性（out-of-thin-air-safety)。</p>
+<p>最低安全性适用于绝大多数变量，但是存在一个例外：非volatile类型的64位数值变量（double和long）。Java内存模型要求，变量的读取操作和写入操作都必须是原子操作，但对于非volatile类型的long和double变量，JVM允许将64位的读操作或写操作分解为两个32位的操作。当读取一个非volatile类型的long变量时，如果对该变量的读操作和写操作在不同线程中执行，那么很可能会读取到某个值的高32位和另一个值的低32位。因此，即使不考虑实效数据问题，在多线程程序中使用共享且可变的long或double等类型的变量也是不安全的。除非用关键字volatile来声明它们，或者用锁保护起来。</p>
+<h4 id="Volatile变量"><a href="#Volatile变量" class="headerlink" title="Volatile变量"></a>Volatile变量</h4><p>Java语言提供了一种稍弱的同步机制，即volatile变量，用来确保将变量的更新操作通知到其他线程。当把变量声明为volatile类型后，编译器与运行时都会注意到这个变量是共享的，因此不会将该变量上的操作与其他内存操作一起重排序。volatile变量不会被缓存在寄存器或者对其他处理器不可见的地方，因此在读取volatile类型的变量时总会返回最新写入的值。</p>
+<p>在访问volatile变量时不会执行加锁操作，因此也就不会使执行线程阻塞，因此volatile变量时一种比synchronized关键字更轻量级的同步机制。</p>
+<p>从内存可见性的角度来看，写入volatile变量相当于退出同步代码块，而不读取volatile变量相当于进入同步代码块。</p>
+<p>仅当volatile变量能简化代码的实现以及对同步策略的验证时，才应该使用它们。如果在验证正确性时需要对可见性进行复杂的判断，那么就不要使用volatile变量。volatile变量的正确使用方式包括：确保它们自身状态的可见性，确保它们所引用对象的状态的可见性，以及标识一些重要的程序生命周期事件的发生（例如，初始化或关闭）。</p>
+<p>加锁机制既可以确保可见性又可以确保原子性，而volatile变量只能确保可见性。</p>
+<p>当且仅当满足以下所有条件时，才应该使用volatile变量：</p>
+<ul>
+<li>当变量的写入操作不依赖变量的当前值，或者你能确保只有单个线程更新变量的值。</li>
+<li>该变量不会与其他状态变量一起纳入不变性条件中</li>
+<li>在访问变量时不需要加锁</li>
+</ul>
+<h4 id="Tornado中的double-checked-locking"><a href="#Tornado中的double-checked-locking" class="headerlink" title="Tornado中的double-checked locking"></a>Tornado中的double-checked locking</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@staticmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">instance</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""Returns a global `IOLoop` instance.</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">    Most applications have a single, global `IOLoop` running on the</span></span><br><span class="line"><span class="string">    main thread.  Use this method to get this instance from</span></span><br><span class="line"><span class="string">    another thread.  In most other cases, it is better to use `current()`</span></span><br><span class="line"><span class="string">    to get the current thread's `IOLoop`.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasattr(IOLoop, <span class="string">"_instance"</span>):</span><br><span class="line">        <span class="keyword">with</span> IOLoop._instance_lock:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> hasattr(IOLoop, <span class="string">"_instance"</span>):</span><br><span class="line">                <span class="comment"># New instance after double check</span></span><br><span class="line">                IOLoop._instance = IOLoop()</span><br><span class="line">    <span class="keyword">return</span> IOLoop._instance</span><br></pre></td></tr></table></figure>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>Java Concurrency in Practice</p>
+<p>Effective Java</p>
+<p><a href="http://en.wikipedia.org/wiki/Lazy_initialization" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/Lazy_initialization</a></p>
+<p><a href="http://en.wikipedia.org/wiki/Double-checked_locking" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/Double-checked_locking</a></p>
+<p><a href="http://www.infoq.com/cn/articles/double-checked-locking-with-delay-initialization" target="_blank" rel="noopener">http://www.infoq.com/cn/articles/double-checked-locking-with-delay-initialization</a></p>
+<p><a href="http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html" target="_blank" rel="noopener">http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html</a></p>
+<p><a href="http://zh.wikipedia.org/wiki/%E6%83%B0%E6%80%A7%E5%88%9D%E5%A7%8B%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">http://zh.wikipedia.org/wiki/%E6%83%B0%E6%80%A7%E5%88%9D%E5%A7%8B%E6%A8%A1%E5%BC%8F</a></p>
+<p><a href="http://zh.wikipedia.org/wiki/%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%E9%94%81%E5%AE%9A%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">http://zh.wikipedia.org/wiki/%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%E9%94%81%E5%AE%9A%E6%A8%A1%E5%BC%8F</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/24/tree-traversal/" rel="next" title="Tree traversal">
+                <i class="fa fa-chevron-left"></i> Tree traversal
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="一" />
+            
+              <p class="site-author-name" itemprop="name">一</p>
+              <p class="site-description motion-element" itemprop="description">One more light goes out.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Lazy-initialization"><span class="nav-number">1.</span> <span class="nav-text">Lazy initialization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Double-checked-locking"><span class="nav-number">2.</span> <span class="nav-text">Double-checked locking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非原子的64位操作"><span class="nav-number">3.</span> <span class="nav-text">非原子的64位操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Volatile变量"><span class="nav-number">4.</span> <span class="nav-text">Volatile变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tornado中的double-checked-locking"><span class="nav-number">5.</span> <span class="nav-text">Tornado中的double-checked locking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">一</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://sinceq.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sinceq.com/2018/03/01/Lazy-initializtion-and-double-checked-locking/';
+          this.page.identifier = '2018/03/01/Lazy-initializtion-and-double-checked-locking/';
+          this.page.title = 'Lazy initialization and double-checked locking';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sinceq.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
