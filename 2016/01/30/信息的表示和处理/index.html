@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="cs," />
 
 
 
@@ -80,13 +80,14 @@
 
 
 <meta name="description" content="三种最重要的数字表示：  无符号（unsigned）编码基于传统的二进制表示法，表示大于或者等于0的数字。  补码（two’s-complement）编码是表示有符号整数的最常见的方式，有符号整数就是可以为正或者为负的数字。  浮点数（floating-point）编码是表示实数的科学记数法的以二为基数的版本。    计算机的表示法是用有限数量的位来对一个数字编码，因此，当结果太大以致不能表示时，">
+<meta name="keywords" content="cs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="信息的表示和处理">
 <meta property="og:url" content="http://sinceq.com/2016/01/30/信息的表示和处理/index.html">
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="三种最重要的数字表示：  无符号（unsigned）编码基于传统的二进制表示法，表示大于或者等于0的数字。  补码（two’s-complement）编码是表示有符号整数的最常见的方式，有符号整数就是可以为正或者为负的数字。  浮点数（floating-point）编码是表示实数的科学记数法的以二为基数的版本。    计算机的表示法是用有限数量的位来对一个数字编码，因此，当结果太大以致不能表示时，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T13:31:23.797Z">
+<meta property="og:updated_time" content="2018-04-07T13:32:22.174Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="信息的表示和处理">
 <meta name="twitter:description" content="三种最重要的数字表示：  无符号（unsigned）编码基于传统的二进制表示法，表示大于或者等于0的数字。  补码（two’s-complement）编码是表示有符号整数的最常见的方式，有符号整数就是可以为正或者为负的数字。  浮点数（floating-point）编码是表示实数的科学记数法的以二为基数的版本。    计算机的表示法是用有限数量的位来对一个数字编码，因此，当结果太大以致不能表示时，">
@@ -447,13 +448,13 @@
 </blockquote>
 <p>Q:写出一个具有如下原型的函数：<br>/<em> Determine whether arguments can be added without overflow </em>/<br>int uadd_ok(unsigned x, unsigned y);</p>
 <p>如果参数x和y相加不会产生溢出，这个函数会返回1。</p>
-<figure class="highlight c"><figcaption><span>uadd_ok function</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">unsigned</span> x, <span class="keyword">unsigned</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">unsigned</span> sum = x + y;</span><br><span class="line">     <span class="keyword">return</span> sum &gt;=x;</span><br><span class="line">&#125;</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><figcaption><span>uadd_ok function</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">unsigned</span> x, <span class="keyword">unsigned</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">unsigned</span> sum = x + y;</span><br><span class="line">     <span class="keyword">return</span> sum &gt;=x;</span><br><span class="line">&#125;</span><br><span class="line">​`</span><br></pre></td></tr></table></figure>
 <h4 id="补码加法"><a href="#补码加法" class="headerlink" title="补码加法"></a>补码加法</h4><ul>
 <li>我们将两个负数x和y相加，得到一个非负的结果（x+y=x+y-2^w）。这种情况称为负溢出（negative overflow）。</li>
 <li>我们将两个正数x和y相加，得到一个负数的结果（x+y=x+y+2^w）。我种情况称为正溢出（positive overflow）。</li>
 </ul>
 <p>Q:写出一个具有如下原型的函数：<br>/<em> Determine whether arguments can be added without overflow </em>/<br>int uadd_ok(int x, int y);<br>如果参数x和y相加不会产生溢出，这个函数会返回1。</p>
-<figure class="highlight c"><figcaption><span>uadd_ok function</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">int</span> sum = x + y;</span><br><span class="line">     <span class="keyword">int</span> neg_over = x &lt; <span class="number">0</span> &amp;&amp; y &lt; <span class="number">0</span> &amp;&amp; sum &gt;=<span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> pos_over = x &gt; <span class="number">0</span> &amp;&amp; y &gt; <span class="number">0</span> &amp;&amp; sum &lt; <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">return</span> !neg_over &amp;&amp; !pos_over;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​<figure class="highlight c"><figcaption><span>uadd_ok function</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">int</span> sum = x + y;</span><br><span class="line">     <span class="keyword">int</span> neg_over = x &lt; <span class="number">0</span> &amp;&amp; y &lt; <span class="number">0</span> &amp;&amp; sum &gt;=<span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> pos_over = x &gt; <span class="number">0</span> &amp;&amp; y &gt; <span class="number">0</span> &amp;&amp; sum &lt; <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">return</span> !neg_over &amp;&amp; !pos_over;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h4 id="补码的非（negation-operation）"><a href="#补码的非（negation-operation）" class="headerlink" title="补码的非（negation operation）"></a>补码的非（negation operation）</h4><p>在C语言中，我们可以确定，对于任意整数值x，计算表达式-x和~x+1得到的结果完全一样。</p>
 <p>以下内容未完成……<br>无符号乘法<br>补码乘法<br>乘以常数<br>除以2的幂</p>
 <h4 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h4><p>101.11(binary) = 1x2^2+0x2^1+1x2^0+1x2^(-1)+1x2^(-2) = 23/4</p>
@@ -499,6 +500,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cs/" rel="tag"># cs</a>
+          
+        </div>
       
 
       
@@ -612,7 +619,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -629,6 +636,15 @@
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>
