@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="os," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="A process generally also includes the process stack, which contains temporary data(such as function parameters, return addresses, and local variables), and a data section, which contains global variab">
+<meta name="keywords" content="os">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程">
+<meta property="og:url" content="http://sinceq.com/2017/04/09/进程/index.html">
+<meta property="og:site_name" content="1llusion">
+<meta property="og:description" content="A process generally also includes the process stack, which contains temporary data(such as function parameters, return addresses, and local variables), and a data section, which contains global variab">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-10T16:56:21.314Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程">
+<meta name="twitter:description" content="A process generally also includes the process stack, which contains temporary data(such as function parameters, return addresses, and local variables), and a data section, which contains global variab">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sinceq.com/2017/04/09/进程/"/>
+
+
+
+
+
+  <title>进程 | 1llusion</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-116144054-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6a5ae1f5c5c7844b2dba26e66383316b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">1llusion</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2017/04/09/进程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">进程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-09T23:40:01+08:00">
+                2017-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/09/进程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/04/09/进程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>A <strong>process</strong> generally also includes the <strong>process stack</strong>, which contains temporary data(such as function parameters, return addresses, and local variables), and a data section, which contains global variables. A process may also include a <strong>heap</strong>, which is memory that is dynamically allocated during process run time.</p>
+<p>A program becomes a process when an executable file is loaded into memory.</p>
+<h3 id="进程描述和控制"><a href="#进程描述和控制" class="headerlink" title="进程描述和控制"></a>进程描述和控制</h3><p>操作系统必须满足的大多数需求表示都涉及进程：</p>
+<ul>
+<li>操作系统必须交替执行多个进程，在合理的响应时间范围内使处理器的利用率最大</li>
+<li>操作系统必须按照特定的策略给进程分配资源，同时避免死锁。</li>
+<li>操作系统可以支持进程间的通信和用户创建进程，它们对构造应用程序很有帮助</li>
+</ul>
+<blockquote>
+<p>从本质上看，如果两个进程为了继续进行而需要相同的两个资源，而它们每人都拥有其中的一个资源，这时就会发生死锁。每个进程都将无限地等待自己没有的那个资源。</p>
+</blockquote>
+<a id="more"></a>
+<h4 id="什么是进程"><a href="#什么是进程" class="headerlink" title="什么是进程"></a>什么是进程</h4><p>进程以下几个定义：</p>
+<ul>
+<li>正在执行的程序</li>
+<li>正在计算机上执行的程序实例</li>
+<li>能分配给处理器并由处理器执行的实体</li>
+<li>具有以下特征的活动单元：一组指令序列的执行、一个当前状态和相关的系统资源集。</li>
+</ul>
+<p>进程的两个基本的元素是<strong>程序代码</strong>和代码相关联的<strong>数据集</strong>。在进程执行时，任意给定一个时间，进程都可以唯一地被表征为以下元素：</p>
+<ul>
+<li><strong>标识符：</strong>跟这个进程相关的唯一标识付，用来区别其他进程。</li>
+<li><strong>状态：</strong>如果进程正在执行，那么进程处于运行态。</li>
+<li><strong>优先级：</strong>相对于其他进程的优先级。</li>
+<li><strong>程序计数器：</strong>程序中即将被执行的下一条指令的地址。</li>
+<li><strong>内存指针：</strong>包括程序代码和进程相关数据的指针，还有和其他进程共享内存快的指针。</li>
+<li><strong>上下文数据：</strong>进程执行时处理器的寄存器中的数据。</li>
+<li><strong>I/O状态信息：</strong>包括显式的I/O请求、分配给进城的I/O设备和被进程使用的文件列表等。</li>
+<li><strong>记账信息：</strong>可能包括处理器时间总和、使用的时钟数总和、时间限制、记账号等。</li>
+</ul>
+<p>前述的列表信息存放在一个叫做<strong>进城控制块</strong>的数据结构中，该控制块由操作系统创建和管理。</p>
+<h4 id="进程状态（Process-State）"><a href="#进程状态（Process-State）" class="headerlink" title="进程状态（Process State）"></a>进程状态（Process State）</h4><p>A process may be in one of the following states:</p>
+<ul>
+<li><strong>New：</strong> The process is being created.</li>
+<li><strong>Running：</strong> Instructions are being executed.</li>
+<li><strong>Waiting：</strong> The process is waiting for some event to occur(such as an I/O completion or reception of a signal).</li>
+<li><strong>Ready：</strong> The process is waiting to be assigned to a processor.</li>
+<li><strong>Terminated：</strong> The process hash finished execution.</li>
+</ul>
+<p>状态如下:</p>
+<ul>
+<li><strong>运行态：</strong>该进程正在执行。</li>
+<li><strong>就绪态：</strong>进城做好了准备，只要有机会就开始执行。</li>
+<li><strong>阻塞/等待态：</strong>进程在某些事件发生前不能执行，如I/O操作完成。</li>
+<li><strong>新建态：</strong>刚刚创建的进程，操作系统还没有把它加入到可执行进程组中。通常是进程控制块已经创建但还没有加载到内存中的新进程。</li>
+<li><strong>退出态：</strong>操作系统从可执行进程组中释放出的进程，或者是因为它自身停止了，或者是因为某种原因被取消。</li>
+</ul>
+<h4 id="进程描述"><a href="#进程描述" class="headerlink" title="进程描述"></a>进程描述</h4><p>操作系统构造并维护它所管理的每个实体的信息表。操作系统维护着4种不同类型的表：内存、I/O、文件和进程。</p>
+<p><strong>内存表</strong>用于跟踪内存和外存（虚拟内存）。内存表必须包括以下信息：</p>
+<ul>
+<li>分配给进程的内存。</li>
+<li>分配给进程的外存。</li>
+<li>内存块和虚拟内存块的任何保护属性，如哪些进程可以访问某些共享内存区域。</li>
+<li>管理虚拟内存所需要的任何信息。</li>
+</ul>
+<p>操作系统使用<strong>I/O表</strong>管理计算机系统的I/O设备和通道。</p>
+<p>操作系统还维护着<strong>文件表</strong>，这些表提供关于文件是否存在、文件在外存中的位置、当前状态和其他属性的信息。</p>
+<p>操作系统为了管理进程必须维护<strong>进程表</strong>。</p>
+<p>与每个进程相关联的还有操作系统用于控制进程的许多属性，通常，属性的集合称作<strong>进城控制块</strong>（proccess control block）。</p>
+<p><strong>Process Control Block</strong></p>
+<p>Each process is represented in the operating system by a process control block(PCB)-also called a task control block. It contains many pieces of information associated with a specific process, including these:</p>
+<ul>
+<li><strong>Process state. </strong>The state may be new, ready, running, waiting, halted, and so on.</li>
+<li><strong>Program counter. </strong>The counter indicates the address of the next instruction to be executed for this process.</li>
+<li><strong>CPU registers.</strong> The registers vary in number and type, depending on the computer architecture. They include accumulators, index registers, stack pointers, and general-prupose registers, plus any condition-code information. Along with the program counter, this state information must be saved when an interrupt occurs. to allow the process to be continued correctly afterward.</li>
+<li><strong>CPU-scheduling information. </strong>This information includes a process priority, pointers to scheduling queues, and any others scheduling parameters,.</li>
+<li><strong>Memory-management information.</strong> This information may include such items as the value of the base and limit resigters and the page tables, or the segment tables, depending on the memory used by the operating system.</li>
+<li><strong>Accounting information. </strong>This information includes the amount of CPU and real time used, time limits, account numbers, job or process numbers, and so on.</li>
+<li><strong>I/O status information.</strong> This information includes the list of I/O devices allocated to the process, a list of open files, and so on.</li>
+</ul>
+<p><strong>In brief. the PCB simply serves as the repository for any information that may vary from process to process.</strong></p>
+<p>可以把进程控制块信息分成三类：</p>
+<ul>
+<li>进程标识信息</li>
+<li>处理器状态信息</li>
+<li>进程控制信息</li>
+</ul>
+<p><strong>进程标识符</strong>，每个进程都分配了一个唯一的数字标识符。进程标识符可以简单地表示为主进程表中的一个索引。</p>
+<h4 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h4><p>非特权态常称作<strong>用户态</strong>。特权态可称作<strong>内核态</strong>。</p>
+<p>创建一个新进程的步骤：</p>
+<ol>
+<li>给新进程分配一个唯一的进程标识符。</li>
+<li>给进程分配空间。</li>
+<li>初始化进程控制块。</li>
+<li>设置正确的连接。</li>
+<li>创建或扩充其他数据结构。</li>
+</ol>
+<p>大多数操作系统区分两种类型的系统中断。一种称为中断，另一种称为陷阱。</p>
+<ul>
+<li><strong>时钟中断：</strong>操作系统确定当前正在运行的进程的执行时间是否已经超过了最大允许时间（<strong>时间片</strong>，即进程在被中断前可以执行的最大时间段），如果超过了，进程必须切换到就绪态，调入另一个进程。</li>
+<li><strong>I/O中断：</strong>操作系统确定是否发生了I/O活动。</li>
+<li><strong>内存失效：</strong>处理器访问一个虚拟内存地址，且此地址单元不在内存中时，操作系统必须从外存中把包含这个引用的内存块调入内存中。</li>
+</ul>
+<p>对于<strong>陷阱</strong>，操作系统确定错误或异常条件是否是致命的。</p>
+<p><strong>I/O消耗性和处理器消耗型</strong></p>
+<p>前者指进程得大部分时间用来提交I/O请求或是等待等待I/O请求。因此，这样的进程经常处于可运行状态，但通常都是运行短短的一会儿，因为它在等待更多的I/O请求时最后总会阻塞。</p>
+<p>相反，处理器消耗型进程把时间大多用在执行代码上，除非被抢占，否则它们通常都一直不停滴运行，因为它们没有太多的I/O需求。但是，因为它们不属于I/O驱动类型，所以从系统响应速度考虑，调度器不应该经常让他们运行。对于处理器消耗型的进程，调度策略是尽量降低它们的运行频率，对他们而言，延长其运行时间会更合适些。处理器消耗型进程的极端例子就是无限循环地执行。</p>
+<p>调度策略通常要在两个矛盾的目标中间寻找平衡：<strong>进程响应迅速和最大系统利用率（高吞肚量）。</strong></p>
+<h3 id="线程、对称多处理（SMP）和微内核"><a href="#线程、对称多处理（SMP）和微内核" class="headerlink" title="线程、对称多处理（SMP）和微内核"></a>线程、对称多处理（SMP）和微内核</h3><h4 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h4><p><strong>多线程</strong>是指操作系统在单个进程内支持多个并发执行路径的能力。</p>
+<p>在一个进程中，可能有一个或多个线程，每个线程有：</p>
+<ul>
+<li>线程执行状态。</li>
+<li>在未运行时保存的线程上下文；从某种意义讲，线程可以被看成做进程内的一个被独立地操作的程序计数器。</li>
+<li>一个执行栈。</li>
+<li>用于每个线程局部变量的静态存储空间。</li>
+<li>与进程内的其他线程共享的对进程的内存和资源的访问。</li>
+</ul>
+<p>从性能比较可以看出线程的重要优点如下：</p>
+<ol>
+<li>在一个已有进程中创建一个新线程比创建一个全新进程所需的时间要少许多。</li>
+<li>终止一个线程比终止一个进程花费的时间少。</li>
+<li>同一进程内线程间切换比进程间切换花费的时间少。</li>
+<li>线程提高了不同的执行程序见通信的效率。</li>
+</ol>
+<p>有4种与线程状态改变相关的基本操作：</p>
+<ul>
+<li><strong>派生：</strong>在典型情况下，当派生一个新进程时，同时也为该进程派生了一个线程。随后，进程中的线程可以在同一个进程中派生另一个线程，并为新线程提供指令指针和参数；新线程拥有自己的寄存器上下文和栈空间，且被放置在就绪队列中。</li>
+<li><strong>阻塞：</strong>当线程需要等待一个事件时，它将被阻塞，此时处理器转而执行另一个处于同一进程中或不同进程中的就绪线程。</li>
+<li><strong>解除阻塞：</strong>当阻塞一个线程的事件发生时，该线程被转移到就绪队列中。</li>
+<li><strong>结束：</strong>当一个线程完成时，其寄存器上下文和栈都被释放。</li>
+</ul>
+<p>线程的实现可以分为两大类：用户级线程和内核级线程。</p>
+<p>线程和进程间的关系</p>
+<table>
+<thead>
+<tr>
+<th>线程：进程</th>
+<th>描述</th>
+<th>示例系统</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1:1</td>
+<td>执行的每个线程是唯一的进程，有它自己的地址空间和资源。</td>
+<td>传统的UNIX</td>
+</tr>
+<tr>
+<td>M:1</td>
+<td>一个进程定义了一个地址空间和动态资源所有权。可以在该进程中创建和执行多个线程。</td>
+<td>Windows NT、Solaris、Linux、OS/2</td>
+</tr>
+<tr>
+<td>1:M</td>
+<td>一个线程可以从一个进程环境迁移到另一个进程环境。这允许线程可以很容易地在不同系统中移动。</td>
+<td>RS</td>
+</tr>
+<tr>
+<td>M:N</td>
+<td>结合了M:1和1:M情况下的属性。</td>
+<td>TRIX</td>
+</tr>
+</tbody>
+</table>
+<h4 id="对称多处理"><a href="#对称多处理" class="headerlink" title="对称多处理"></a>对称多处理</h4><p>明确SMP体系结构处于整个并行处理器类别的什么位置是有用的。Flynn首先提出的对并行处理器系统给的分类仍然是最常用的分类法，他把计算机系统分为以下4类：</p>
+<ul>
+<li><p><strong>单指令单数据（SISD）流：</strong>单处理器执行单个指令流，对保存在单个内存中的数据进行操作。</p>
+</li>
+<li><p><strong>单指令多数据（SIMD）流：</strong> 一个机器指令控制许多处理部件步伐一致地同时进行。</p>
+</li>
+<li><p><strong>多指令单数据（MISD）流</strong>：一系列数据被传送到一组处理器上，每个处理器执行不同的指令序列。这个机构从未实现过。</p>
+</li>
+<li><p><strong>多指令多数据（MIMD）流</strong>：一组处理器同时在不同的数据集上执行不同的指令序列。</p>
+<p>​</p>
+</li>
+</ul>
+<h3 id="并发性：互斥和同步"><a href="#并发性：互斥和同步" class="headerlink" title="并发性：互斥和同步"></a>并发性：互斥和同步</h3><p><strong>和并发相关的关键术语</strong></p>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原子操作</td>
+<td>一个或者多个指令的序列，对外是不可分的；即没有其他进程可以看到其中间状态或者中断此操作</td>
+</tr>
+<tr>
+<td>临界区</td>
+<td>是一段代码，在这段代码中进程将访问共享资源，当另一一个进程已经在这段代码中运行时，这个进程就不能在这段代码中执行</td>
+</tr>
+<tr>
+<td>死锁</td>
+<td>两个或者两个以上的进程因其中的每个进程都在等待其他进程做完某些事情而不能继续执行，这样的情形叫做死锁</td>
+</tr>
+<tr>
+<td>活锁</td>
+<td>两个或两个以上进程为了响应其他进程中的变化而持续改变自己的状态但不做有用的工作，这样的情形叫做活锁</td>
+</tr>
+<tr>
+<td>互斥</td>
+<td>当一个进程在临界区访问共享资源时，其他进程不能进入该临界区访问任何共享资源，这种情形叫做互斥</td>
+</tr>
+<tr>
+<td>竞争条件</td>
+<td>多个线程或进程在读一个共享数据时，结果依赖于它们执行的相对时间，这种情形叫做竞争</td>
+</tr>
+<tr>
+<td>饥饿</td>
+<td>是指一个可运行的进程尽管能继续执行，但被调度器无限期地忽视，而不能被调度执行的情况</td>
+</tr>
+</tbody>
+</table>
+<h4 id="并发的原理"><a href="#并发的原理" class="headerlink" title="并发的原理"></a>并发的原理</h4><p>为了提供对互斥的支持，必须满足如下要求：</p>
+<ol>
+<li>必须强制实施互斥：在于相同资源或共享对象的临界区有关的所有进程中，一次只允许一个进程进入临界区</li>
+<li>一个在非临界区停止的进程不能干涉其他进程</li>
+<li>决不允许出现需要访问临界区的进程被无限延迟的情况，即不会产生死锁和饥饿</li>
+<li>当没有进程在临界区，任何需要进入临界区的进程必须能攻立即进入</li>
+<li>对相关进程对执行速度和处理器的数目没有任何要求和限制</li>
+<li>一个进程驻留在临界区中的时间必须是有限的</li>
+</ol>
+<h4 id="Synchronization-Hardware（硬件支持）"><a href="#Synchronization-Hardware（硬件支持）" class="headerlink" title="Synchronization Hardware（硬件支持）"></a>Synchronization Hardware（硬件支持）</h4><h5 id="中断禁用"><a href="#中断禁用" class="headerlink" title="中断禁用"></a>中断禁用</h5><p>The critical-section problem could be solved simply in a single-processor environment if we could prevent interrupts from occurring while a shared variable was being modified. In this way, we could be sure that the current sequence of instructions would be allowed to execute in order without preemption. No other instructions would be run, so no unexpected modifications could be made to the shared variable. This is often the approach taken by nonpreemptive kernels. </p>
+<p>在<strong>单处理器</strong>中，并发进程不能重叠，只能交替。此外，一个进程将一直运行，直到它用了一个系统服务或被中断。因此为保证互斥，只需要保证一个进程不被中断就可以了，这种能力可以通过系统内核为启用和禁止中断定义的语句来提供。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">while(true)</span><br><span class="line">&#123;</span><br><span class="line">    /*禁用中断*/</span><br><span class="line">    /*临界区*/</span><br><span class="line">    /*启用中断*/</span><br><span class="line">    /*其余部分*/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于临界区不能被中断，所以可以保证互斥。但是该方法的代价非常高，由于处理器被限制于只能交替执行程序，因此执行的效率将会明显的降低。第二个问题是该方法不能用于多处理器结构中，在一个计算机系统包括多个处理器时，就有可能有一个以上的进程同时执行，在这种情况下，禁用中断是不能保证互斥的。</p>
+<h5 id="专用硬件指令"><a href="#专用硬件指令" class="headerlink" title="专用硬件指令"></a>专用硬件指令</h5><p>Many modern computer systems therefore provide special hardware instructions that allow us either to test and modify the content of a word or to swap the contents of two words atomically。 </p>
+<p>在多处理器配置中，几个处理器共享内存。在这种情况下，不存在主／从关系，处理器间行为是无关的，表现出一种对等关系，处理器之间没有支持互斥的中断机制。</p>
+<p><strong>比较和交换指令</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int compare_and_swap(int *word, int testval, int newval)</span><br><span class="line">&#123;</span><br><span class="line">    int oldval;</span><br><span class="line">    oldval = *word;</span><br><span class="line">    if(oldval == testval) *word = newval;</span><br><span class="line">    return oldval;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该指令的一个版本是用一个测试值检查一个内存单元。如果该内存单元的当前值是testval，就用newval取代该值；否则保持不变。该指令总是返回旧内存值；因此如果返回值与测试值相同，则表示该内存单元已经被更新。由此可见，这个原子指令由两部分组成：比较内存单元值和测试值；如果值有差异，则产生交换。整个比较和交换功能按原子操作执行，即它不接受中断。</p>
+<p>共享变量bolt被初始化为0，唯一可以进入临界区的进程是发现bold等于0的那个进程。所有试图进入临界区的其他进程进入忙等待模式。术语忙等待（busy waiting）或者自旋等待（spin waiting）指的是这样一种技术：进程在得到临界区访问权之前，它只能继续执行测试变量的指令来得到访问权，除此之外不能做其他事情。当一个进程离开临界区的时候，它把bolt重置为0，此时只有一个等待进程被允许进入临界区。</p>
+<p><strong>exchange指令</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void exchange(int register, int memory)</span><br><span class="line">&#123;</span><br><span class="line">     int temp;</span><br><span class="line">     temp = memory;</span><br><span class="line">     memory = register;</span><br><span class="line">     register = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>硬件方法方法的特点</strong></p>
+<ul>
+<li>适用于任意数目的进程，不管是单处理机还是多处理机；</li>
+<li>简单、容易验证其正确性。</li>
+<li>可以支持进程内有多个临界区，只需为每个临界区设立一个布尔变量。</li>
+</ul>
+<p><strong>硬件方法的缺点</strong></p>
+<ul>
+<li>进程等待进入临界区时要耗费处理机时间，不能实现让权等待。</li>
+<li>从等待进程中随机选择一个进入临界区，有的进程可能一直选不上，从而导致“饥饿”现象。</li>
+<li>可能死锁</li>
+</ul>
+<h4 id="信号量（Semaphore）"><a href="#信号量（Semaphore）" class="headerlink" title="信号量（Semaphore）"></a>信号量（Semaphore）</h4><p>基本原理：两个或者多个进程可以通过简单的信号进行合作，一个进程可以被迫在某一位置停止，直到它接收到一个特定的信号。任何复杂的合作需求可以通过适当的信号结构得到满足。为了发信号，需要使用一个称作信号量的特殊变量。为通过信号量s传送信号，进程可以执行原语semSignal(s);为通过信号量s接收信号，进程可行之行原语semWait(s);如果相应的信号仍然没有发送，则进程被挂起，直到发送玩为止。</p>
+<p>A semaphore S is an integer variable that, apart from initialization, is accessed only through two standard atomic operations: wait() and signal(). </p>
+<p>The wait() operation was originally termed P (from the Dutch proberen, “to test”); signal() was originally called V (from verhogen, “to increment”). The definition of wait() is as follows: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wait(S) &#123;</span><br><span class="line">    while (S &lt;= 0)</span><br><span class="line">     // busy wait</span><br><span class="line">     S--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The definition of signal() is as follows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">signal(S) &#123; </span><br><span class="line">	S++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>All modifications to the integer value of the semaphore in the wait() and signal() operations must be executed indivisibly. That is, when one process modifies the semaphore value, no other process can simultaneously modify that same semaphore value. In addition, in the case of wait(S), the testing of the integer value of S (S ≤ 0), as well as its possible modification (S–), must be executed without interruption.</p>
+<p>所有通过wait和signal对信号量的修改必须不可分割的执行。那就是说当一个进程修改了值，就不允许其他程序同时修改相同的信号值。另外，在wait这方面，它的执行一定不能中断。</p>
+<p>Operating systems often distinguish between counting and binary semaphores. The value of a counting semaphore can range over an unrestricted domain. The value of a binary semaphore can range only between 0 and 1. </p>
+<p>To implement semaphores under this definition, we define a semaphore as follows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef struct&#123;</span><br><span class="line">    int value;</span><br><span class="line">    struct process *list; </span><br><span class="line">&#125; </span><br><span class="line">semaphore;</span><br></pre></td></tr></table></figure>
+<p>Each semaphore has an integer value and a list of processes list. When a process must wait on a semaphore, it is added to the list of processes. A signal() operation removes one process from the list of waiting processes and awakens that process.</p>
+<p>Now, the wait() semaphore operation can be defined as</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wait(semaphore *S) &#123;</span><br><span class="line">	S-&gt;value--;</span><br><span class="line">	if (S-&gt;value &lt; 0) </span><br><span class="line">	&#123;add this process to S-&gt;list;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>wait操作，S.value–，表示进程请求一个该类资源，当S.value&lt;0时，表示该类资源已分配完毕，因此进程应调用block原语，进行自我阻塞，放弃处理机，并插入到该类资源的等待队列S.L中，可见该机制遵循了“让权等待”的准则。</p>
+<p>and the signal() semaphore operation can be defined as </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">signal(semaphore *S) &#123; </span><br><span class="line">	S-&gt;value++;</span><br><span class="line">	if (S-&gt;value &lt;= 0) &#123;</span><br><span class="line">	remove a process P from S-&gt;list; wakeup(P);</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>signal操作，表示进程释放一个资源，使系统中可供分配的该类资源数增1，故S.value++。若加1后仍是S.value&lt;=0，则表示在S.L中仍有等待该资源的进程被阻塞，故还应调用wakeup 原语，将S.L中的第一个等待进程唤醒</p>
+<p><strong>强信号量保证不会饥饿，而弱信号量不能。</strong></p>
+<h4 id="管程"><a href="#管程" class="headerlink" title="管程"></a>管程</h4><h4 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h4><p>消息传递系统可以有多种形式，本书将给出关于这类系统典型特征的一般介绍。消息传递的实际功能以一对原语的形式提供：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">send(destination, message)</span><br><span class="line">receive(source, message)</span><br></pre></td></tr></table></figure>
+<p>这是进程间进行消息传递所需要的最小操作集。一个进程以消息（message）的形式给另一个指定的目标（destination）进程发送信息；进程通过执行receive原语接收信息，receive原语中指明发送消息的源进程（source）和消息。</p>
+<h4 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a>读者-写者问题</h4><h3 id="并发：死锁和饥饿"><a href="#并发：死锁和饥饿" class="headerlink" title="并发：死锁和饥饿"></a>并发：死锁和饥饿</h3><h4 id="死锁的原理"><a href="#死锁的原理" class="headerlink" title="死锁的原理"></a>死锁的原理</h4><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>操作系统 精髓与设计原理</p>
+<p>operating-system concepts</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/os/" rel="tag"># os</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/26/操作系统概述/" rel="next" title="操作系统概述">
+                <i class="fa fa-chevron-left"></i> 操作系统概述
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/24/tree-traversal/" rel="prev" title="Tree traversal">
+                Tree traversal <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="一" />
+            
+              <p class="site-author-name" itemprop="name">一</p>
+              <p class="site-description motion-element" itemprop="description">One more light goes out.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程描述和控制"><span class="nav-number">1.</span> <span class="nav-text">进程描述和控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是进程"><span class="nav-number">1.1.</span> <span class="nav-text">什么是进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程状态（Process-State）"><span class="nav-number">1.2.</span> <span class="nav-text">进程状态（Process State）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程描述"><span class="nav-number">1.3.</span> <span class="nav-text">进程描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程控制"><span class="nav-number">1.4.</span> <span class="nav-text">进程控制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程、对称多处理（SMP）和微内核"><span class="nav-number">2.</span> <span class="nav-text">线程、对称多处理（SMP）和微内核</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程和线程"><span class="nav-number">2.1.</span> <span class="nav-text">进程和线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对称多处理"><span class="nav-number">2.2.</span> <span class="nav-text">对称多处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发性：互斥和同步"><span class="nav-number">3.</span> <span class="nav-text">并发性：互斥和同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#并发的原理"><span class="nav-number">3.1.</span> <span class="nav-text">并发的原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Synchronization-Hardware（硬件支持）"><span class="nav-number">3.2.</span> <span class="nav-text">Synchronization Hardware（硬件支持）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#中断禁用"><span class="nav-number">3.2.1.</span> <span class="nav-text">中断禁用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#专用硬件指令"><span class="nav-number">3.2.2.</span> <span class="nav-text">专用硬件指令</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量（Semaphore）"><span class="nav-number">3.3.</span> <span class="nav-text">信号量（Semaphore）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管程"><span class="nav-number">3.4.</span> <span class="nav-text">管程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息传递"><span class="nav-number">3.5.</span> <span class="nav-text">消息传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读者-写者问题"><span class="nav-number">3.6.</span> <span class="nav-text">读者-写者问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发：死锁和饥饿"><span class="nav-number">4.</span> <span class="nav-text">并发：死锁和饥饿</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#死锁的原理"><span class="nav-number">4.1.</span> <span class="nav-text">死锁的原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">一</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://sinceq.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sinceq.com/2017/04/09/进程/';
+          this.page.identifier = '2017/04/09/进程/';
+          this.page.title = '进程';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sinceq.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
