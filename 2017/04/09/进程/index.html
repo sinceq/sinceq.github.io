@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="A process generally also includes the process stack, which contains temporary data(such as function parameters, return addresses, and local variables), and a data section, which contains global variab">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-10T16:56:21.314Z">
+<meta property="og:updated_time" content="2018-04-15T15:17:58.897Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程">
 <meta name="twitter:description" content="A process generally also includes the process stack, which contains temporary data(such as function parameters, return addresses, and local variables), and a data section, which contains global variab">
@@ -620,7 +620,56 @@
 <li>从等待进程中随机选择一个进入临界区，有的进程可能一直选不上，从而导致“饥饿”现象。</li>
 <li>可能死锁</li>
 </ul>
-<h4 id="信号量（Semaphore）"><a href="#信号量（Semaphore）" class="headerlink" title="信号量（Semaphore）"></a>信号量（Semaphore）</h4><p>基本原理：两个或者多个进程可以通过简单的信号进行合作，一个进程可以被迫在某一位置停止，直到它接收到一个特定的信号。任何复杂的合作需求可以通过适当的信号结构得到满足。为了发信号，需要使用一个称作信号量的特殊变量。为通过信号量s传送信号，进程可以执行原语semSignal(s);为通过信号量s接收信号，进程可行之行原语semWait(s);如果相应的信号仍然没有发送，则进程被挂起，直到发送玩为止。</p>
+<h4 id="信号量（Semaphore）"><a href="#信号量（Semaphore）" class="headerlink" title="信号量（Semaphore）"></a>信号量（Semaphore）</h4><p>常用并发机制</p>
+<table>
+<thead>
+<tr>
+<th>并发机制</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>信号量</td>
+<td>用于进程传递信号的一个整数值。在信号量上只有三种操作可以进行，初始化、递减和增加，这三种操作都是原子操作。递减操作可以用于阻塞一个进程，增加操作可以用于解除阻塞一个进程。也称为计数信号量或一般信号量。</td>
+</tr>
+<tr>
+<td>二元信号量</td>
+<td>只取0值和1值的信号量。</td>
+</tr>
+<tr>
+<td>互斥量</td>
+<td>类似于二元信号量。关键区别在于为其加锁（设定值为0）的进程和为其解锁（设定值为1）的进程必须为同一个进程。</td>
+</tr>
+<tr>
+<td>条件变量</td>
+<td>一种数据类型，用于阻塞进程或者线程，直到热定的条件为真。</td>
+</tr>
+<tr>
+<td>管程</td>
+<td>一种编程语言结构，在一个抽象数据类型中封装了变量、访问过程和初始化代码。管程的变量只能由管程自己的访问过程来访问，每次只能有一个进程在其中执行。访问过程即临界区。管程可以有一个等待进程队列。</td>
+</tr>
+<tr>
+<td>事件标志</td>
+<td>作为同步机制的一个内存字。应用程序代码可以为标志中的每个位关联不同的时间。通过测试相关的一个或多个位，线程可以等待一个事件或多个事件。在全部的所需位都被设定（AND）或者至少一个位被设定（OR）之前线程会一直被阻塞。</td>
+</tr>
+<tr>
+<td>信箱/消息</td>
+<td>两个进程交换信息的一种方法，也可以用于同步。</td>
+</tr>
+<tr>
+<td>自旋锁</td>
+<td>一种互斥机制，进程在一个无条件循环中执行，等待锁变量的值变为可用。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>信号量的基本原理：</strong>两个或者多个进程可以通过简单的信号进行合作，一个进程可以被迫在某一位置停止，直到它接收到一个特定的信号。任何复杂的合作需求可以通过适当的信号结构得到满足。为了发信号，需要使用一个称作信号量的特殊变量。为通过信号量s传送信号，进程可以执行原语semSignal(s);为通过信号量s接收信号，进程可执行原语semWait(s);如果相应的信号仍然没有发送，则进程被挂起，直到发送完为止。</p>
+<p>为达到预期效果，可把信号量看做是一个具有整数值的变量，在它之上定义三个操作：</p>
+<ol>
+<li>一个信号量可以初始化非负数。</li>
+<li>semWait操作使信号量减1.如果值变为负数，则执行semWait的进程被阻塞。否则进程继续执行。</li>
+<li>semSignal操作使信号量加1。如果值小于或者等于零，则被semWait操作阻塞的进程被解除阻塞。</li>
+</ol>
 <p>A semaphore S is an integer variable that, apart from initialization, is accessed only through two standard atomic operations: wait() and signal(). </p>
 <p>The wait() operation was originally termed P (from the Dutch proberen, “to test”); signal() was originally called V (from verhogen, “to increment”). The definition of wait() is as follows: </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wait(S) &#123;</span><br><span class="line">    while (S &lt;= 0)</span><br><span class="line">     // busy wait</span><br><span class="line">     S--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -639,10 +688,41 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">signal(semaphore *S) &#123; </span><br><span class="line">	S-&gt;value++;</span><br><span class="line">	if (S-&gt;value &lt;= 0) &#123;</span><br><span class="line">	remove a process P from S-&gt;list; wakeup(P);</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>signal操作，表示进程释放一个资源，使系统中可供分配的该类资源数增1，故S.value++。若加1后仍是S.value&lt;=0，则表示在S.L中仍有等待该资源的进程被阻塞，故还应调用wakeup 原语，将S.L中的第一个等待进程唤醒</p>
 <p><strong>强信号量保证不会饥饿，而弱信号量不能。</strong></p>
+<h5 id="生产者-消费者问题"><a href="#生产者-消费者问题" class="headerlink" title="生产者/消费者问题"></a>生产者/消费者问题</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/* program boundedbuffer */</span><br><span class="line">const int sizeofbufer = /* 缓冲区大小 */</span><br><span class="line">semaphore n = 0, s= 1, e = sizeofbuffer;</span><br><span class="line">void producer()</span><br><span class="line">&#123;</span><br><span class="line">    while (true) &#123;</span><br><span class="line">         produce();</span><br><span class="line">         semWait(e);</span><br><span class="line">         semWait(s);</span><br><span class="line">         append();</span><br><span class="line">         semSignal(s);</span><br><span class="line">         semSignal(n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">void consumer()</span><br><span class="line">&#123;</span><br><span class="line">    while (true) &#123;</span><br><span class="line">        semWait(n);</span><br><span class="line">        semWait(s);</span><br><span class="line">        take();</span><br><span class="line">        semSignal(s);</span><br><span class="line">        semSignal(e);</span><br><span class="line">        consume();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    parbegin (producer, consumer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="信号量的实现"><a href="#信号量的实现" class="headerlink" title="信号量的实现"></a>信号量的实现</h5><p>比较并交换指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">semWait(s)</span><br><span class="line">&#123;</span><br><span class="line">    while (compare_and_swap(s.flag, 0, 1) == 1)</span><br><span class="line">    	/* 不做任何事 */;</span><br><span class="line">    s.count--;</span><br><span class="line">    if (s.count &lt; 0) &#123;</span><br><span class="line">        /* 该进程进入s.queue队列 */;</span><br><span class="line">        /* 阻塞该进程（也必须将s.flag设置为0） */;</span><br><span class="line">    &#125;</span><br><span class="line">    s.flag = 0;</span><br><span class="line">&#125;</span><br><span class="line">semSignal(s)</span><br><span class="line">&#123;</span><br><span class="line">    while (compare_and_swap(s.flag, 0, 1) == 1)</span><br><span class="line">    	/* 不做任何事 */;</span><br><span class="line">    s.count++;</span><br><span class="line">    if (s.count &lt; = 0) &#123;</span><br><span class="line">        /* 从s.queue队列中移除进程p */;</span><br><span class="line">        /* 进程P进入就绪队列 */;</span><br><span class="line">    &#125;</span><br><span class="line">    s.flag = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>中断方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">semWait(s)</span><br><span class="line">&#123;</span><br><span class="line">	禁用中断；</span><br><span class="line">	s.count--;</span><br><span class="line">	if (s.count &lt; 0) &#123;</span><br><span class="line">        /* 该进程进入s.queue队列 */;</span><br><span class="line">        /* 阻塞该进程，并允许中断 */;</span><br><span class="line">	&#125;</span><br><span class="line">	else</span><br><span class="line">		允许中断;</span><br><span class="line">&#125;</span><br><span class="line">semSignal(s)</span><br><span class="line">&#123;</span><br><span class="line">    禁用中断;</span><br><span class="line">    s.count++;</span><br><span class="line">    if (s.count &lt;= 0) &#123;</span><br><span class="line">        /*从s.queue队列中移除进程P*/</span><br><span class="line">        /*进程P进入就绪队列*/;</span><br><span class="line">    &#125;</span><br><span class="line">    允许中断;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="管程"><a href="#管程" class="headerlink" title="管程"></a>管程</h4><h4 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h4><p>消息传递系统可以有多种形式，本书将给出关于这类系统典型特征的一般介绍。消息传递的实际功能以一对原语的形式提供：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">send(destination, message)</span><br><span class="line">receive(source, message)</span><br></pre></td></tr></table></figure>
 <p>这是进程间进行消息传递所需要的最小操作集。一个进程以消息（message）的形式给另一个指定的目标（destination）进程发送信息；进程通过执行receive原语接收信息，receive原语中指明发送消息的源进程（source）和消息。</p>
-<h4 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a>读者-写者问题</h4><h3 id="并发：死锁和饥饿"><a href="#并发：死锁和饥饿" class="headerlink" title="并发：死锁和饥饿"></a>并发：死锁和饥饿</h3><h4 id="死锁的原理"><a href="#死锁的原理" class="headerlink" title="死锁的原理"></a>死锁的原理</h4><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>操作系统 精髓与设计原理</p>
+<h4 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a>读者-写者问题</h4><h3 id="并发：死锁和饥饿"><a href="#并发：死锁和饥饿" class="headerlink" title="并发：死锁和饥饿"></a>并发：死锁和饥饿</h3><h4 id="死锁的原理"><a href="#死锁的原理" class="headerlink" title="死锁的原理"></a>死锁的原理</h4><p>In a multiprogramming environment, several processes may compete for a finite number of resources. A process requests resources; if the resources are not available at that time, the process enters a waiting state. Sometimes, a waiting process is never again able to change state, because the resources it has requested are held by other waiting processes. This situation is called a <strong>deadlock</strong>.  </p>
+<p>可以把死锁定义为一组相互竞争系统资源或进行通信的进程间的”永久”阻塞。</p>
+<h5 id="死锁的条件"><a href="#死锁的条件" class="headerlink" title="死锁的条件"></a>死锁的条件</h5><p>死锁有三个必要条件：</p>
+<ol>
+<li><strong>互斥（Mutual exclusion）</strong>。一次只有一个进程可以使用一个资源。其他进程不能访问已分配给其他进程的资源。</li>
+<li><strong>占有且等待（Hold and wait）</strong>。当一个进程等待其他进程时，继续占有已经分配的资源。</li>
+<li><strong>不可抢占（No preemption）</strong>。不能强行抢占进程已占有的资源。</li>
+<li><strong>循环等待（Circular wait）</strong>。存在一个封闭的进程链，使得每个进程至少占有此链中下一个进程所需要的一个资源。</li>
+</ol>
+<h4 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h4><p>简单的讲，死锁预防策略是试图设计一种系统来排除发生死锁的可能性。可把死锁预防方法分为两类。一种是间接的死锁预防方法，即防止前面列出的三个必要条件中任何一个的发生；一种是直接的死锁预防方法，即防止循环等待的发生。</p>
+<h4 id="死锁避免"><a href="#死锁避免" class="headerlink" title="死锁避免"></a>死锁避免</h4><p>死锁避免允许三个必要条件，但通过明智的选择，确保永远不会到达死锁点，因此死锁避免比死锁预防允许更多的并发。</p>
+<p>两种死锁避免的方法：</p>
+<ul>
+<li>如果一个进程的请求会导致死锁，则不启动此进程。</li>
+<li>如果一个进程增加的资源请求会导致死锁，则不允许此分配。</li>
+</ul>
+<h5 id="资源分配拒绝"><a href="#资源分配拒绝" class="headerlink" title="资源分配拒绝"></a>资源分配拒绝</h5><p>资源分配拒绝策略，又称为<strong>银行家算法</strong>。首选需要定义状态和安全状态的概念。<strong>安全状态</strong>是指至少有一个资源分配序列不会导致死锁，<strong>不安全状态</strong>当然就是指一个不安全状态。</p>
+<p>死锁避免的优点是它不需要死锁预防中的抢占和回滚进程，并且比死锁预防的限制少。但是，它在使用中也有许多限制：</p>
+<ul>
+<li>必须事先声明每个进程请求的最大资源。</li>
+<li>考虑的进程是无关的，也就是说，它们执行的顺序必须没有任何同步要求的限制。</li>
+<li>分配的资源数目必须是固定的。</li>
+<li>在占有资源时，进程不能退出。</li>
+</ul>
+<h4 id="死锁检测"><a href="#死锁检测" class="headerlink" title="死锁检测"></a>死锁检测</h4><h4 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h4><h4 id="UNIX的并发机制"><a href="#UNIX的并发机制" class="headerlink" title="UNIX的并发机制"></a>UNIX的并发机制</h4><h5 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h5><p>UNIX对操作系统开发最重要的贡献之一是管道。受协同程序概念的启发，管道是一个环形缓冲区，允许两个进程以生产者/消费者的模型进行通信。因此，这是一个先进先出队列，由一个进程写，而由另一个进程读。</p>
+<p>有两类管道：命名管道和匿名管道。只有有“血缘”关系的进程才可以共享匿名管道，而不相关的进程只能共享命名管道。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>操作系统 精髓与设计原理</p>
 <p>operating-system concepts</p>
 
       
@@ -832,7 +912,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程描述和控制"><span class="nav-number">1.</span> <span class="nav-text">进程描述和控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是进程"><span class="nav-number">1.1.</span> <span class="nav-text">什么是进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程状态（Process-State）"><span class="nav-number">1.2.</span> <span class="nav-text">进程状态（Process State）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程描述"><span class="nav-number">1.3.</span> <span class="nav-text">进程描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程控制"><span class="nav-number">1.4.</span> <span class="nav-text">进程控制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程、对称多处理（SMP）和微内核"><span class="nav-number">2.</span> <span class="nav-text">线程、对称多处理（SMP）和微内核</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程和线程"><span class="nav-number">2.1.</span> <span class="nav-text">进程和线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对称多处理"><span class="nav-number">2.2.</span> <span class="nav-text">对称多处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发性：互斥和同步"><span class="nav-number">3.</span> <span class="nav-text">并发性：互斥和同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#并发的原理"><span class="nav-number">3.1.</span> <span class="nav-text">并发的原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Synchronization-Hardware（硬件支持）"><span class="nav-number">3.2.</span> <span class="nav-text">Synchronization Hardware（硬件支持）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#中断禁用"><span class="nav-number">3.2.1.</span> <span class="nav-text">中断禁用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#专用硬件指令"><span class="nav-number">3.2.2.</span> <span class="nav-text">专用硬件指令</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量（Semaphore）"><span class="nav-number">3.3.</span> <span class="nav-text">信号量（Semaphore）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管程"><span class="nav-number">3.4.</span> <span class="nav-text">管程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息传递"><span class="nav-number">3.5.</span> <span class="nav-text">消息传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读者-写者问题"><span class="nav-number">3.6.</span> <span class="nav-text">读者-写者问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发：死锁和饥饿"><span class="nav-number">4.</span> <span class="nav-text">并发：死锁和饥饿</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#死锁的原理"><span class="nav-number">4.1.</span> <span class="nav-text">死锁的原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程描述和控制"><span class="nav-number">1.</span> <span class="nav-text">进程描述和控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是进程"><span class="nav-number">1.1.</span> <span class="nav-text">什么是进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程状态（Process-State）"><span class="nav-number">1.2.</span> <span class="nav-text">进程状态（Process State）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程描述"><span class="nav-number">1.3.</span> <span class="nav-text">进程描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程控制"><span class="nav-number">1.4.</span> <span class="nav-text">进程控制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程、对称多处理（SMP）和微内核"><span class="nav-number">2.</span> <span class="nav-text">线程、对称多处理（SMP）和微内核</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程和线程"><span class="nav-number">2.1.</span> <span class="nav-text">进程和线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对称多处理"><span class="nav-number">2.2.</span> <span class="nav-text">对称多处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发性：互斥和同步"><span class="nav-number">3.</span> <span class="nav-text">并发性：互斥和同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#并发的原理"><span class="nav-number">3.1.</span> <span class="nav-text">并发的原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Synchronization-Hardware（硬件支持）"><span class="nav-number">3.2.</span> <span class="nav-text">Synchronization Hardware（硬件支持）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#中断禁用"><span class="nav-number">3.2.1.</span> <span class="nav-text">中断禁用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#专用硬件指令"><span class="nav-number">3.2.2.</span> <span class="nav-text">专用硬件指令</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量（Semaphore）"><span class="nav-number">3.3.</span> <span class="nav-text">信号量（Semaphore）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#生产者-消费者问题"><span class="nav-number">3.3.1.</span> <span class="nav-text">生产者/消费者问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#信号量的实现"><span class="nav-number">3.3.2.</span> <span class="nav-text">信号量的实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管程"><span class="nav-number">3.4.</span> <span class="nav-text">管程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息传递"><span class="nav-number">3.5.</span> <span class="nav-text">消息传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读者-写者问题"><span class="nav-number">3.6.</span> <span class="nav-text">读者-写者问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发：死锁和饥饿"><span class="nav-number">4.</span> <span class="nav-text">并发：死锁和饥饿</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#死锁的原理"><span class="nav-number">4.1.</span> <span class="nav-text">死锁的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#死锁的条件"><span class="nav-number">4.1.1.</span> <span class="nav-text">死锁的条件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#死锁预防"><span class="nav-number">4.2.</span> <span class="nav-text">死锁预防</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#死锁避免"><span class="nav-number">4.3.</span> <span class="nav-text">死锁避免</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#资源分配拒绝"><span class="nav-number">4.3.1.</span> <span class="nav-text">资源分配拒绝</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#死锁检测"><span class="nav-number">4.4.</span> <span class="nav-text">死锁检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哲学家就餐问题"><span class="nav-number">4.5.</span> <span class="nav-text">哲学家就餐问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UNIX的并发机制"><span class="nav-number">4.6.</span> <span class="nav-text">UNIX的并发机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#管道"><span class="nav-number">4.6.1.</span> <span class="nav-text">管道</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
