@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="life," />
+  <meta name="keywords" content="nginx," />
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="很多人在二三十岁的时候就死去了。因为一旦过了那个年龄，他们只是自己的影子，余生都会在模仿自己中度过。 ——罗曼·罗兰《约翰·克里斯多夫》">
-<meta name="keywords" content="life">
+<meta name="description" content="这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。 简介nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurre">
+<meta name="keywords" content="nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="62">
-<meta property="og:url" content="http://sinceq.com/2016/01/24/62/index.html">
+<meta property="og:title" content="关于Nginx">
+<meta property="og:url" content="http://sinceq.com/2017/05/03/关于Nginx/index.html">
 <meta property="og:site_name" content="1llusion">
-<meta property="og:description" content="很多人在二三十岁的时候就死去了。因为一旦过了那个年龄，他们只是自己的影子，余生都会在模仿自己中度过。 ——罗曼·罗兰《约翰·克里斯多夫》">
+<meta property="og:description" content="这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。 简介nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurre">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-07T13:32:25.952Z">
+<meta property="og:image" content="http://www.aosabook.org/images/nginx/architecture.png">
+<meta property="og:updated_time" content="2018-05-03T12:24:57.284Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="62">
-<meta name="twitter:description" content="很多人在二三十岁的时候就死去了。因为一旦过了那个年龄，他们只是自己的影子，余生都会在模仿自己中度过。 ——罗曼·罗兰《约翰·克里斯多夫》">
+<meta name="twitter:title" content="关于Nginx">
+<meta name="twitter:description" content="这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。 简介nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurre">
+<meta name="twitter:image" content="http://www.aosabook.org/images/nginx/architecture.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://sinceq.com/2016/01/24/62/"/>
+  <link rel="canonical" href="http://sinceq.com/2017/05/03/关于Nginx/"/>
 
 
 
 
 
-  <title>62 | 1llusion</title>
+  <title>关于Nginx | 1llusion</title>
   
 
 
@@ -282,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/01/24/62/">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2017/05/03/关于Nginx/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="一">
@@ -299,7 +301,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">62</h1>
+          <h1 class="post-title" itemprop="name headline">关于Nginx</h1>
         
 
         <div class="post-meta">
@@ -311,8 +313,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-24T22:00:16+08:00">
-                2016-01-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-03T19:21:38+08:00">
+                2017-05-03
               </time>
             
 
@@ -334,8 +336,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1llusion/" itemprop="url" rel="index">
-                    <span itemprop="name">1llusion</span>
+                  <a href="/categories/web服务器/" itemprop="url" rel="index">
+                    <span itemprop="name">web服务器</span>
                   </a>
                 </span>
 
@@ -352,9 +354,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2016/01/24/62/#comments" itemprop="discussionUrl">
+                <a href="/2017/05/03/关于Nginx/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/01/24/62/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/05/03/关于Nginx/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,9 +384,49 @@
       
 
       
-        <blockquote>
-<p>很多人在二三十岁的时候就死去了。因为一旦过了那个年龄，他们只是自己的影子，余生都会在模仿自己中度过。 ——罗曼·罗兰《约翰·克里斯多夫》</p>
-</blockquote>
+        <p>这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurrency and low memory usage.</p>
+<h3 id="Architechture"><a href="#Architechture" class="headerlink" title="Architechture"></a>Architechture</h3><p><img src="http://www.aosabook.org/images/nginx/architecture.png" alt="img"></p>
+<h4 id="IO多路复用（事件驱动）。"><a href="#IO多路复用（事件驱动）。" class="headerlink" title="IO多路复用（事件驱动）。"></a>IO多路复用（事件驱动）。</h4><p>Connections are processed in a highly efficient run-loop in a limited number of single-threaded processes called workers. Within each worker nginx can handle many thousands of concurrent connections and requests per second.</p>
+<p>nginx uses event notification mechanisms and a number of disk I/O performance enhancements in Linux, Solaris and BSD-based operating systems. like kqueue, poll, and event ports.</p>
+<h4 id="Workers-Model"><a href="#Workers-Model" class="headerlink" title="Workers Model"></a>Workers Model</h4><p><strong>Worker</strong> processes accept new requests from a shared “listen” socket and execute a highly efficient run-loop inside each worker to process thousands of connections per worker.</p>
+<p>nginx runs several processes in memory; there is a single master process and several worker processes. There are also a couple of special purpose processes, specifically a cache loader and cache manager. All processes are <strong>single-threaded</strong> in version 1.x of nginx. <strong>All processes primarily use shared-memory mechanisms for inter-process communication.</strong> </p>
+<p>The master process is responsible for the following tasks:</p>
+<ul>
+<li>读取以及验证配置</li>
+<li>创建、绑定以及关闭sockets</li>
+<li>启动、关闭以及维护配置好的worker进程</li>
+<li>重新加载配置</li>
+<li>controlling non-stop binary upgrades</li>
+<li>re-opening log files</li>
+<li>compeiling embedded Perl scripts</li>
+</ul>
+<h3 id="高性能"><a href="#高性能" class="headerlink" title="高性能"></a>高性能</h3><ul>
+<li>采用多进程异步非阻塞事件处理机制（epoll）。</li>
+<li>master/worker结构。</li>
+</ul>
+<p>采用单线程来异步非阻塞处理请求，不会为每个请求分配cpu和内存资源，节省了大量资源，同时也减少了大量的CPU的上下文切换。所以才使得Nginx支持更高的并发。</p>
+<p>Nginx能够实现高性能和可扩展性的关键取决于两个基本的设计选型：</p>
+<ul>
+<li>尽可能限制工作进程的数量，从而减少上下文切换带来的开销。默认和推荐配置是让每个CPU内核对应一个工作进程，从而高效利用硬件资源。</li>
+<li>工作进程采用单线程，并以非阻塞的方式处理多个并发连接。</li>
+</ul>
+<p>Nginx的每个工作进程通过状态机处理多个连接请求，这个状态机被实现为非阻塞的工作方式：</p>
+<ul>
+<li>每个工作进程需要处理若干套接字，包括监听套接字或者连接套接字。</li>
+<li>当监听套接字收到新的请求时，会打开一个新的连接套接字来处理与客户端的通信。</li>
+<li>当一个事件到达连接套接字时，工作进程迅速完成响应，并转而处理其他任何套接字新收到的事件。</li>
+</ul>
+<h3 id="Web服务器"><a href="#Web服务器" class="headerlink" title="Web服务器"></a>Web服务器</h3><p>一般Web服务器可通过以下三种方式提供服务：</p>
+<ul>
+<li>多进程方式（如Apache prefork模块）</li>
+<li>多线程方式（如Apache worker模块）</li>
+<li>异步方式（如Nginx worker模块）</li>
+</ul>
+<p>其中效率最高的是异步方式，最稳定的是多进程方式，占用资源较少的是多线程方式。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="http://www.aosabook.org/en/nginx.html" target="_blank" rel="noopener">http://www.aosabook.org/en/nginx.html</a></p>
+<p><a href="https://www.zhihu.com/question/28594409" target="_blank" rel="noopener">https://www.zhihu.com/question/28594409</a></p>
+<p><a href="http://www.infoq.com/cn/news/2015/06/nginx-design-performance-scale-/" target="_blank" rel="noopener">http://www.infoq.com/cn/news/2015/06/nginx-design-performance-scale-/</a></p>
 
       
     </div>
@@ -402,7 +444,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/life/" rel="tag"># life</a>
+            <a href="/tags/nginx/" rel="tag"># nginx</a>
           
         </div>
       
@@ -415,14 +457,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/04/24/tree-traversal/" rel="next" title="Tree traversal">
+                <i class="fa fa-chevron-left"></i> Tree traversal
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/01/24/计算机漫游/" rel="prev" title="计算机系统漫游">
-                计算机系统漫游 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/01/Lazy-initializtion-and-double-checked-locking/" rel="prev" title="Lazy initialization and double-checked locking">
+                Lazy initialization and double-checked locking <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -485,8 +531,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -550,6 +605,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Architechture"><span class="nav-number">2.</span> <span class="nav-text">Architechture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO多路复用（事件驱动）。"><span class="nav-number">2.1.</span> <span class="nav-text">IO多路复用（事件驱动）。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Workers-Model"><span class="nav-number">2.2.</span> <span class="nav-text">Workers Model</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高性能"><span class="nav-number">3.</span> <span class="nav-text">高性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web服务器"><span class="nav-number">4.</span> <span class="nav-text">Web服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -707,9 +778,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://sinceq.com/2016/01/24/62/';
-          this.page.identifier = '2016/01/24/62/';
-          this.page.title = '62';
+          this.page.url = 'http://sinceq.com/2017/05/03/关于Nginx/';
+          this.page.identifier = '2017/05/03/关于Nginx/';
+          this.page.title = '关于Nginx';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sinceq.disqus.com/embed.js';

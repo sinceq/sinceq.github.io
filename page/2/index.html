@@ -281,6 +281,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/02/03/程序的机器级表示/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/03/程序的机器级表示/" itemprop="url">程序的机器级表示</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-03T00:01:45+08:00">
+                2016-02-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/02/03/程序的机器级表示/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/02/03/程序的机器级表示/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="基于两种相关的机器语言：Intel-IA32-和-x86-64。"><a href="#基于两种相关的机器语言：Intel-IA32-和-x86-64。" class="headerlink" title="基于两种相关的机器语言：Intel IA32 和 x86-64。"></a>基于两种相关的机器语言：Intel IA32 和 x86-64。</h3><p>32位机器只能使用大概 4GB (2^32字节) 的随机访问存储器（即内存），而目前64位机器能够使用多达 256TB（2^48字节）的内存空间。</p>
+<p>Intel 处理器系列俗称 x86, 经历了一个长期的、不断进化的发展过程。</p>
+<p>Linux 使用了平坦寻址方式（flat addressing）。</p>
+<p>对于机器级编程来说，其中两种抽象尤为重要。第一种是机器级程序的格式和行为，定义为指令集体系结构（Instrucion set architecture，ISA），它定义了处理器状态、指令的格式，以及每条指令对状态的影响。第二种抽象是，机器级程序使用的存储器地址是虚拟地址，提供的存储器模型是一个非常大的字节数组。</p>
+<p>IA32 机器代码和原始的C代码差别非常大。一些通常对C语言程序猿隐蔽的处理器状态是可见的：</p>
+<ul>
+<li>程序计数器（在 IA32 中，通常称为“PC”，用%eip表示）指示将要执行的下一条指令在存储器中的地址。</li>
+<li>整数寄存器文件包含8个命名的位置，分别存储32位的值。这些寄存器可以存储地址（对英语C语言的指针）或整数数据。有的寄存器被用来记录某些重要的程序状态，而其他的寄存器则用来保存临时数据，例如过程的局部变量和函数的返回值。</li>
+<li>条件码寄存去保存着最近执行的算数或逻辑指令的状态信息。它们用来实现控制或数据流中的变化，比如说用来实现if和while语句。</li>
+<li>一组浮点寄存器存放浮点数据。</li>
+</ul>
+<p>程序存储器（program momery）包含：程序的可执行机器代码，操作系统需要的一些信息，用来管理过程调用和返回的运行时栈，以及用户分配的存储器块（比如malloc库函数分配的）。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/01/30/信息的表示和处理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -814,7 +978,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -825,7 +989,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -836,7 +1000,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
