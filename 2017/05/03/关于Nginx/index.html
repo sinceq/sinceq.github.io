@@ -88,7 +88,7 @@
 <meta property="og:description" content="这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。 简介nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurre">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.aosabook.org/images/nginx/architecture.png">
-<meta property="og:updated_time" content="2018-05-03T12:24:57.284Z">
+<meta property="og:updated_time" content="2018-05-14T17:26:07.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Nginx">
 <meta name="twitter:description" content="这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。 简介nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurre">
@@ -387,8 +387,29 @@
         <p>这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。</p>
 <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurrency and low memory usage.</p>
 <h3 id="Architechture"><a href="#Architechture" class="headerlink" title="Architechture"></a>Architechture</h3><p><img src="http://www.aosabook.org/images/nginx/architecture.png" alt="img"></p>
+<p>nginx在启动后，会有一个master进程和多个worker进程。master进程主要用来管理worker进程，包含：接收来自外界的信号，向各worker进程发送信号，监控worker进程的运行状态，当worker进程退出后，会自动重新启动新的worker进程。而基本的网络事件，则是放在worker进程中来处理了。<strong>worker进程的个数是可以设置的，一般我们会设置与机器cpu核数一致。</strong></p>
+<p>master来管理worker进程，所以我们只需要与master进程通信就行了，master进程会接收来自外界发来的信号，再根据信号做不同的事情。所以我们要控制nginx，只需要通过kill向master进程发送信号就行了。</p>
+<p>worker进程之间是平等的，每个进程，处理请求的机会也是一样的。当我们提供80端口的http服务时，一个连接请求过来，每个进程都有可能处理这个连接，怎么做到的呢？所有worker进程都是从master进程fork过来，在master进程里面，先建立好需要listen的socket（listenfd）之后，然后再fork出多个worker进程。所有worker进程的listenfd会在新连接到来时变得可读，为保证只有一个进程处理该连接，所有worker进程在注册listenfd读事件前抢<strong>accept_mutex</strong>，抢到互斥锁的那个进程注册listenfd读事件，在读事件里调用accept接受该连接，这样一个完整的请求就是这样的了。</p>
+<p><strong>nginx采用这种进程模型的好处</strong></p>
+<ul>
+<li>首先，对于每个worker进程来说，独立的进程，不需加锁，所以省掉了锁带来的开销。</li>
+<li>其次，采用独立的进程，可以让互相之间不会影响，一个进程退出后，其他进程还在工作，服务不会中断，master进程则很快启动新的worker进程。</li>
+</ul>
 <h4 id="IO多路复用（事件驱动）。"><a href="#IO多路复用（事件驱动）。" class="headerlink" title="IO多路复用（事件驱动）。"></a>IO多路复用（事件驱动）。</h4><p>Connections are processed in a highly efficient run-loop in a limited number of single-threaded processes called workers. Within each worker nginx can handle many thousands of concurrent connections and requests per second.</p>
 <p>nginx uses event notification mechanisms and a number of disk I/O performance enhancements in Linux, Solaris and BSD-based operating systems. like kqueue, poll, and event ports.</p>
+<p>nginx采用了<strong>异步非阻塞</strong>的方式来处理请求。</p>
+<p>apache的工作方式？每个请求会独立占一个工作线程，当并发数上到几千时，就同时有几千的线程在处理请求。这对操作系统来说，是个不小的挑战:</p>
+<ul>
+<li>线程带来的内存占用非常大</li>
+<li>线程的上下文切换带来的cpu开销很大</li>
+</ul>
+<p>在nginx里面，最忌讳阻塞的系统调用了。不要阻塞，那就非阻塞。非阻塞就是<strong>事件没有准备好，马上返回EAGAIN，告诉你，事件还没有准备好呢，你慌什么，过会再来吧。</strong>（select/poll/epoll/kqueue）</p>
+<p>拿epoll为例，当事件没有准备好时，放到epoll里面，事件准备好了，我就去读写，当读写返回EAGAIN时，我们将它再次加入到epoll里面。这样只要事件准备好了，我们就去处理它，只有当所有事件都没准备好时，才在epoll里面等着。</p>
+<p><strong>推荐设置worker的个数为cpu的核数，在这里就很容易理解了，更多的worker数，只会导致进程来竞争cpu资源了，从而带来不必要的上下文切换。</strong></p>
+<p>对于一个基本的web服务器来说，事件通常有三种类型，<strong>网络事件、信号、定时器</strong>。</p>
+<p>其中网络事件通过异步非阻塞可以很好的解决掉。</p>
+<p><strong>信号</strong>的处理，对nginx来说，有一些特定的信号，代表着特定的意义。信号会中断掉程序当前的运行，在改变状态后，继续执行。如果是系统调用，则可能会导致系统调用的失败，需要重入。对于nginx来说，如果nginx正在等待事件（epoll_wait），如果程序收到信号，在信号处理函数处理完后，epoll_wait会返回错误，然后程序可再次进入epoll_wait调用。</p>
+<p><strong>定时器</strong>。由于epoll_wait等函数在调用的时候是可以设置一个超时时间的，所以nginx借助这个超时时间来实现定时器。nginx里面的定时器事件是放在一颗维护定时器的红黑树里面，每次在进入epoll_wait前，先从红黑树里面拿到所有定时器事件的最小时间，在计算出epoll_wait的超时时间后进入epoll_wait。所以，当没有事件产生，也没有中断信号时，epoll_wait会超时，也就是说，定时器事件到了。这时，nginx会检查所有的超时事件，将他们的状态设置为超时，然后再去处理网络事件。</p>
 <h4 id="Workers-Model"><a href="#Workers-Model" class="headerlink" title="Workers Model"></a>Workers Model</h4><p><strong>Worker</strong> processes accept new requests from a shared “listen” socket and execute a highly efficient run-loop inside each worker to process thousands of connections per worker.</p>
 <p>nginx runs several processes in memory; there is a single master process and several worker processes. There are also a couple of special purpose processes, specifically a cache loader and cache manager. All processes are <strong>single-threaded</strong> in version 1.x of nginx. <strong>All processes primarily use shared-memory mechanisms for inter-process communication.</strong> </p>
 <p>The master process is responsible for the following tasks:</p>
@@ -424,7 +445,10 @@
 <li>异步方式（如Nginx worker模块）</li>
 </ul>
 <p>其中效率最高的是异步方式，最稳定的是多进程方式，占用资源较少的是多线程方式。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="http://www.aosabook.org/en/nginx.html" target="_blank" rel="noopener">http://www.aosabook.org/en/nginx.html</a></p>
+<h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><p>nginx如何复用端口号？</p>
+<p>如何实现从容重启？（nginx -s reload）</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="http://tengine.taobao.org/book/index.html" target="_blank" rel="noopener">http://tengine.taobao.org/book/index.html</a></p>
+<p><a href="http://www.aosabook.org/en/nginx.html" target="_blank" rel="noopener">http://www.aosabook.org/en/nginx.html</a></p>
 <p><a href="https://www.zhihu.com/question/28594409" target="_blank" rel="noopener">https://www.zhihu.com/question/28594409</a></p>
 <p><a href="http://www.infoq.com/cn/news/2015/06/nginx-design-performance-scale-/" target="_blank" rel="noopener">http://www.infoq.com/cn/news/2015/06/nginx-design-performance-scale-/</a></p>
 
@@ -560,7 +584,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -571,7 +595,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -582,7 +606,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -615,7 +639,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Architechture"><span class="nav-number">2.</span> <span class="nav-text">Architechture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO多路复用（事件驱动）。"><span class="nav-number">2.1.</span> <span class="nav-text">IO多路复用（事件驱动）。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Workers-Model"><span class="nav-number">2.2.</span> <span class="nav-text">Workers Model</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高性能"><span class="nav-number">3.</span> <span class="nav-text">高性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web服务器"><span class="nav-number">4.</span> <span class="nav-text">Web服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Architechture"><span class="nav-number">2.</span> <span class="nav-text">Architechture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO多路复用（事件驱动）。"><span class="nav-number">2.1.</span> <span class="nav-text">IO多路复用（事件驱动）。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Workers-Model"><span class="nav-number">2.2.</span> <span class="nav-text">Workers Model</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高性能"><span class="nav-number">3.</span> <span class="nav-text">高性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web服务器"><span class="nav-number">4.</span> <span class="nav-text">Web服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q"><span class="nav-number">5.</span> <span class="nav-text">Q</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
