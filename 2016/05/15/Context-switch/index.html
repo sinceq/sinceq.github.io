@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="os," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="IntroA context switch (also sometimes referred to as a process switch or a task switch) is the switching of the CPU (central processing unit) from one process or thread to another. Context switch过高会导致">
+<meta name="keywords" content="os">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Context switch">
+<meta property="og:url" content="http://sinceq.com/2016/05/15/Context-switch/index.html">
+<meta property="og:site_name" content="1llusion">
+<meta property="og:description" content="IntroA context switch (also sometimes referred to as a process switch or a task switch) is the switching of the CPU (central processing unit) from one process or thread to another. Context switch过高会导致">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-15T04:49:31.426Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Context switch">
+<meta name="twitter:description" content="IntroA context switch (also sometimes referred to as a process switch or a task switch) is the switching of the CPU (central processing unit) from one process or thread to another. Context switch过高会导致">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sinceq.com/2016/05/15/Context-switch/"/>
+
+
+
+
+
+  <title>Context switch | 1llusion</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-116144054-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6a5ae1f5c5c7844b2dba26e66383316b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">1llusion</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/05/15/Context-switch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Context switch</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-15T11:14:23+08:00">
+                2016-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/05/15/Context-switch/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/05/15/Context-switch/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p>A context switch (also sometimes referred to as a process switch or a task switch) is the switching of the <a href="http://www.linfo.org/cpu.html" target="_blank" rel="noopener">CPU</a> (central processing unit) from one <a href="http://www.linfo.org/process.html" target="_blank" rel="noopener">process</a> or thread to another.</p>
+<p>Context switch过高会导致CPU像个搬运工，频繁在寄存器和运行队列之间奔波，更多的时间花在了线程切换，而不是真正工作的线程上。直接的消耗包括CPU寄存器需要保存和加载，系统调度器的代码需要执行。间接消耗在于多核cache之间的共享数据。</p>
+<p>A process (also sometimes referred to as a task) is an executing (i.e., running) <a href="http://www.linfo.org/instance.html" target="_blank" rel="noopener">instance</a> of a <a href="http://www.linfo.org/program.html" target="_blank" rel="noopener">program</a>. In <a href="http://www.linfo.org/linuxdef.html" target="_blank" rel="noopener">Linux</a>, threads are lightweight processes that can run in parallel and share an address space (i.e., a range of <a href="http://www.linfo.org/memory.html" target="_blank" rel="noopener">memory</a> locations) and other resources with their parent processes (i.e., the processes that created them).</p>
+<p>A context is the contents of a CPU’s <a href="http://www.linfo.org/register.html" target="_blank" rel="noopener">registers</a> and program counter at any point in time. A register is a small amount of very fast memory inside of a CPU (as opposed to the slower <a href="http://www.linfo.org/ram.html" target="_blank" rel="noopener">RAM</a> main memory outside of the CPU) that is used to speed the execution of <a href="http://www.linfo.org/computer.html" target="_blank" rel="noopener">computer</a> programs by providing quick access to commonly used values, generally those in the midst of a calculation. A program counter is a specialized register that indicates the position of the CPU in its instruction sequence and which holds either the address of the instruction being executed or the address of the next instruction to be executed, depending on the specific system.</p>
+<a id="more"></a>
+<p>context 是指任何时间点cpu寄存器和程序计数器中的内容。**</p>
+<p>Context switching can be described in slightly more detail as the <a href="http://www.linfo.org/kernel.html" target="_blank" rel="noopener">kernel</a> (i.e., the core of the <a href="http://www.linfo.org/operating_systems_list.html" target="_blank" rel="noopener">operating system</a>) performing the following activities with regard to processes (including threads) on the CPU: (1) suspending the progression of one process and storing the CPU’s state (i.e., the context) for that process somewhere in memory, (2) retrieving the context of the next process from memory and restoring it in the CPU’s registers and (3) returning to the location indicated by the program counter (i.e., returning to the line of code at which the process was interrupted) in order to resume the process.</p>
+<p>内核为每个进程维持一个上下文（context）。上下文就是内核重新启动一个被抢占的进程的所需的状态。它由一些对象的值组成，这些对象包括通用目的的寄存器、浮点寄存器、程序计数器、用户栈、状态寄存器、内核栈和各种内核数据结构，比如描绘地址空间的页表、包含有关当前进程信息的进程表，以及包含进程已打开文件的信息的文件表。</p>
+<p>在进程执行的某些时刻，内核可以决定抢占当前进程，并重新开始一个先前被抢占的进程。这种决定就叫做调度（schedule），是由内核中称为调度起 (schduler)的代码处理的。当内核选择的一个新的进程运行时，我们就说内核调度了这个进程。在内核调度了一个新的进程运行后，它就抢占当前进程，并使用一种称为上下文切换的机制来将控制转移到新的进程，上下文切换1）保存当前进程的上下文，2）恢复某个先前被抢占的进程被保存的上下文，3）将控制传递给这个新恢复的进程。</p>
+<p>上下文交换(context switch)，又称环境切换，电脑术语，是一个储存和重建<a href="http://zh.wikipedia.org/wiki/%E4%B8%AD%E5%A4%AE%E8%99%95%E7%90%86%E5%99%A8" target="_blank" rel="noopener">CPU</a>的<a href="http://zh.wikipedia.org/w/index.php?title=%E7%8B%80%E6%85%8B_(%E9%9B%BB%E8%85%A6%E7%A7%91%E5%AD%B8" target="_blank" rel="noopener">状态</a>&amp;action=edit&amp;redlink=1) (<a href="http://zh.wikipedia.org/w/index.php?title=%E5%85%A7%E6%96%87_(%E9%9B%BB%E8%85%A6%E7%A7%91%E5%AD%B8" target="_blank" rel="noopener">内文</a>&amp;action=edit&amp;redlink=1))，因此令多个<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>(process)可以分享单一CPU资源的计算过程。要交换<a href="http://zh.wikipedia.org/wiki/%E4%B8%AD%E5%A4%AE%E8%99%95%E7%90%86%E5%99%A8" target="_blank" rel="noopener">CPU</a>上的<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>时，必需先行储存目前<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>的状态，再将欲执行的<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>之状态读回<a href="http://zh.wikipedia.org/wiki/%E4%B8%AD%E5%A4%AE%E8%99%95%E7%90%86%E5%99%A8" target="_blank" rel="noopener">CPU</a>中。</p>
+<h3 id="什么时候发生context-switch"><a href="#什么时候发生context-switch" class="headerlink" title="什么时候发生context switch"></a>什么时候发生context switch</h3><p><strong>CS只能发生在内核态（kernel mode）</strong></p>
+<h4 id="多工"><a href="#多工" class="headerlink" title="多工"></a>多工</h4><p>最常见的，在一些<a href="http://zh.wikipedia.org/wiki/%E6%8E%92%E7%A8%8B" target="_blank" rel="noopener">排程</a>(scheduling)<a href="http://zh.wikipedia.org/wiki/%E6%BC%94%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">算法</a>内，其中<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>有时候需要暂时离开CPU，让另一个<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>进来CPU运作。在先占式多工系统中，每一个行程都将轮流执行不定长度的时间，这些时间段落称为time slice。如果<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>并非自愿让出CPU(例如执行I/O操作时，<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>就需放弃CPU使用权)，当时限到时，系统将产生一个定时中断，<a href="http://zh.wikipedia.org/wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%B5%B1" target="_blank" rel="noopener">操作系统</a>将排定由其它的<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>来执行。此机制用以确保CPU不致被较依赖处理器运算的行程垄断。若无定时中断，除非<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>自愿让出CPU，否则该<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>将持续执行。对于拥有较多I/O指令的<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>，往往执行不了多久，便需要让出CPU；而较依赖处理器的<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">行程</a>相对而言I/O操作较少，反而能一直持续使用CPU，便形成了垄断现象。此即Convoy效应。</p>
+<h4 id="中断处理"><a href="#中断处理" class="headerlink" title="中断处理"></a>中断处理</h4><p>在接受到<a href="http://zh.wikipedia.org/wiki/%E4%B8%AD%E6%96%B7" target="_blank" rel="noopener">中断</a>的时候，<a href="http://zh.wikipedia.org/wiki/%E4%B8%AD%E5%A4%AE%E8%99%95%E7%90%86%E5%99%A8" target="_blank" rel="noopener">CPU</a>必须要进行上下文交换。</p>
+<h4 id="用户状态或者kernel状态的交换"><a href="#用户状态或者kernel状态的交换" class="headerlink" title="用户状态或者kernel状态的交换"></a>用户状态或者kernel状态的交换</h4><p>当<a href="http://zh.wikipedia.org/wiki/%E7%94%A8%E6%88%B7%E6%80%81" target="_blank" rel="noopener">用户态</a>和<a href="http://zh.wikipedia.org/w/index.php?title=Kernel_mode&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">kernel mode</a>交换发生的时候，并不需要进行上下文交换；并且用户态和kernel mode的交换本身并不是一个上下文交换。不过，根据操作系统的不同，有时候会在此时进行一次上下文交换的步骤。</p>
+<p>上下文切换：具体步骤</p>
+<p>在一次交换中，第一个行程的状态要被纪录在某个地方，这样当排程器(scheduler)要回到这个行程时，才可以重建这个行程并且继续运算。</p>
+<p>这里所谓“行程的状态”，包含了这个行程使用的所有暂存器(register)，特别是<a href="http://zh.wikipedia.org/wiki/%E7%A8%8B%E5%BC%8F%E8%A8%88%E6%95%B8%E5%99%A8" target="_blank" rel="noopener">程式计数器</a>；加上所有操作系统可能需要的特定资料。这些资料一般以名为<a href="http://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%A1%A8" target="_blank" rel="noopener">行程控制表</a>(process control block，PCB)的数据结构储存起来。</p>
+<h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="时间片"><a href="#时间片" class="headerlink" title="时间片"></a>时间片</h4><p>时间片（timeslice）又称为“量子（quantum）”或“处理器片（processor slice）”是分时操作系统分配给每个正在运行的<a href="http://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B" target="_blank" rel="noopener">进程</a>微观上的一段CPU时间（在抢占<a href="http://zh.wikipedia.org/wiki/%E5%86%85%E6%A0%B8" target="_blank" rel="noopener">内核</a>中是：从进程开始运行直到被抢占的时间）。现代操作系统（如：<a href="http://zh.wikipedia.org/wiki/Windows" target="_blank" rel="noopener">Windows</a>、<a href="http://zh.wikipedia.org/wiki/Linux" target="_blank" rel="noopener">Linux</a>、<a href="http://zh.wikipedia.org/wiki/Mac_OS_X" target="_blank" rel="noopener">Mac OS X</a>等）允许同时运行多个进程 —— 例如，你可以在打开音乐播放器听音乐的同时用<a href="http://zh.wikipedia.org/wiki/%E6%B5%8F%E8%A7%88%E5%99%A8" target="_blank" rel="noopener">浏览器</a>浏览<a href="http://zh.wikipedia.org/wiki/%E7%BD%91%E9%A1%B5" target="_blank" rel="noopener">网页</a>并下载文件。事实上，由于一台<a href="http://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA" target="_blank" rel="noopener">计算机</a>通常只有一个<a href="http://zh.wikipedia.org/wiki/CPU" target="_blank" rel="noopener">CPU</a>，所以永远不可能真正地同时运行多个任务。这些进程“看起来像”同时运行的，实则是轮番穿插地运行，由于时间片通常很短（在<a href="http://zh.wikipedia.org/wiki/Linux" target="_blank" rel="noopener">Linux</a>上为5ms－800ms），用户不会感觉到。</p>
+<p>时间片由<a href="http://zh.wikipedia.org/wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F" target="_blank" rel="noopener">操作系统</a>内核的<a href="http://zh.wikipedia.org/w/index.php?title=%E8%B0%83%E5%BA%A6%E7%A8%8B%E5%BA%8F&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">调度程序</a>分配给每个进程。首先，内核会给每个进程分配相等的初始时间片，然后每个进程轮番地执行相应的时间，当所有进程都处于时间片耗尽的状态时，内核会重新为每个进程计算并分配时间片，如此往复。 </p>
+<p>时间片实际上就是分配给每个可运行进程的处理器时间段。</p>
+<p>时间片是一个数值，它表明进程在被抢占前所能持续运行的事件。调度策略必须规定一个默认的时间片，但这并不是件简单的事。时间片过长会导致系统对交互的响应表现欠佳；让人觉得系统无法并发执行应用程序。时间片太短会明显增大进城切换带来的处理器耗时，因为肯定会有相当一部分系统时间用在进程切换上，而这些进程能够用来运行的时间片却很短。此外，i/o消耗型和处理器消耗型的进程之间的矛盾在这里也再次显露出来：i/o消耗型不需要长的时间片，而处理器消耗型的进程则希望越长越好。</p>
+<h4 id="引发上下文切换的原因"><a href="#引发上下文切换的原因" class="headerlink" title="引发上下文切换的原因"></a>引发上下文切换的原因</h4><p>对于抢占式操作系统而言：</p>
+<ul>
+<li>当前任务的时间片用完之后，系统CPU正常调度下一个任务；</li>
+<li>当前任务碰到IO阻塞，调度线程将挂起此任务，继续下一个任务；</li>
+<li>多个任务抢占锁资源，当前任务没有抢到，被调度器挂起，继续下一个任务；</li>
+<li>用户代码挂起当前任务，让出CPU时间；</li>
+<li>硬件中断；</li>
+</ul>
+<h4 id="上下文切换的查看方法"><a href="#上下文切换的查看方法" class="headerlink" title="上下文切换的查看方法"></a>上下文切换的查看方法</h4><p><strong>sar -w</strong>，这个只能看出主机上总的上下文切换的情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#sar -w 1</span><br><span class="line">11:27:52 AM    proc/s   cswch/s</span><br><span class="line">11:27:53 AM      0.00    968.00</span><br><span class="line">11:27:54 AM      1.00   1133.00</span><br><span class="line">11:27:55 AM      1.00   1001.00</span><br><span class="line">11:27:56 AM      0.00    764.00</span><br><span class="line">11:27:57 AM      0.00    855.00</span><br></pre></td></tr></table></figure>
+<p><strong>vmstat</strong>也可以查看总的上下文切换情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#vmstat 3</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 1  0      0 257464  36056 13466164    0    0  1622    80    1    1 25  0 75  0  0</span><br><span class="line"> 0  0      0 257148  36160 13466148    0    0     0   359  626  944  0  0 99  0  0</span><br><span class="line"> 0  0      0 260744  36284 13462208    0    0    81  1059  804 1023  1  0 99  0  0</span><br><span class="line"> 0  0      0 274496  36332 13448692    0    0  3555  6991 1584 1048  7  0 92  1  0</span><br></pre></td></tr></table></figure>
+<p>查看每个进程或进程的上下文使用情况，可以通过pidstat命令或者通过查看proc。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># pidstat -w   每个进程的context switching情况</span><br><span class="line"># pidstat -wt  细分到每个threads</span><br><span class="line">查看proc下的文件方法如下：</span><br><span class="line"># pid=307</span><br><span class="line"># grep ctxt /proc/$pid/status</span><br><span class="line">voluntary_ctxt_switches:        41    #自愿的上下文切换</span><br><span class="line">nonvoluntary_ctxt_switches:     16    #非自愿的上下文切换</span><br></pre></td></tr></table></figure>
+<p>cswch/s: 每秒任务主动(自愿的)切换上下文的次数，当某一任务处于阻塞等待时，将主动让出自己的CPU资源。nvcswch/s: 每秒任务被动(不自愿的)切换上下文的次数，CPU分配给某一任务的时间片已经用完，因此将强迫该进程让出CPU的执行权。</p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p>Computer Systems A Programmer’s Perspective</p>
+<p><a href="http://www.linfo.org/context_switch.html" target="_blank" rel="noopener">http://www.linfo.org/context_switch.html</a></p>
+<p><a href="http://en.wikipedia.org/wiki/Program_counter" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/Program_counter</a></p>
+<p><a href="http://zh.wikipedia.org/wiki/%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BA%A4%E6%8F%9B" target="_blank" rel="noopener">http://zh.wikipedia.org/wiki/%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BA%A4%E6%8F%9B</a></p>
+<p><a href="http://zh.wikipedia.org/wiki/%E6%97%B6%E9%97%B4%E7%89%87" target="_blank" rel="noopener">http://zh.wikipedia.org/wiki/%E6%97%B6%E9%97%B4%E7%89%87</a></p>
+<p><a href="http://www.361way.com/linux-context-switch/5131.html" target="_blank" rel="noopener">http://www.361way.com/linux-context-switch/5131.html</a></p>
+<p><a href="http://cs.stackexchange.com/questions/18496/what-happens-when-time-slices-are-too-short-or-too-long" target="_blank" rel="noopener">http://cs.stackexchange.com/questions/18496/what-happens-when-time-slices-are-too-short-or-too-long</a></p>
+<p><a href="http://www.cnblogs.com/zhiranok/archive/2012/08/13/context_switch_1.html" target="_blank" rel="noopener">http://www.cnblogs.com/zhiranok/archive/2012/08/13/context_switch_1.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/os/" rel="tag"># os</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/26/优化程序性能/" rel="next" title="优化程序性能">
+                <i class="fa fa-chevron-left"></i> 优化程序性能
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/22/计算机系统概述/" rel="prev" title="计算机系统概述">
+                计算机系统概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="一" />
+            
+              <p class="site-author-name" itemprop="name">一</p>
+              <p class="site-description motion-element" itemprop="description">One more light goes out.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Intro"><span class="nav-number">1.</span> <span class="nav-text">Intro</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么时候发生context-switch"><span class="nav-number">2.</span> <span class="nav-text">什么时候发生context switch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多工"><span class="nav-number">2.1.</span> <span class="nav-text">多工</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断处理"><span class="nav-number">2.2.</span> <span class="nav-text">中断处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户状态或者kernel状态的交换"><span class="nav-number">2.3.</span> <span class="nav-text">用户状态或者kernel状态的交换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q"><span class="nav-number">3.</span> <span class="nav-text">Q</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#时间片"><span class="nav-number">3.1.</span> <span class="nav-text">时间片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引发上下文切换的原因"><span class="nav-number">3.2.</span> <span class="nav-text">引发上下文切换的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上下文切换的查看方法"><span class="nav-number">3.3.</span> <span class="nav-text">上下文切换的查看方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文档"><span class="nav-number">4.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">一</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://sinceq.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sinceq.com/2016/05/15/Context-switch/';
+          this.page.identifier = '2016/05/15/Context-switch/';
+          this.page.title = 'Context switch';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sinceq.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

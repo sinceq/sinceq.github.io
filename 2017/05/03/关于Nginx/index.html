@@ -88,7 +88,7 @@
 <meta property="og:description" content="这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。 简介nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurre">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.aosabook.org/images/nginx/architecture.png">
-<meta property="og:updated_time" content="2018-05-14T17:26:07.268Z">
+<meta property="og:updated_time" content="2018-05-15T04:49:49.939Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Nginx">
 <meta name="twitter:description" content="这应该是一篇迟到好几年的文章了，之前面试就被问过关于nginx的东西。回忆一下回答的并不好，大多数时候其实都只是简单的应用而已。很少去关心为什么用？所以想想也对，一直逃避的问题其实是逃不掉，所以最终还是要坦然面对。 简介nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurre">
@@ -388,6 +388,7 @@
 <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>nginx（pronounced “engine x”），开源web服务器。nginx has focused on high performance, high concurrency and low memory usage.</p>
 <h3 id="Architechture"><a href="#Architechture" class="headerlink" title="Architechture"></a>Architechture</h3><p><img src="http://www.aosabook.org/images/nginx/architecture.png" alt="img"></p>
 <p>nginx在启动后，会有一个master进程和多个worker进程。master进程主要用来管理worker进程，包含：接收来自外界的信号，向各worker进程发送信号，监控worker进程的运行状态，当worker进程退出后，会自动重新启动新的worker进程。而基本的网络事件，则是放在worker进程中来处理了。<strong>worker进程的个数是可以设置的，一般我们会设置与机器cpu核数一致。</strong></p>
+<a id="more"></a>
 <p>master来管理worker进程，所以我们只需要与master进程通信就行了，master进程会接收来自外界发来的信号，再根据信号做不同的事情。所以我们要控制nginx，只需要通过kill向master进程发送信号就行了。</p>
 <p>worker进程之间是平等的，每个进程，处理请求的机会也是一样的。当我们提供80端口的http服务时，一个连接请求过来，每个进程都有可能处理这个连接，怎么做到的呢？所有worker进程都是从master进程fork过来，在master进程里面，先建立好需要listen的socket（listenfd）之后，然后再fork出多个worker进程。所有worker进程的listenfd会在新连接到来时变得可读，为保证只有一个进程处理该连接，所有worker进程在注册listenfd读事件前抢<strong>accept_mutex</strong>，抢到互斥锁的那个进程注册listenfd读事件，在读事件里调用accept接受该连接，这样一个完整的请求就是这样的了。</p>
 <p><strong>nginx采用这种进程模型的好处</strong></p>
@@ -491,8 +492,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/01/Lazy-initializtion-and-double-checked-locking/" rel="prev" title="Lazy initialization and double-checked locking">
-                Lazy initialization and double-checked locking <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/07/OAuth-2-0/" rel="prev" title="OAuth 2.0">
+                OAuth 2.0 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -584,7 +585,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
