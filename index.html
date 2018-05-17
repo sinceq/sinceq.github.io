@@ -281,208 +281,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2018/05/07/Coroutine/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="一">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="1llusion">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/07/Coroutine/" itemprop="url">Coroutine</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-07T17:49:59+08:00">
-                2018-05-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/07/Coroutine/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/07/Coroutine/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p><strong>Coroutines</strong> are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations. Coroutines are well-suited for implementing more familiar program components such as cooperative tasks, exceptions, event loop, iterators, infinite lists and pipes.</p>
-<p>Coroutines are a natural way of expressing many algorithms, such as simulations, games, asynchronous I/O, and other forms of event-driven programming or co-operative multitasking. Python’s generator functions are almost coroutines — but not quite — in that they allow pausing execution to produce a value, but do not provide for values or exceptions to be passed in when execution resumes. They also do not allow execution to be paused within the “try” portion of try/finally blocks, and therefore make it difficult for an aborted coroutine to clean up after itself.</p>
-<p>Such applications could then write co-routines to do non-blocking socket I/O by yielding control to an I/O scheduler until data has been sent or becomes available.</p>
-<p>Because generator-iterators begin execution at the top of the generator’s function body, there is no yield expression to receive a value when the generator has just been created. <strong>Therefore,  calling send() with a non-None argument is prohibited when the generator iterator has just started, and a TypeError is raised if this occurs. Thus, before you can communicate with a coroutine you must first call next() or send(None) to advance its execution to the first yield expression.</strong></p>
-<p>As with the next() method, the send() method returns the next value yielded by the generator-iterator, or raises SopIteration if the generator exits normally, or has already exited. If the generator raises an uncaught exception, it is propagated to send()’s caller.</p>
-<h3 id="迭代器（Iterators）"><a href="#迭代器（Iterators）" class="headerlink" title="迭代器（Iterators）"></a>迭代器（Iterators）</h3><p>Python supports a concept of iteration over containers. This is implemented using two distinct methods; these are used to allow user-defined classes to support iteration. Sequences, described below in more detail, always support the iteration methods.</p>
-<p>Iteration is a process implying iterables (implementing the <code>__iter__()</code> method) and iterators (implementing the <code>__next__()</code> method). Iterables are any objects you can get an iterator from. Iterators are objects that let you iterate on iterables.</p>
-<p>The iterator objects themselves are required to support the following two methods, which together form the iterator protocol:</p>
-<ol>
-<li><code>iterator.__iter__()</code></li>
-</ol>
-<p>​     Return the iterator object itself. This is required to allow both containers and iterators to be used with the <a href="http://docs.python.org/2/reference/compound_stmts.html#for" target="_blank" rel="noopener">for</a> and <a href="http://docs.python.org/2/reference/expressions.html#in" target="_blank" rel="noopener">in</a> statements. This method corresponds to the tp_iter slot of the type structure for Python objects in the Python/C API.</p>
-<ol>
-<li><code>iterator.next()</code></li>
-</ol>
-<p>​     Return the next item from the container. If there are no further items, raise the <a href="http://docs.python.org/2/library/exceptions.html#exceptions.StopIteration" target="_blank" rel="noopener">StopIteration</a> exception. This method corresponds to the tp_iternext slot of the type structure for Python objects in the Python/C API.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding:utf-8 -*-</span><br><span class="line">class CountDown(object):</span><br><span class="line">    def __init__(self, start):</span><br><span class="line">    	self.count = start</span><br><span class="line"> </span><br><span class="line">    def __iter__(self):</span><br><span class="line">        return self</span><br><span class="line"> </span><br><span class="line">    def next(self):</span><br><span class="line">        if self.count &lt;= 0:</span><br><span class="line">            raise StopIteration</span><br><span class="line">        r = self.count</span><br><span class="line">        self.count -= 1</span><br><span class="line">        return r</span><br></pre></td></tr></table></figure>
-<p>下面是搬自stackoverflow的一个cheat sheet。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">sequence</span><br><span class="line">  +</span><br><span class="line">  |</span><br><span class="line">  v</span><br><span class="line">   def __getitem__(self, index: int):</span><br><span class="line">  +    ...</span><br><span class="line">  |    raise IndexError</span><br><span class="line">  |</span><br><span class="line">  |</span><br><span class="line">  |              def __iter__(self):</span><br><span class="line">  |             +     ...</span><br><span class="line">  |             |     return &lt;iterator&gt;</span><br><span class="line">  |             |</span><br><span class="line">  |             |</span><br><span class="line">  +--&gt; or &lt;-----+        def __next__(self):</span><br><span class="line">       +        |       +    ...</span><br><span class="line">       |        |       |    raise StopIteration</span><br><span class="line">       v        |       |</span><br><span class="line">    iterable    |       |</span><br><span class="line">           +    |       |</span><br><span class="line">           |    |       v</span><br><span class="line">           |    +----&gt; and +-------&gt; iterator</span><br><span class="line">           |                               ^</span><br><span class="line">           v                               |</span><br><span class="line">   iter(&lt;iterable&gt;) +----------------------+</span><br><span class="line">                                           |</span><br><span class="line">   def generator():                        |</span><br><span class="line">  +    yield 1                             |</span><br><span class="line">  |                 generator_expression +-+</span><br><span class="line">  |                                        |</span><br><span class="line">  +-&gt; generator() +-&gt; generator_iterator +-+</span><br></pre></td></tr></table></figure>
-<h3 id="生成器（Generators）"><a href="#生成器（Generators）" class="headerlink" title="生成器（Generators）"></a>生成器（Generators）</h3><p>生成器提供了一种出色的方法，使得需要返回一系列元素的函数所需的代码更加简单、高效。基于yield指令，可以暂停一个函数并返回中间结果。该函数将保存执行环境并且可以在必要时恢复。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding:utf-8 -*-</span><br><span class="line"></span><br><span class="line">def fibonacci():</span><br><span class="line">    a, b = 0, 1</span><br><span class="line">    while True:</span><br><span class="line">        yield b</span><br><span class="line">        a, b = b, a+b</span><br><span class="line"></span><br><span class="line">fib = fibonacci()</span><br><span class="line">print [fib.next() for i in range(10)]</span><br><span class="line">print [fib.next() for i in range(10)]</span><br><span class="line">print map(lambda x,f = lambda x,f:f(x-1,f)+f(x-2,f) if x &gt;1 else x:f(x,f),range(10))</span><br></pre></td></tr></table></figure>
-<p><strong>In Python, everything described here as a coroutine is still a generator.</strong></p>
-<p><strong>Remember, yield both passes a value to whoever called next(), and saves the “state” of the generator function.</strong></p>
-<h4 id="Generators-vs-Iterators"><a href="#Generators-vs-Iterators" class="headerlink" title="Generators vs. Iterators"></a>Generators vs. Iterators</h4><p>A generator function is slightly different than an object that supports iteration</p>
-<p>A generator is a <strong>one-time operation.</strong> You can iterate over the generated data once, but if you want to do it again, you have to call the generator function again.</p>
-<p>This is different than a list(which you can iterate over as many times as you want)</p>
-<p>When you’re using send to “start”  a generator, you must send None.</p>
-<ul>
-<li>Generators are used to generate a series of values</li>
-<li>Yield is like the return of generator functions</li>
-<li>The only other thing yield does is save the “state” of a generator function</li>
-<li>A generator is just a special type of iterator</li>
-<li>Like iterators, we can get the next value from a generator using next() for gets values by calling next() implicitly.</li>
-</ul>
-<h4 id="Generator-function-vs-Generator-expression"><a href="#Generator-function-vs-Generator-expression" class="headerlink" title="Generator function vs Generator expression"></a>Generator function vs Generator expression</h4><h5 id="Generator-functions"><a href="#Generator-functions" class="headerlink" title="Generator functions"></a>Generator functions</h5><p>They are coded as normal def but use yield to return results one at a time, suspending and resuming.</p>
-<h5 id="Generator-expressions"><a href="#Generator-expressions" class="headerlink" title="Generator expressions"></a>Generator expressions</h5><p>There are similar to the list comprehensions. But the return an object that produces results on demand instead of building a result list.</p>
-<p>Because neither of them constructs a result list all at once, they save memory space and allow computation time to be split by implementing the iteration protocol.</p>
-<p>Python引入的与生成器相关的最后一个特性是提供了与next方法调用的代码进行交互的功能。yield将变成一个表达式，而一个值可以通过名为send的新方法来传递。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">def psychologist():</span><br><span class="line">    print &apos;Please tell me your problems&apos;</span><br><span class="line">    while True:</span><br><span class="line">        answer = (yield)</span><br><span class="line">        if answer is not None:</span><br><span class="line">            if answer.endswith(&apos;?&apos;):</span><br><span class="line">                print (&quot;Don&apos;t ask yourself too much questions&quot;)</span><br><span class="line">            elif &apos;good&apos; in answer:</span><br><span class="line">                print &quot;A that&apos;s good, go on&quot;</span><br><span class="line">            elif &apos;bad&apos; in answer:</span><br><span class="line">                print &quot;Don&apos;t be so negative&quot;</span><br><span class="line"></span><br><span class="line">free = psychologist()</span><br><span class="line">free.next()</span><br><span class="line">free.send(&apos;I feel bad&apos;)</span><br><span class="line">free.send(&quot;?&quot;)</span><br><span class="line">free.send(&quot;ok then i should find what is good for me&quot;)</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Please tell me your problems</span><br><span class="line">Don&apos;t be so negative</span><br><span class="line">Don&apos;t ask yourself too much questions</span><br><span class="line">A that&apos;s good, go on</span><br></pre></td></tr></table></figure>
-<p>send的工作机制与next一样，但是yield将变成能够返回传入的值。因而，这个函数可以根据客户端代码来改变其行为。同时，还添加了throw和close两个函数，以完成该行为。它们将向生成器抛出一个错误：</p>
-<p>throw 允许客户端代码传入要抛出的任何类型的异常；</p>
-<p>close的工作方式是相同的，但是将会抛出一个特定的异常——GeneratorExit，在这种情况下，生成器函数必须再次抛出GeneratorExit或StopIteration异常。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def my_generator():</span><br><span class="line">    try:</span><br><span class="line">        yield &apos;something&apos;</span><br><span class="line">    except ValueError:</span><br><span class="line">        yield &apos;dealing with the exception&apos;</span><br><span class="line">    finally:</span><br><span class="line">        print &quot;ok let&apos;s clean&quot;</span><br><span class="line"></span><br><span class="line">gen = my_generator()</span><br><span class="line">print gen.next()</span><br><span class="line">print gen.throw(ValueError(&apos;mean mean mean&apos;))</span><br><span class="line">gen.close()</span><br><span class="line">print gen.next()</span><br></pre></td></tr></table></figure>
-<h4 id="Yield"><a href="#Yield" class="headerlink" title="Yield"></a>Yield</h4><p>Yield返回一个生成器。简单地讲，yield的作用就是把一个函数变成一个generator。一个带有 yield 的函数就是一个 generator，它和普通函数不同，生成一个 generator 看起来像函数调用，但不会执行任何函数代码，直到对其调用 next()（在 for 循环中会自动调用 next()）才开始执行。虽然执行流程仍按函数的流程执行，但每执行到一个 yield 语句就会中断，并返回一个迭代值，下次执行时从 yield 的下一个语句继续执行。看起来就好像一个函数在正常执行的过程中被 yield 中断了数次，每次中断都会通过 yield 返回当前的迭代值。</p>
-<p>为了精通yield，你必须要理解：<strong>当你调用这个函数的时候，函数内部的代码并不立马执行。</strong></p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="http://www.dabeaz.com/coroutines/" target="_blank" rel="noopener">http://www.dabeaz.com/coroutines/</a></p>
-<p><a href="https://www.python.org/dev/peps/pep-0342/" target="_blank" rel="noopener">https://www.python.org/dev/peps/pep-0342/</a></p>
-<p><a href="https://docs.python.org/3/library/asyncio-task.html" target="_blank" rel="noopener">https://docs.python.org/3/library/asyncio-task.html</a></p>
-<p><a href="https://stackoverflow.com/questions/9884132/what-exactly-are-iterator-iterable-and-iteration" target="_blank" rel="noopener">https://stackoverflow.com/questions/9884132/what-exactly-are-iterator-iterable-and-iteration</a></p>
-<p><a href="https://stackoverflow.com/questions/1995418/python-generator-expression-vs-yield" target="_blank" rel="noopener">https://stackoverflow.com/questions/1995418/python-generator-expression-vs-yield</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sinceq.com/2018/03/01/Lazy-initializtion-and-double-checked-locking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -909,6 +707,166 @@
 <p><a href="https://www.zhihu.com/question/19811087" target="_blank" rel="noopener">https://www.zhihu.com/question/19811087</a></p>
 
           
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2017/05/07/Coroutine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/07/Coroutine/" itemprop="url">Coroutine</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-07T17:49:59+08:00">
+                2017-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/07/Coroutine/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/05/07/Coroutine/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p><strong>Coroutines</strong> are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations. Coroutines are well-suited for implementing more familiar program components such as cooperative tasks, exceptions, event loop, iterators, infinite lists and pipes.</p>
+<p>Coroutines are a natural way of expressing many algorithms, such as simulations, games, asynchronous I/O, and other forms of event-driven programming or co-operative multitasking. Python’s generator functions are almost coroutines — but not quite — in that they allow pausing execution to produce a value, but do not provide for values or exceptions to be passed in when execution resumes. They also do not allow execution to be paused within the “try” portion of try/finally blocks, and therefore make it difficult for an aborted coroutine to clean up after itself.</p>
+<p>Such applications could then write co-routines to do non-blocking socket I/O by yielding control to an I/O scheduler until data has been sent or becomes available.</p>
+<p>Because generator-iterators begin execution at the top of the generator’s function body, there is no yield expression to receive a value when the generator has just been created. <strong>Therefore,  calling send() with a non-None argument is prohibited when the generator iterator has just started, and a TypeError is raised if this occurs. Thus, before you can communicate with a coroutine you must first call next() or send(None) to advance its execution to the first yield expression.</strong></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/07/Coroutine/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
