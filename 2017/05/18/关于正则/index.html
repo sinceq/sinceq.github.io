@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="Intro最近工作上遇到一些字符串匹配问题，自然就用到了正则。很早以前自己翻过一些正则相关的书以及资料，但是最终如果没有应用到实际场景中，渐渐就会忘了。 Regular Expression 正则表达式，是计算机科学的一个概念。正则表达式使用单个字符来描述、匹配一系列匹配某个句法规则的字符串。 Repeaters A repeater indicates how many times the pr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-21T16:34:26.481Z">
+<meta property="og:updated_time" content="2018-05-21T16:47:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于正则">
 <meta name="twitter:description" content="Intro最近工作上遇到一些字符串匹配问题，自然就用到了正则。很早以前自己翻过一些正则相关的书以及资料，但是最终如果没有应用到实际场景中，渐渐就会忘了。 Regular Expression 正则表达式，是计算机科学的一个概念。正则表达式使用单个字符来描述、匹配一系列匹配某个句法规则的字符串。 Repeaters A repeater indicates how many times the pr">
@@ -388,6 +388,7 @@
 </tbody>
 </table>
 <p>Repeaters are <strong>greedy</strong>.</p>
+<a id="more"></a>
 <h3 id="Wildcards"><a href="#Wildcards" class="headerlink" title="Wildcards"></a>Wildcards</h3><blockquote>
 <p>In software, a wildcard character is a single character, such as an asterisk *,<br>used to represent a number of characters or an empty string.<br>It is often used in file searches so the full name need not be typed.</p>
 </blockquote>
@@ -483,42 +484,6 @@
 <p>Lookahead and lookbehind, collectively called “lookaround”, are zero-length assertions just like the <a href="https://www.regular-expressions.info/anchors.html" target="_blank" rel="noopener">start and end of line</a>, and <a href="https://www.regular-expressions.info/wordboundaries.html" target="_blank" rel="noopener">start and end of word</a> anchors explained earlier in this tutorial. The difference is that lookaround actually matches characters, but then gives up the match, returning only the result: match or no match. That is why they are called “assertions”. They do not consume characters in the string, but only assert whether a match is possible or not. Lookaround allows you to create regular expressions that are impossible to create without them, or that would get very longwinded without them.</p>
 </blockquote>
 <p>零宽断言用来定位到某个位置，得到的结果也是零宽匹配。零宽断言分为<strong>预测先行（lookahead）</strong>和<strong>回顾后发（lookbehind）</strong>，两者合称为<strong>环视（lookaround）。</strong></p>
-<table>
-<thead>
-<tr>
-<th>\</th>
-<th></th>
-<th>OR operator. It has a very low precedence. Crow\</th>
-<th>Servo will match either Crow or Servo, not Cro, a ‘w’ or an ‘S’, and ervo.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>^</td>
-<td>Matches at the beginning of lines in MULTILINE mode. Otherwise, matches only at the beginning of the string.</td>
-</tr>
-<tr>
-<td>$</td>
-<td>Matches at the end of lines in MULTILINE mode. Otherwise, matches only at the end of the string (and immediately before the newline – if any – at the end of the string).</td>
-</tr>
-<tr>
-<td>\A</td>
-<td>Matches only at the beginning of the string. When not in MULTILINE mode, \A and ^ are effectively the same.</td>
-</tr>
-<tr>
-<td>\Z</td>
-<td>Matches only at the end of the string.</td>
-</tr>
-<tr>
-<td>\b</td>
-<td>Word boundary: matches at the beginning or end of a word. A <strong>word</strong> is a sequence of alphanumeric characters. The beginning or end of a word is any whitespace or other non-alphanumeric character.<strong>Attention!</strong> When in a character class, [\b] denotes the backspace character!</td>
-</tr>
-<tr>
-<td>\B</td>
-<td>Matches if current position is NOT a word boundary.</td>
-</tr>
-</tbody>
-</table>
 <h4 id="Postive-and-Negative-Lookahead"><a href="#Postive-and-Negative-Lookahead" class="headerlink" title="Postive and Negative Lookahead"></a>Postive and Negative Lookahead</h4><p>Positive lookahead works just the same. <code>q(?=exp)</code> 断言指定位置的后面能够匹配表达式exp。</p>
 <p>Negative lookahead provides the solution: <code>q(?!exp)</code>.  断言指定位置的后面不满足表达式exp。</p>
 <h4 id="Positive-and-Negative-Lookbehind"><a href="#Positive-and-Negative-Lookbehind" class="headerlink" title="Positive and Negative Lookbehind"></a>Positive and Negative Lookbehind</h4><p>The construct for positive lookbehind is <code>(?&lt;=exp)</code> 断言指定位置的前面能够匹配表达式exp。</p>

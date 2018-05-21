@@ -690,8 +690,7 @@
 
       
         
-          
-            <h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p>最近工作上遇到一些字符串匹配问题，自然就用到了正则。很早以前自己翻过一些正则相关的书以及资料，但是最终如果没有应用到实际场景中，渐渐就会忘了。</p>
+          <h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p>最近工作上遇到一些字符串匹配问题，自然就用到了正则。很早以前自己翻过一些正则相关的书以及资料，但是最终如果没有应用到实际场景中，渐渐就会忘了。</p>
 <p><strong>Regular Expression</strong> 正则表达式，是计算机科学的一个概念。正则表达式使用单个字符来描述、匹配一系列匹配某个句法规则的字符串。</p>
 <h3 id="Repeaters"><a href="#Repeaters" class="headerlink" title="Repeaters"></a>Repeaters</h3><blockquote>
 <p>A repeater indicates how many times the previous character has to be repeated. When put just after a group, it indicates how many times the group has to be repeated.</p>
@@ -719,145 +718,13 @@
 </tbody>
 </table>
 <p>Repeaters are <strong>greedy</strong>.</p>
-<h3 id="Wildcards"><a href="#Wildcards" class="headerlink" title="Wildcards"></a>Wildcards</h3><blockquote>
-<p>In software, a wildcard character is a single character, such as an asterisk *,<br>used to represent a number of characters or an empty string.<br>It is often used in file searches so the full name need not be typed.</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>.</th>
-<th>Matches anything, except the newline character.</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>\d</td>
-<td>Matches any digit.</td>
-<td>Equal to [0-9].</td>
-</tr>
-<tr>
-<td>\D</td>
-<td>Matches any non-digit.</td>
-<td>Equal to <code>[^0-9]</code>.</td>
-</tr>
-<tr>
-<td>\s</td>
-<td>Matches any whitespace.</td>
-<td>Equal to [ \t\n\r\f\v].</td>
-</tr>
-<tr>
-<td>\S</td>
-<td>Matches any non-whitespace.</td>
-<td>Equal to <code>[^ \t\n\r\f\v]</code>.</td>
-</tr>
-<tr>
-<td>\w</td>
-<td>Matches any alphanumeric char.</td>
-<td>Equal to [a-zA-Z0-9] if ASCII.</td>
-</tr>
-<tr>
-<td>\W</td>
-<td>Matches any non-alphanumeric char.</td>
-<td>Equal to <code>[^a-zA-Z0-9]</code>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Character-classes"><a href="#Character-classes" class="headerlink" title="Character classes"></a>Character classes</h3><blockquote>
-<p>A character class defines a set of characters to be matched. The character class [abc] matches either char a, b or c. The characters in the class are OR-ed, not AND-ed. A shorthand notation would be [a-c].</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>[.]</th>
-<th>Loses special nature.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>[\d]</td>
-<td>Keeps special nature.</td>
-</tr>
-<tr>
-<td>[\D]</td>
-<td>Matches any non-digit.</td>
-</tr>
-<tr>
-<td>[\s]</td>
-<td>Keeps special nature.</td>
-</tr>
-<tr>
-<td>[\S]</td>
-<td>Keeps special nature.</td>
-</tr>
-<tr>
-<td>[\w]</td>
-<td>Keeps special nature.</td>
-</tr>
-<tr>
-<td>[\W]</td>
-<td>Keeps special nature.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Character-groups"><a href="#Character-groups" class="headerlink" title="Character groups"></a>Character groups</h3><blockquote>
-<p>A character group forms one unit. The group (abc) matches the exact substring abc and can be backreferenced by its group number.</p>
-</blockquote>
-<p>Please do not confuse character groups with classes! This overview might help:</p>
-<ul>
-<li>abc     : matches the exact substring “abc”.</li>
-<li>(abc) : matches the exact substring “abc”, and can be backreferenced.</li>
-<li>[abc] : matches character a, b or c.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import re</span><br><span class="line">&gt;&gt;&gt; p = re.compile(r&quot;(a(b)c)d&quot;)</span><br><span class="line">&gt;&gt;&gt; m = p.match(&quot;abcdefghijklmn&quot;)</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">&gt;&gt;&gt; m.group(0)      &lt;- Group 0 is by default the whole match.</span><br><span class="line">&quot;abcd&quot;</span><br><span class="line">&gt;&gt;&gt; m.group(1)      &lt;- The group belonging to the first ( encountered.</span><br><span class="line">&quot;abc&quot;</span><br><span class="line">&gt;&gt;&gt; m.group(2)      &lt;- The group belonging to the second ( encountered.</span><br><span class="line">&quot;b&quot;</span><br><span class="line">&gt;&gt;&gt; m.groups()      &lt;- Don&apos;t forget the s.</span><br><span class="line">(&quot;abc&quot;, &quot;b&quot;)</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="零宽断言（zero-width-assertions）"><a href="#零宽断言（zero-width-assertions）" class="headerlink" title="零宽断言（zero-width assertions）"></a>零宽断言（zero-width assertions）</h3><blockquote>
-<p>Lookahead and lookbehind, collectively called “lookaround”, are zero-length assertions just like the <a href="https://www.regular-expressions.info/anchors.html" target="_blank" rel="noopener">start and end of line</a>, and <a href="https://www.regular-expressions.info/wordboundaries.html" target="_blank" rel="noopener">start and end of word</a> anchors explained earlier in this tutorial. The difference is that lookaround actually matches characters, but then gives up the match, returning only the result: match or no match. That is why they are called “assertions”. They do not consume characters in the string, but only assert whether a match is possible or not. Lookaround allows you to create regular expressions that are impossible to create without them, or that would get very longwinded without them.</p>
-</blockquote>
-<p>零宽断言用来定位到某个位置，得到的结果也是零宽匹配。零宽断言分为<strong>预测先行（lookahead）</strong>和<strong>回顾后发（lookbehind）</strong>，两者合称为<strong>环视（lookaround）。</strong></p>
-<table>
-<thead>
-<tr>
-<th>\</th>
-<th></th>
-<th>OR operator. It has a very low precedence. Crow\</th>
-<th>Servo will match either Crow or Servo, not Cro, a ‘w’ or an ‘S’, and ervo.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>^</td>
-<td>Matches at the beginning of lines in MULTILINE mode. Otherwise, matches only at the beginning of the string.</td>
-</tr>
-<tr>
-<td>$</td>
-<td>Matches at the end of lines in MULTILINE mode. Otherwise, matches only at the end of the string (and immediately before the newline – if any – at the end of the string).</td>
-</tr>
-<tr>
-<td>\A</td>
-<td>Matches only at the beginning of the string. When not in MULTILINE mode, \A and ^ are effectively the same.</td>
-</tr>
-<tr>
-<td>\Z</td>
-<td>Matches only at the end of the string.</td>
-</tr>
-<tr>
-<td>\b</td>
-<td>Word boundary: matches at the beginning or end of a word. A <strong>word</strong> is a sequence of alphanumeric characters. The beginning or end of a word is any whitespace or other non-alphanumeric character.<strong>Attention!</strong> When in a character class, [\b] denotes the backspace character!</td>
-</tr>
-<tr>
-<td>\B</td>
-<td>Matches if current position is NOT a word boundary.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="Postive-and-Negative-Lookahead"><a href="#Postive-and-Negative-Lookahead" class="headerlink" title="Postive and Negative Lookahead"></a>Postive and Negative Lookahead</h4><p>Positive lookahead works just the same. <code>q(?=exp)</code> 断言指定位置的后面能够匹配表达式exp。</p>
-<p>Negative lookahead provides the solution: <code>q(?!exp)</code>.  断言指定位置的后面不满足表达式exp。</p>
-<h4 id="Positive-and-Negative-Lookbehind"><a href="#Positive-and-Negative-Lookbehind" class="headerlink" title="Positive and Negative Lookbehind"></a>Positive and Negative Lookbehind</h4><p>The construct for positive lookbehind is <code>(?&lt;=exp)</code> 断言指定位置的前面能够匹配表达式exp。</p>
-<p>Negative lookbehind is written as <code>(?&lt;!exp)</code> 断言指定位置的前面不满足表达式exp。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://qscintilla.com/zero-width-assertions/" target="_blank" rel="noopener">https://qscintilla.com/zero-width-assertions/</a></p>
-<p><a href="https://www.regular-expressions.info/lookaround.html" target="_blank" rel="noopener">https://www.regular-expressions.info/lookaround.html</a></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/18/关于正则/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
