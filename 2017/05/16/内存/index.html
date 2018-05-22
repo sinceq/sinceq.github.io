@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="内存管理虚拟内存Reference操作系统 精髓与设计原理">
+<meta name="description" content="内存管理 Memory management is the act of managing computer memory. The essential requirement of memory management is to provide ways to dynamically allocate portions of memory to programs at their request">
 <meta name="keywords" content="os">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内存">
 <meta property="og:url" content="http://sinceq.com/2017/05/16/内存/index.html">
 <meta property="og:site_name" content="1llusion">
-<meta property="og:description" content="内存管理虚拟内存Reference操作系统 精髓与设计原理">
+<meta property="og:description" content="内存管理 Memory management is the act of managing computer memory. The essential requirement of memory management is to provide ways to dynamically allocate portions of memory to programs at their request">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-15T16:08:50.562Z">
+<meta property="og:updated_time" content="2018-05-22T15:32:57.564Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内存">
-<meta name="twitter:description" content="内存管理虚拟内存Reference操作系统 精髓与设计原理">
+<meta name="twitter:description" content="内存管理 Memory management is the act of managing computer memory. The essential requirement of memory management is to provide ways to dynamically allocate portions of memory to programs at their request">
 
 
 
@@ -382,7 +382,223 @@
       
 
       
-        <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>操作系统 精髓与设计原理</p>
+        <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><blockquote>
+<p>Memory management is the act of managing <a href="http://en.wikipedia.org/wiki/Computer_memory" target="_blank" rel="noopener">computer memory</a>. The essential requirement of memory management is to provide ways to dynamically allocate portions of memory to programs at their request, and free it for reuse when no longer needed. This is critical to any advanced computer system where more than a single <a href="http://en.wikipedia.org/wiki/Process_(computing" target="_blank" rel="noopener">process</a>) might be underway at any time.</p>
+</blockquote>
+<p><strong>内存管理术语</strong></p>
+<table>
+<thead>
+<tr>
+<th>页框</th>
+<th>内存中一个固定长度的块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页</td>
+<td>一个固定长度的数据块，储存在二级存储中（如磁盘）。数据页可以临时复制入内存中的页框中。</td>
+</tr>
+<tr>
+<td>段</td>
+<td>一个变长的数据块，储存在二级存储器中。整个段可以临时复制到内存的一个可用区域内（分段），或者可以将一个段分为许多页，将每页单独复制到内存中（分段和分页相结合）。</td>
+</tr>
+</tbody>
+</table>
+<p>内存管理需求：重定位、保护、共享、逻辑组织、物理组织</p>
+<p>内存管理最基本的操作是由处理器把程序装入内存中执行。</p>
+<h4 id="内存分区"><a href="#内存分区" class="headerlink" title="内存分区"></a>内存分区</h4><p>内存管理最基本的操作是由处理器把程序装入内存中执行。</p>
+<a id="more"></a>
+<p><strong>内存管理技术</strong></p>
+<table>
+<thead>
+<tr>
+<th>技术</th>
+<th>说明</th>
+<th>优势</th>
+<th>弱点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>固定分区</td>
+<td>在系统生成阶段，内存被划分成许多静态分区。进程可以被装入到大于或等于自身大小的分区中。</td>
+<td>实现简单，只需要极少的操作系统开销。</td>
+<td>由于有内部碎片，对内存的使用不充分；活动进程的最大数目是固定的。</td>
+</tr>
+<tr>
+<td>动态分区</td>
+<td>分区是动态创建的，因而使得每个进程可以被装入与自身大小正好相等的分区中</td>
+<td>没有内部碎片；可以更充分地使用内存。</td>
+<td>由于需要压缩外部碎片，处理器利用率低。</td>
+</tr>
+<tr>
+<td>简单分页</td>
+<td>内存被划分成许多大小相等的页框；每个进程被划分成许多大小与页框相等的页；要装入进程，需要把进程包含的所有页都装入到内存中不一定连续的页框中。</td>
+<td>没有外部碎片</td>
+<td>有少量的内部碎片</td>
+</tr>
+<tr>
+<td>简单分段</td>
+<td>每个进程被划分成许多段；要装入进程，需要把进程包含的所有段都载入到内存中不一定连续的某些动态分区中。</td>
+<td>没有内部碎片；相对于动态分区，提高了内存利用率减少开销</td>
+<td>存在外部碎片</td>
+</tr>
+<tr>
+<td>虚拟内存分页</td>
+<td>除了不需要装入进程的所有页之外，与简单分页一样；非驻留页在以后需要时自动调入内存</td>
+<td>没有外部碎片；支持更高道数的多道程序设计；巨大的虚拟地址空间。</td>
+<td>复杂的内存管理开销</td>
+</tr>
+<tr>
+<td>虚拟内存分段</td>
+<td>除了不需要装入进程的所有段之外，与简单分段一样，非驻留段在以后需要时自动调入内存</td>
+<td>没有内部碎片；支持更高道数的多道程序设计；巨大的虚拟地址空间。支持保护和共享</td>
+<td>复杂的内存管理开销</td>
+</tr>
+</tbody>
+</table>
+<h5 id="固定分区"><a href="#固定分区" class="headerlink" title="固定分区"></a>固定分区</h5><p>使用大小相等的固定分区有两个难点：</p>
+<ul>
+<li>程序可能太大而不能放到一个分区中。在这种情况下，程序员必须使用覆盖技术设计程序，使得任何时候该程序只有一部分需要放到内存中。</li>
+<li>内存的利用率非常低。由于被装入的数据块小于分区大小，从而导致分区内部有空间浪费，这种现象称为<strong>内存碎片</strong>（internal fragmentation）。</li>
+</ul>
+<p>可以通过大小不等的分区来缓解这两个问题。</p>
+<h6 id="放置算法"><a href="#放置算法" class="headerlink" title="放置算法"></a>放置算法</h6><p>对于大小相等的分区策略，进程在内存中的放置非常简单。只要存在可用分区，进程就可以装入分区。由于所有的分区大小相等，因而使用哪个分区都没有关系。</p>
+<h5 id="动态分区"><a href="#动态分区" class="headerlink" title="动态分区"></a>动态分区</h5><p>对于动态分区，分区长度和数目是可变的。当进程被载入内存时，系统会给它分配一块和它所需容量完全相等的内存空间。</p>
+<p>动态分区方法在开始时是很好的，但它最终会导致在内存中出现许多小的空洞。随着时间的推移，内存中产生了越来越多的碎片，内存的利用率随之下降。这种现象成为<strong>外部碎片</strong>（external fragmentation），指在所有分区外的存储空间变成越来越多的碎片，这与前面的内部碎片正好相对。</p>
+<p>克服外部碎片的一种技术是<strong>压缩</strong>（compaction）</p>
+<p>操作系统不时地移动进程，使得进程占用的空间连续，并且所有的空闲空间连成一片。</p>
+<h6 id="放置算法-1"><a href="#放置算法-1" class="headerlink" title="放置算法"></a>放置算法</h6><p>三种放置算法：最佳适配、首次适配和下次适配。这三种算法都是在内存中选择等于或大于该进程的空闲块。差别在于：<strong>最佳适配</strong>选择与要求的大小最接近的块；<strong>首次适配</strong>从头开始扫描内存，选择大小足够的第一个可用块；<strong>下次适配</strong>从上一次放置的位置开始扫描内存，选择下一个大小足够的可用块。</p>
+<h6 id="置换算法"><a href="#置换算法" class="headerlink" title="置换算法"></a>置换算法</h6><h5 id="伙伴系统"><a href="#伙伴系统" class="headerlink" title="伙伴系统"></a>伙伴系统</h5><p>固定分区和动态分区都有缺陷。固定分区方案限制了活动进程的数目，并且如果可用分区的大小与进程大小非常不匹配，则内存空间的利用率非常低。动态分区的维护特别复杂，并且引入了进行压缩的额外开销。一种更有吸引力的折中方案是伙伴系统。</p>
+<h5 id="重定位"><a href="#重定位" class="headerlink" title="重定位"></a>重定位</h5><h4 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h4><blockquote>
+<p>Paged allocation divides the computer’s primary memory into fixed-size units called page frames, and the program’s virtual <a href="http://en.wikipedia.org/wiki/Address_space" target="_blank" rel="noopener">address space</a> into <a href="http://en.wikipedia.org/wiki/Page_(computer_memory" target="_blank" rel="noopener">pages</a>) of the same size. The hardware<a href="http://en.wikipedia.org/wiki/Memory_management_unit" target="_blank" rel="noopener">memory management unit</a> maps pages to frames. The physical memory can be allocated on a page basis while the address space appears contiguous.</p>
+</blockquote>
+<p>分页与固定分区的区别在于：采用分页技术的分页相当小，一个程序可以占据多个分区，并且这些分区不需要是连续的。</p>
+<p>总之，采用简单分页技术，内存被分成许多大小相等且很小的页框，每个进程被划分成同样大小的页；较小的进程需要较少的页，较大的进程需要较多的页；当一个进程被装入时，它的所有页都被装入到可用框中，并且建立一个页表。</p>
+<h4 id="分段"><a href="#分段" class="headerlink" title="分段"></a>分段</h4><blockquote>
+<p>Segmented memory is the only memory management technique that does not provide the user’s program with a ‘linear and contiguous address space.”Segments are areas of memory that usually correspond to a logical grouping of information such as a code procedure or a data array. Segments require hardware support in the form of a segment table which usually contains the physical address of the segment in memory, its size, and other data such as access protection bits and status (swapped in, swapped out, etc.)</p>
+</blockquote>
+<p>采用简单分段技术，进程被划分成许多段，段的大小不需要相等。当一个进程被调入时，它的所有段都被装入内存的可用区域中，并建立一个段表。和分页一样，采用分段技术时的逻辑地址也是由两部分组成：段号和偏移量。</p>
+<h4 id="安全问题"><a href="#安全问题" class="headerlink" title="安全问题"></a>安全问题</h4><p>缓冲区溢出（buffer overflow）也叫内存越界（buffer overrun）.</p>
+<p>输入到一个缓冲区或者数据保存区域的数据量超过了其容量，从而导致覆盖了其他信息的一种状况。攻击者造成并利用折中状况使系统崩溃或者通过插入特质的代码来控制系统。</p>
+<h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><blockquote>
+<p>Two general approaches to memory management can be used, depending (in part) on the available hardware. The simplest strategy, called swapping, consists of bringing in each process in its entirety, running it for a while, then putting it back on the disk. The other strategy, called virtual memory, allows programs to run even when they are only partially in main memory. copy at a rate of 2 GB/sec (0.5 nsec/byte) it takes about 0.5 sec to compact all of memory. That may not seem like much time, but it would be noticeably disruptive to a user watching a video stream.</p>
+</blockquote>
+<blockquote>
+<p>In <a href="http://en.wikipedia.org/wiki/Computing" target="_blank" rel="noopener">computing</a>, virtual memory is a <a href="http://en.wikipedia.org/wiki/Memory_management" target="_blank" rel="noopener">memory management</a> technique that is implemented using both hardware and software. It maps <a href="http://en.wikipedia.org/wiki/Memory_address" target="_blank" rel="noopener">memory addresses</a> used by a program, called <em>virtual addresses</em>, into physical addresses in computer memory. <a href="http://en.wikipedia.org/wiki/Main_storage#Primary_storage" target="_blank" rel="noopener">Main storage</a> as seen by a process or task appears as a contiguous <a href="http://en.wikipedia.org/wiki/Address_space" target="_blank" rel="noopener">address space</a> or collection of contiguous <a href="http://en.wikipedia.org/wiki/Memory_segmentation" target="_blank" rel="noopener">segments</a>. The operating system manages virtual address spaces and the assignment of real memory to virtual memory. Address translation hardware in the CPU, often referred to as a <a href="http://en.wikipedia.org/wiki/Memory_management_unit" target="_blank" rel="noopener">memory management unit</a> or MMU, automatically translates virtual addresses to physical addresses. Software within the operating system may extend these capabilities to provide a virtual address space that can exceed the capacity of real memory and thus reference more memory than is physically present in the computer.</p>
+</blockquote>
+<p><strong>虚拟内存术语</strong></p>
+<table>
+<thead>
+<tr>
+<th>虚拟内存</th>
+<th>在内存分配机制中，尽管备用内存是主内存的一部分，它也可以被寻址。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>虚拟地址</td>
+<td>在虚拟内存中分配给某一位置的地址使该位置可以被访问，仿佛它是主内存的一部分</td>
+</tr>
+<tr>
+<td>虚拟地址空间</td>
+<td>分配给进程的虚拟存储</td>
+</tr>
+<tr>
+<td>地址空间</td>
+<td>可用于某进程的内存地址范围</td>
+</tr>
+<tr>
+<td>实地址</td>
+<td>内存中存储位置的地址</td>
+</tr>
+</tbody>
+</table>
+<p>有两种实现方法可以提高系统的利用率，其中第二种的效果比第一种更令人吃惊。这两种实现方法分笔试：</p>
+<ol>
+<li><strong>在内存中保留多个进程</strong>。</li>
+<li><strong>进程可以比内存的全部空间还大</strong>。</li>
+</ol>
+<p>由于一个进程只能在内存中执行，因此这个存储器称作<strong>实存储器</strong>（real memory）,简称实存。但是程序员或用户感觉到的是一个更大的内存，通常它被分配在磁盘上，这称为<strong>虚拟内存</strong>（virtual memory），简称虚存。</p>
+<h5 id="硬件和控制结构"><a href="#硬件和控制结构" class="headerlink" title="硬件和控制结构"></a>硬件和控制结构</h5><p>分页和分段的特点**</p>
+<table>
+<thead>
+<tr>
+<th>简单分页</th>
+<th>虚拟分页</th>
+<th>简单分段</th>
+<th>虚存分段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内存被划分成大小固定的小块，称作页框</td>
+<td>内存被划分成大小固定的小块，称作页框</td>
+<td>内存未被划分</td>
+<td>内存未被划分</td>
+</tr>
+<tr>
+<td>程序被编译器或内存管理系统划分为页</td>
+<td>程序被编译器或内存管理系统划分为页</td>
+<td>由程序员给编译器指定程序段</td>
+<td>由程序员给编译器指定程序段</td>
+</tr>
+<tr>
+<td>页框中有内部碎片</td>
+<td>页框中有内部碎片</td>
+<td>没有内部碎片</td>
+<td>没有内部碎片</td>
+</tr>
+<tr>
+<td>没有外部碎片</td>
+<td>没有外部碎片</td>
+<td>有外部碎片</td>
+<td>有外部碎片</td>
+</tr>
+<tr>
+<td>操作系统必须为每个进程维护一个页表，以说明每个页对应的页框</td>
+<td>操作系统必须为每个进程维护一个页表，以说明每个页对应的页框</td>
+<td>操作系统必须为每个进程维护一个段表，以说明每一段中的加载地址和长度</td>
+<td>操作系统必须为每个进程维护一个段表，以说明每一段中的加载地址和长度</td>
+</tr>
+<tr>
+<td>操作系统必须维护一个空闲页框列表</td>
+<td>操作系统必须维护一个空闲页框列表</td>
+<td>操作系统必须维护一个内存中的空闲的空洞列表</td>
+<td>操作系统必须维护一个内存中的空闲的空洞列表</td>
+</tr>
+<tr>
+<td>处理器使用页号和偏移量来计算绝对地址</td>
+<td>处理器使用页号和偏移量来计算绝对地址</td>
+<td>处理器使用段号和偏移量来计算绝对地址</td>
+<td>处理器使用段号和偏移量来计算绝对地址</td>
+</tr>
+<tr>
+<td>当程序运行时，它的所有页必须都在内存中，除非是用了覆盖技术</td>
+<td>当进程在运行时，并不是它的所有页都必须在内存页框中，只在需要时才读入页</td>
+<td>当程序运行时，它的所有页必须都在内存中，除非是用了覆盖技术</td>
+<td>当进程在运行时，并不是它的所有段都必须在内存页框中，只在需要时才读入段</td>
+</tr>
+<tr>
+<td></td>
+<td>把一页读入内存可能需要把另一页写到磁盘</td>
+<td></td>
+<td>把一段读入内存可能需要把另外的一个段或几个段写出到磁盘</td>
+</tr>
+</tbody>
+</table>
+<h6 id="局部性"><a href="#局部性" class="headerlink" title="局部性"></a>局部性</h6><p>如果一块正好在将要被用到之前唤出，操作系统就不得不很快把它取回来。太多的这类操作会导致一种称为<strong>系统抖动</strong>（thrashing）的情况：处理器的大部分时间都用于交换块，而不是执行指令。</p>
+<p>操作系统试图根据最近的历史来猜测在不远的将来最可能用到的块。这类推断基于<strong>局部性原理</strong>（principle of locality）。概括来说，局部性原理描述了一个进程中程序和数据引用的集簇倾向。因此，假设在很短的时间内仅需要进程的一部分块是合理的。同时，还可以对在不远的将来可能会访问的快进行猜测，从而避免系统抖动。</p>
+<h5 id="操作系统软件"><a href="#操作系统软件" class="headerlink" title="操作系统软件"></a>操作系统软件</h5><p>操作系统的内存管理设计取决于三个基本方面的选择：</p>
+<ul>
+<li>是否使用虚拟内存技术</li>
+<li>使用分页还是分段，或者是二者的组合</li>
+<li>为各种存储管理特征采用的算法</li>
+</ul>
+<p>为了有效地使用处理器和I/O设备，希望能在内存中保留尽可能多的进程。此外，还希望能解除程序在开发时对程序使用内存大小的限制。</p>
+<p>解决这两个问题的途径是虚拟内存技术。</p>
+<p>支持虚拟内存技术的两种基本方法是分页和分段。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>操作系统 精髓与设计原理</p>
 
       
     </div>
@@ -571,7 +787,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理"><span class="nav-number">1.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟内存"><span class="nav-number">2.</span> <span class="nav-text">虚拟内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理"><span class="nav-number">1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分区"><span class="nav-number">1.1.</span> <span class="nav-text">内存分区</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#固定分区"><span class="nav-number">1.1.1.</span> <span class="nav-text">固定分区</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#放置算法"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">放置算法</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#动态分区"><span class="nav-number">1.1.2.</span> <span class="nav-text">动态分区</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#放置算法-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">放置算法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#置换算法"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">置换算法</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#伙伴系统"><span class="nav-number">1.1.3.</span> <span class="nav-text">伙伴系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重定位"><span class="nav-number">1.1.4.</span> <span class="nav-text">重定位</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分页"><span class="nav-number">1.2.</span> <span class="nav-text">分页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分段"><span class="nav-number">1.3.</span> <span class="nav-text">分段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安全问题"><span class="nav-number">1.4.</span> <span class="nav-text">安全问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟内存"><span class="nav-number">2.</span> <span class="nav-text">虚拟内存</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#硬件和控制结构"><span class="nav-number">2.0.1.</span> <span class="nav-text">硬件和控制结构</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#局部性"><span class="nav-number">2.0.1.1.</span> <span class="nav-text">局部性</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#操作系统软件"><span class="nav-number">2.0.2.</span> <span class="nav-text">操作系统软件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>

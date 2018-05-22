@@ -874,10 +874,38 @@
 
       
         
-          
-            <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>操作系统 精髓与设计原理</p>
-
-          
+          <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><blockquote>
+<p>Memory management is the act of managing <a href="http://en.wikipedia.org/wiki/Computer_memory" target="_blank" rel="noopener">computer memory</a>. The essential requirement of memory management is to provide ways to dynamically allocate portions of memory to programs at their request, and free it for reuse when no longer needed. This is critical to any advanced computer system where more than a single <a href="http://en.wikipedia.org/wiki/Process_(computing" target="_blank" rel="noopener">process</a>) might be underway at any time.</p>
+</blockquote>
+<p><strong>内存管理术语</strong></p>
+<table>
+<thead>
+<tr>
+<th>页框</th>
+<th>内存中一个固定长度的块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页</td>
+<td>一个固定长度的数据块，储存在二级存储中（如磁盘）。数据页可以临时复制入内存中的页框中。</td>
+</tr>
+<tr>
+<td>段</td>
+<td>一个变长的数据块，储存在二级存储器中。整个段可以临时复制到内存的一个可用区域内（分段），或者可以将一个段分为许多页，将每页单独复制到内存中（分段和分页相结合）。</td>
+</tr>
+</tbody>
+</table>
+<p>内存管理需求：重定位、保护、共享、逻辑组织、物理组织</p>
+<p>内存管理最基本的操作是由处理器把程序装入内存中执行。</p>
+<h4 id="内存分区"><a href="#内存分区" class="headerlink" title="内存分区"></a>内存分区</h4><p>内存管理最基本的操作是由处理器把程序装入内存中执行。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/16/内存/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
