@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="QWhat is the difference between ++i and i++?++i 等价于i=i+1。递增运算将运算对象的值增加1. 123i = 1;j = ++i;(i is 2, j is 2) i++ 同样会自增i，但是返回的是原来的值。 123i = 1;j = i++;(i is 2, j is 1) 12345678910111213// 前缀形式：int&amp;amp; in">
+<meta name="description" content="类型算数类型   类型 含义 最小尺寸     bool 布尔类型 未定义   char 字符 8位   wchar_t 宽字符 16位   char16_t Unicode字符 16位   char32_t Unicode字符 32位   short 短整型 16位   int 整型 16位   long 长整型 32位   long long 长整型 64位   float 单精度浮点数 6位">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++ Primer阅读笔记">
 <meta property="og:url" content="http://sinceq.com/2017/05/15/C-Primer阅读笔记/index.html">
 <meta property="og:site_name" content="1llusion">
-<meta property="og:description" content="QWhat is the difference between ++i and i++?++i 等价于i=i+1。递增运算将运算对象的值增加1. 123i = 1;j = ++i;(i is 2, j is 2) i++ 同样会自增i，但是返回的是原来的值。 123i = 1;j = i++;(i is 2, j is 1) 12345678910111213// 前缀形式：int&amp;amp; in">
+<meta property="og:description" content="类型算数类型   类型 含义 最小尺寸     bool 布尔类型 未定义   char 字符 8位   wchar_t 宽字符 16位   char16_t Unicode字符 16位   char32_t Unicode字符 32位   short 短整型 16位   int 整型 16位   long 长整型 32位   long long 长整型 64位   float 单精度浮点数 6位">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-15T15:57:30.099Z">
+<meta property="og:updated_time" content="2018-05-22T16:34:27.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++ Primer阅读笔记">
-<meta name="twitter:description" content="QWhat is the difference between ++i and i++?++i 等价于i=i+1。递增运算将运算对象的值增加1. 123i = 1;j = ++i;(i is 2, j is 2) i++ 同样会自增i，但是返回的是原来的值。 123i = 1;j = i++;(i is 2, j is 1) 12345678910111213// 前缀形式：int&amp;amp; in">
+<meta name="twitter:description" content="类型算数类型   类型 含义 最小尺寸     bool 布尔类型 未定义   char 字符 8位   wchar_t 宽字符 16位   char16_t Unicode字符 16位   char32_t Unicode字符 32位   short 短整型 16位   int 整型 16位   long 长整型 32位   long long 长整型 64位   float 单精度浮点数 6位">
 
 
 
@@ -381,11 +381,85 @@
       
 
       
-        <h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="What-is-the-difference-between-i-and-i"><a href="#What-is-the-difference-between-i-and-i" class="headerlink" title="What is the difference between ++i and i++?"></a><a href="https://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i" target="_blank" rel="noopener">What is the difference between ++i and i++?</a></h4><p>++i 等价于i=i+1。递增运算将运算对象的值增加1.</p>
+        <h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><h4 id="算数类型"><a href="#算数类型" class="headerlink" title="算数类型"></a>算数类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>含义</th>
+<th>最小尺寸</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+<td>布尔类型</td>
+<td>未定义</td>
+</tr>
+<tr>
+<td>char</td>
+<td>字符</td>
+<td>8位</td>
+</tr>
+<tr>
+<td>wchar_t</td>
+<td>宽字符</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>char16_t</td>
+<td>Unicode字符</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>char32_t</td>
+<td>Unicode字符</td>
+<td>32位</td>
+</tr>
+<tr>
+<td>short</td>
+<td>短整型</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>long</td>
+<td>长整型</td>
+<td>32位</td>
+</tr>
+<tr>
+<td>long long</td>
+<td>长整型</td>
+<td>64位</td>
+</tr>
+<tr>
+<td>float</td>
+<td>单精度浮点数</td>
+<td>6位有效数字</td>
+</tr>
+<tr>
+<td>double</td>
+<td>双精度浮点数</td>
+<td>10位有效数字</td>
+</tr>
+<tr>
+<td>long double</td>
+<td>扩展精度浮点数</td>
+<td>10位有效数字</td>
+</tr>
+</tbody>
+</table>
+<h4 id="内置类型的机器实现"><a href="#内置类型的机器实现" class="headerlink" title="内置类型的机器实现"></a>内置类型的机器实现</h4><p>计算机以比特序列存储数据，每个比特非0即1。大多数计算机以2的整数次幂个比特为块来处理内存，可寻址的最小内存块称为“字节（byte）”。存储的基本单元称为“字（word）”，它通常由几个字节组成。</p>
+<h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="What-is-the-difference-between-i-and-i"><a href="#What-is-the-difference-between-i-and-i" class="headerlink" title="What is the difference between ++i and i++?"></a><a href="https://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i" target="_blank" rel="noopener">What is the difference between ++i and i++?</a></h4><p>++i 等价于i=i+1。递增运算将运算对象的值增加1.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = 1;</span><br><span class="line">j = ++i;</span><br><span class="line">(i is 2, j is 2)</span><br></pre></td></tr></table></figure>
 <p>i++ 同样会自增i，但是返回的是原来的值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = 1;</span><br><span class="line">j = i++;</span><br><span class="line">(i is 2, j is 1)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 前缀形式：</span><br><span class="line">int&amp; int::operator++() //这里返回的是一个引用形式，就是说函数返回值也可以作为一个左值使用</span><br><span class="line">&#123;//函数本身无参，意味着是在自身空间内增加1的</span><br><span class="line">  *this += 1;  // 增加</span><br><span class="line">  return *this;  // 取回值</span><br><span class="line">&#125;</span><br><span class="line">//后缀形式:</span><br><span class="line">const int int::operator++(int) //函数返回值是一个非左值型的，与前缀形式的差别所在。</span><br><span class="line">&#123;//函数带参，说明有另外的空间开辟</span><br><span class="line">  int oldValue = *this;  // 取回值</span><br><span class="line">  ++(*this);  // 增加</span><br><span class="line">  return oldValue;  // 返回被取回的值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>### </p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>C++ Primer第五版</p>
 <p><a href="https://www.zhihu.com/question/19811087" target="_blank" rel="noopener">https://www.zhihu.com/question/19811087</a></p>
 
@@ -515,7 +589,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -570,7 +644,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q"><span class="nav-number">1.</span> <span class="nav-text">Q</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-the-difference-between-i-and-i"><span class="nav-number">1.1.</span> <span class="nav-text">What is the difference between ++i and i++?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算数类型"><span class="nav-number">1.1.</span> <span class="nav-text">算数类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内置类型的机器实现"><span class="nav-number">1.2.</span> <span class="nav-text">内置类型的机器实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q"><span class="nav-number">2.</span> <span class="nav-text">Q</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-the-difference-between-i-and-i"><span class="nav-number">2.1.</span> <span class="nav-text">What is the difference between ++i and i++?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
