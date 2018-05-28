@@ -281,6 +281,178 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/01/30/信息的表示和处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/30/信息的表示和处理/" itemprop="url">信息的表示和处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-30T14:29:01+08:00">
+                2016-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/01/30/信息的表示和处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/30/信息的表示和处理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>三种最重要的数字表示：</p>
+<ol>
+<li><p>无符号（unsigned）编码基于传统的二进制表示法，表示大于或者等于0的数字。</p>
+</li>
+<li><p>补码（two’s-complement）编码是表示有符号整数的最常见的方式，有符号整数就是可以为正或者为负的数字。</p>
+</li>
+<li><p>浮点数（floating-point）编码是表示实数的科学记数法的以二为基数的版本。</p>
+</li>
+</ol>
+<blockquote>
+<p>计算机的表示法是用有限数量的位来对一个数字编码，因此，当结果太大以致不能表示时，某些运算就会溢出（overflow）。</p>
+</blockquote>
+<p>在C语言中，以0x或者0X开头的数字常量被认为是十六进制的值。</p>
+<p>十进制和十六进制表示之间的转换需要使用乘法或者除法来处理一般情况。将一个十进制数x转换为十六进制，可以反复地用16除x，得到一个商q和一个余数r，也就是x=qx16+r。然后，我们用十六进制数字表示的r作为最低位数字，并且通过对q反复进行这个过程得到剩下的数字。</p>
+<p>反过来，将一个十六进制数字转换为十进制数字，我们用相应的16的幂乘以每个十六进制数字。</p>
+<figure class="highlight perl"><figcaption><span>d2h.pl</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env perl</span></span><br><span class="line"><span class="comment">#Convert list of decimal numbers into hex</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>($i = <span class="number">0</span>; $i &lt; @ARGV; $i++)&#123;</span><br><span class="line">	<span class="keyword">printf</span>(<span class="string">"%d\t=0x%x\n"</span>, $ARGV[$i], $ARGV[$i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/30/信息的表示和处理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/01/24/计算机漫游/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -642,7 +814,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

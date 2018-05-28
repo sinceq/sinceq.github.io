@@ -609,6 +609,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2017/05/28/I-O和文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/28/I-O和文件/" itemprop="url">I/O和文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-28T17:15:16+08:00">
+                2017-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/28/I-O和文件/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/05/28/I-O和文件/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sinceq.com/2017/05/24/CPU-Scheduling/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1293,8 +1445,52 @@
 </tr>
 </tbody>
 </table>
-<h4 id="内置类型的机器实现"><a href="#内置类型的机器实现" class="headerlink" title="内置类型的机器实现"></a>内置类型的机器实现</h4><p>计算机以比特序列存储数据，每个比特非0即1。大多数计算机以2的整数次幂个比特为块来处理内存，可寻址的最小内存块称为“字节（byte）”。存储的基本单元称为“字（word）”，它通常由几个字节组成。</p>
-<h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="What-is-the-difference-between-i-and-i"><a href="#What-is-the-difference-between-i-and-i" class="headerlink" title="What is the difference between ++i and i++?"></a><a href="https://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i" target="_blank" rel="noopener">What is the difference between ++i and i++?</a></h4><p>++i 等价于i=i+1。递增运算将运算对象的值增加1.</p>
+<h5 id="内置类型的机器实现"><a href="#内置类型的机器实现" class="headerlink" title="内置类型的机器实现"></a>内置类型的机器实现</h5><p>计算机以比特序列存储数据，每个比特非0即1。大多数计算机以2的整数次幂个比特为块来处理内存，可寻址的最小内存块称为“字节（byte）”。存储的基本单元称为“字（word）”，它通常由几个字节组成。</p>
+<p>除去布尔和扩展的字符外，其他整型可以划分为<strong>带符号的（signed）</strong>和<strong>无符号的（unsigned）</strong>两种。带符号的类型可以表示整数、负数或0，无符号类型则仅能表示大于等于0的值。</p>
+<h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><p>当从无符号数中减去一个值时，不管这个值是不是无符号数，我们都必须确保结果不能是一个负值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 错误：变量u永远也不会小于0，循环条件一直成立</span><br><span class="line">for (unsigned u = 10; u &gt;= 0;  --u)</span><br><span class="line">	std::cout &lt;&lt; u &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
+<h4 id="字面值常量"><a href="#字面值常量" class="headerlink" title="字面值常量"></a>字面值常量</h4><h5 id="转义序列"><a href="#转义序列" class="headerlink" title="转义序列"></a>转义序列</h5><p>有两类程序员不能直接使用：一类是<strong>不可打印（nonprintable）</strong>的字符，如退格活其他控制字符，因为它们没有可视的图符；另一类是C++语言中有特殊含义的字符（单引号、双引号、问号、反斜线）。在这些情况下需要用到<strong>转义序列（escape sequence）</strong>，转义序列均以反斜线作为开始，C++语言规定的转义序列包括：</p>
+<p>换行符 \n 横向制表符\t 报警符\a 纵向制表符\v 退格符\b 双引号 \” 反斜线 \ 问号 \? 单引号 \’ 回车符 \r 进纸符\f</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p><strong>变量</strong>提供一个具名的、可供程序操作的存储空间。</p>
+<h4 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h4><p>初始化不是赋值，初始化的含义是创建变量时赋予其一个初始值，而赋值的含义是把对象的当前值擦出，而以一个新值来替代。</p>
+<h4 id="变量声明和定义的关系"><a href="#变量声明和定义的关系" class="headerlink" title="变量声明和定义的关系"></a>变量声明和定义的关系</h4><p>为了支持分离式编译，C++语言将声明和定义区分开来。<strong>声明（declaration）</strong>使得名字为程序所知，一个文件如果想使用别处定义的名字则必须包含对那个名字的声明。而<strong>定义（definition）</strong>负责创建与名字关联的实体。</p>
+<blockquote>
+<p>变量能且只能被定义一次，但是可以被多次声明。</p>
+</blockquote>
+<h4 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h4><p>变量命名规范</p>
+<ul>
+<li>标识符要能体现实际含义。</li>
+<li>变量名一般用小写字母，如index。</li>
+<li>用户自定义的类名一般以大写字母开头，如Sales_item。</li>
+<li>如果标识符由多个单词组成，则单词间应该应有明显区分。</li>
+</ul>
+<h4 id="名字的作用域"><a href="#名字的作用域" class="headerlink" title="名字的作用域"></a>名字的作用域</h4><h4 id="复合类型"><a href="#复合类型" class="headerlink" title="复合类型"></a>复合类型</h4><p><strong>复合类型（compound type）</strong>是指基于其他类型定义的类型。</p>
+<h5 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h5><p><strong>引用（reference）</strong>为对象起了另外一个名字，引用类型引用另外一种类型。（引用类型的初始值必须是一个对象）</p>
+<p><strong>引用必须初始化。</strong></p>
+<blockquote>
+<p>引用并非对象，相反的，它只是为一个已经存在的对象所起的另外一个名字。</p>
+</blockquote>
+<h5 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h5><p><strong>指针（pointer）</strong>是“指向（point to）”另外一种类型的复合类型。与引用类似，指针也实现了对其他对象的间接访问。然而指针与引用相比又有很多不同点。其一，指针本身就是一个对象，允许对指针赋值和拷贝，而且在指针的生命周期内它可以先后指向几个不同的对象。其二，指针无需在定义时赋值。</p>
+<p>定义指针类型的方法将声明符写成*d的形式，其中d是变量名。</p>
+<p><strong>引用不是对象，没有实际地址，所以不能定义指向引用的指针。</strong></p>
+<p><strong>指针值</strong></p>
+<ol>
+<li>指向一个对象。</li>
+<li>指向紧邻对象所占空间的下一个位置。</li>
+<li>空指针。</li>
+<li>无效指针，也就是上述情况之外的其他值。</li>
+</ol>
+<p><strong>取地址符（操作符&amp;）</strong></p>
+<p><strong>解引用符（操作符*）</strong></p>
+<p>如果指针指向了一个对象，则允许使用<strong>解引用符</strong>（操作符*）来访问该对象。</p>
+<p>建议：初始化所有指针。</p>
+<h6 id="指向指针的指针"><a href="#指向指针的指针" class="headerlink" title="指向指针的指针"></a>指向指针的指针</h6><h6 id="指向指针的引用"><a href="#指向指针的引用" class="headerlink" title="指向指针的引用"></a>指向指针的引用</h6><h4 id="const界定符"><a href="#const界定符" class="headerlink" title="const界定符"></a>const界定符</h4><p>const对象一旦创建后其值就不能再改变，所以const对象必须初始化。</p>
+<p><strong>默认状态下，const对象仅在文件内有效</strong></p>
+<blockquote>
+<p>如果想在多个文件之间共享const对象，必须在变量的定义之前添加extern关键字。</p>
+</blockquote>
+<h5 id="const的引用"><a href="#const的引用" class="headerlink" title="const的引用"></a>const的引用</h5><p>可以把引用绑定到const对象上，就想绑定到了其他对象上一样，我们称之为<strong>对常量的引用（reference to const）</strong>。与普通引用不同的是，对常量的引用不能被用作修改它所绑定的对象。</p>
+<h5 id="指针和const"><a href="#指针和const" class="headerlink" title="指针和const"></a>指针和const</h5><h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="What-is-the-difference-between-i-and-i"><a href="#What-is-the-difference-between-i-and-i" class="headerlink" title="What is the difference between ++i and i++?"></a><a href="https://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i" target="_blank" rel="noopener">What is the difference between ++i and i++?</a></h4><p>++i 等价于i=i+1。递增运算将运算对象的值增加1.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = 1;</span><br><span class="line">j = ++i;</span><br><span class="line">(i is 2, j is 2)</span><br></pre></td></tr></table></figure>
 <p>i++ 同样会自增i，但是返回的是原来的值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = 1;</span><br><span class="line">j = i++;</span><br><span class="line">(i is 2, j is 1)</span><br></pre></td></tr></table></figure>
@@ -1811,172 +2007,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2017/04/24/tree-traversal/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="一">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="1llusion">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/24/tree-traversal/" itemprop="url">Tree traversal</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-24T22:57:53+08:00">
-                2017-04-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/24/tree-traversal/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/04/24/tree-traversal/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="树的遍历"><a href="#树的遍历" class="headerlink" title="树的遍历"></a>树的遍历</h3><ul>
-<li>前序（preorder），我们访问该几点，然后访问该节点的左子树和右子树；</li>
-<li>中序（inoder），我们访问该节点的左子树，然后访问该节点，再访问该节点的右子树；</li>
-<li>后序（postorder），我们访问该节点的左子树和右子树，再访问该节点。</li>
-</ul>
-<h4 id="递归遍历"><a href="#递归遍历" class="headerlink" title="递归遍历"></a>递归遍历</h4><figure class="highlight c"><figcaption><span>preorder.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void traverse(link h, void(*visit)(link))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(h == <span class="literal">NULL</span>) <span class="keyword">return</span>;</span><br><span class="line">    (*visit) (h);</span><br><span class="line">    traverse(h-&gt;l, visit);</span><br><span class="line">    traverse(h-&gt;r, visit);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="非递归遍历"><a href="#非递归遍历" class="headerlink" title="非递归遍历"></a>非递归遍历</h4><blockquote>
-<p>所有的递归都可以用迭代来实现么？</p>
-</blockquote>
-<figure class="highlight c"><figcaption><span>preorder.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void traverse(link h, void(*visit)(link))</span><br><span class="line">&#123;</span><br><span class="line">    STACKinit(max);</span><br><span class="line">    STACKpush(h);</span><br><span class="line">    <span class="keyword">while</span>(!STACKempty())</span><br><span class="line">    &#123;</span><br><span class="line">        (*visit)(h = STACKpop());</span><br><span class="line">        <span class="keyword">if</span> (h-&gt;r != <span class="literal">NULL</span>) STACKpush(h-&gt;r);</span><br><span class="line">        <span class="keyword">if</span> (h-&gt;l != <span class="literal">NULL</span>) STACKpush(h-&gt;l);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/04/24/tree-traversal/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2031,7 +2061,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
