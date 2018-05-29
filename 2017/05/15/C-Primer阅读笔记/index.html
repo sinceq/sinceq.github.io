@@ -81,14 +81,14 @@
 
 <meta name="description" content="类型算数类型   类型 含义 最小尺寸     bool 布尔类型 未定义   char 字符 8位   wchar_t 宽字符 16位   char16_t Unicode字符 16位   char32_t Unicode字符 32位   short 短整型 16位   int 整型 16位   long 长整型 32位   long long 长整型 64位   float 单精度浮点数 6位">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ Primer阅读笔记">
+<meta property="og:title" content="C++ Primer阅读笔记一">
 <meta property="og:url" content="http://sinceq.com/2017/05/15/C-Primer阅读笔记/index.html">
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="类型算数类型   类型 含义 最小尺寸     bool 布尔类型 未定义   char 字符 8位   wchar_t 宽字符 16位   char16_t Unicode字符 16位   char32_t Unicode字符 32位   short 短整型 16位   int 整型 16位   long 长整型 32位   long long 长整型 64位   float 单精度浮点数 6位">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-28T16:06:12.904Z">
+<meta property="og:updated_time" content="2018-05-29T16:22:09.132Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ Primer阅读笔记">
+<meta name="twitter:title" content="C++ Primer阅读笔记一">
 <meta name="twitter:description" content="类型算数类型   类型 含义 最小尺寸     bool 布尔类型 未定义   char 字符 8位   wchar_t 宽字符 16位   char16_t Unicode字符 16位   char32_t Unicode字符 32位   short 短整型 16位   int 整型 16位   long 长整型 32位   long long 长整型 64位   float 单精度浮点数 6位">
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <title>C++ Primer阅读笔记 | 1llusion</title>
+  <title>C++ Primer阅读笔记一 | 1llusion</title>
   
 
 
@@ -298,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++ Primer阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">C++ Primer阅读笔记一</h1>
         
 
         <div class="post-meta">
@@ -454,6 +454,7 @@
 </table>
 <h5 id="内置类型的机器实现"><a href="#内置类型的机器实现" class="headerlink" title="内置类型的机器实现"></a>内置类型的机器实现</h5><p>计算机以比特序列存储数据，每个比特非0即1。大多数计算机以2的整数次幂个比特为块来处理内存，可寻址的最小内存块称为“字节（byte）”。存储的基本单元称为“字（word）”，它通常由几个字节组成。</p>
 <p>除去布尔和扩展的字符外，其他整型可以划分为<strong>带符号的（signed）</strong>和<strong>无符号的（unsigned）</strong>两种。带符号的类型可以表示整数、负数或0，无符号类型则仅能表示大于等于0的值。</p>
+<a id="more"></a>
 <h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><p>当从无符号数中减去一个值时，不管这个值是不是无符号数，我们都必须确保结果不能是一个负值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 错误：变量u永远也不会小于0，循环条件一直成立</span><br><span class="line">for (unsigned u = 10; u &gt;= 0;  --u)</span><br><span class="line">	std::cout &lt;&lt; u &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
 <h4 id="字面值常量"><a href="#字面值常量" class="headerlink" title="字面值常量"></a>字面值常量</h4><h5 id="转义序列"><a href="#转义序列" class="headerlink" title="转义序列"></a>转义序列</h5><p>有两类程序员不能直接使用：一类是<strong>不可打印（nonprintable）</strong>的字符，如退格活其他控制字符，因为它们没有可视的图符；另一类是C++语言中有特殊含义的字符（单引号、双引号、问号、反斜线）。在这些情况下需要用到<strong>转义序列（escape sequence）</strong>，转义序列均以反斜线作为开始，C++语言规定的转义序列包括：</p>
@@ -496,13 +497,14 @@
 <blockquote>
 <p>如果想在多个文件之间共享const对象，必须在变量的定义之前添加extern关键字。</p>
 </blockquote>
-<h5 id="const的引用"><a href="#const的引用" class="headerlink" title="const的引用"></a>const的引用</h5><p>可以把引用绑定到const对象上，就想绑定到了其他对象上一样，我们称之为<strong>对常量的引用（reference to const）</strong>。与普通引用不同的是，对常量的引用不能被用作修改它所绑定的对象。</p>
-<h5 id="指针和const"><a href="#指针和const" class="headerlink" title="指针和const"></a>指针和const</h5><h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="What-is-the-difference-between-i-and-i"><a href="#What-is-the-difference-between-i-and-i" class="headerlink" title="What is the difference between ++i and i++?"></a><a href="https://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i" target="_blank" rel="noopener">What is the difference between ++i and i++?</a></h4><p>++i 等价于i=i+1。递增运算将运算对象的值增加1.</p>
+<h5 id="const的引用"><a href="#const的引用" class="headerlink" title="const的引用"></a>const的引用</h5><p>可以把引用绑定到const对象上，就像绑定到了其他对象上一样，我们称之为<strong>对常量的引用（reference to const）</strong>。与普通引用不同的是，对常量的引用不能被用作修改它所绑定的对象。</p>
+<h5 id="指针和const"><a href="#指针和const" class="headerlink" title="指针和const"></a>指针和const</h5><p>与引用一样，也可以令指针指向变量或非变量。类似于常量引用，<strong>指向常量的指针（pointer to const）</strong>不能用于改变其所指对象的值。要想存放常量对象的地址，只能使用指向常量的指针。</p>
+<h4 id="处理类型"><a href="#处理类型" class="headerlink" title="处理类型"></a>处理类型</h4><h5 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h5><p><strong>类型别名（type alias）</strong>是一个名字，它是某种类型的同义词。</p>
+<h5 id="auto类型说明符"><a href="#auto类型说明符" class="headerlink" title="auto类型说明符"></a>auto类型说明符</h5><h5 id="decltype类型指示"><a href="#decltype类型指示" class="headerlink" title="decltype类型指示"></a>decltype类型指示</h5><h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="What-is-the-difference-between-i-and-i"><a href="#What-is-the-difference-between-i-and-i" class="headerlink" title="What is the difference between ++i and i++?"></a><a href="https://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i" target="_blank" rel="noopener">What is the difference between ++i and i++?</a></h4><p>++i 等价于i=i+1。递增运算将运算对象的值增加1.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = 1;</span><br><span class="line">j = ++i;</span><br><span class="line">(i is 2, j is 2)</span><br></pre></td></tr></table></figure>
 <p>i++ 同样会自增i，但是返回的是原来的值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = 1;</span><br><span class="line">j = i++;</span><br><span class="line">(i is 2, j is 1)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 前缀形式：</span><br><span class="line">int&amp; int::operator++() //这里返回的是一个引用形式，就是说函数返回值也可以作为一个左值使用</span><br><span class="line">&#123;//函数本身无参，意味着是在自身空间内增加1的</span><br><span class="line">  *this += 1;  // 增加</span><br><span class="line">  return *this;  // 取回值</span><br><span class="line">&#125;</span><br><span class="line">//后缀形式:</span><br><span class="line">const int int::operator++(int) //函数返回值是一个非左值型的，与前缀形式的差别所在。</span><br><span class="line">&#123;//函数带参，说明有另外的空间开辟</span><br><span class="line">  int oldValue = *this;  // 取回值</span><br><span class="line">  ++(*this);  // 增加</span><br><span class="line">  return oldValue;  // 返回被取回的值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
 <p>### </p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>C++ Primer第五版</p>
 <p><a href="https://www.zhihu.com/question/19811087" target="_blank" rel="noopener">https://www.zhihu.com/question/19811087</a></p>
@@ -688,7 +690,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算数类型"><span class="nav-number">1.1.</span> <span class="nav-text">算数类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#内置类型的机器实现"><span class="nav-number">1.1.1.</span> <span class="nav-text">内置类型的机器实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型转换"><span class="nav-number">1.2.</span> <span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字面值常量"><span class="nav-number">1.3.</span> <span class="nav-text">字面值常量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#转义序列"><span class="nav-number">1.3.1.</span> <span class="nav-text">转义序列</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#变量定义"><span class="nav-number">2.1.</span> <span class="nav-text">变量定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量声明和定义的关系"><span class="nav-number">2.2.</span> <span class="nav-text">变量声明和定义的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标识符"><span class="nav-number">2.3.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#名字的作用域"><span class="nav-number">2.4.</span> <span class="nav-text">名字的作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">2.5.</span> <span class="nav-text">复合类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#引用"><span class="nav-number">2.5.1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指针"><span class="nav-number">2.5.2.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#指向指针的指针"><span class="nav-number">2.5.2.1.</span> <span class="nav-text">指向指针的指针</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#指向指针的引用"><span class="nav-number">2.5.2.2.</span> <span class="nav-text">指向指针的引用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#const界定符"><span class="nav-number">2.6.</span> <span class="nav-text">const界定符</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#const的引用"><span class="nav-number">2.6.1.</span> <span class="nav-text">const的引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指针和const"><span class="nav-number">2.6.2.</span> <span class="nav-text">指针和const</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q"><span class="nav-number">3.</span> <span class="nav-text">Q</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-the-difference-between-i-and-i"><span class="nav-number">3.1.</span> <span class="nav-text">What is the difference between ++i and i++?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算数类型"><span class="nav-number">1.1.</span> <span class="nav-text">算数类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#内置类型的机器实现"><span class="nav-number">1.1.1.</span> <span class="nav-text">内置类型的机器实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型转换"><span class="nav-number">1.2.</span> <span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字面值常量"><span class="nav-number">1.3.</span> <span class="nav-text">字面值常量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#转义序列"><span class="nav-number">1.3.1.</span> <span class="nav-text">转义序列</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#变量定义"><span class="nav-number">2.1.</span> <span class="nav-text">变量定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量声明和定义的关系"><span class="nav-number">2.2.</span> <span class="nav-text">变量声明和定义的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标识符"><span class="nav-number">2.3.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#名字的作用域"><span class="nav-number">2.4.</span> <span class="nav-text">名字的作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">2.5.</span> <span class="nav-text">复合类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#引用"><span class="nav-number">2.5.1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指针"><span class="nav-number">2.5.2.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#指向指针的指针"><span class="nav-number">2.5.2.1.</span> <span class="nav-text">指向指针的指针</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#指向指针的引用"><span class="nav-number">2.5.2.2.</span> <span class="nav-text">指向指针的引用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#const界定符"><span class="nav-number">2.6.</span> <span class="nav-text">const界定符</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#const的引用"><span class="nav-number">2.6.1.</span> <span class="nav-text">const的引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指针和const"><span class="nav-number">2.6.2.</span> <span class="nav-text">指针和const</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理类型"><span class="nav-number">2.7.</span> <span class="nav-text">处理类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#类型别名"><span class="nav-number">2.7.1.</span> <span class="nav-text">类型别名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#auto类型说明符"><span class="nav-number">2.7.2.</span> <span class="nav-text">auto类型说明符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#decltype类型指示"><span class="nav-number">2.7.3.</span> <span class="nav-text">decltype类型指示</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q"><span class="nav-number">3.</span> <span class="nav-text">Q</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-the-difference-between-i-and-i"><span class="nav-number">3.1.</span> <span class="nav-text">What is the difference between ++i and i++?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
@@ -853,7 +855,7 @@
         var disqus_config = function () {
           this.page.url = 'http://sinceq.com/2017/05/15/C-Primer阅读笔记/';
           this.page.identifier = '2017/05/15/C-Primer阅读笔记/';
-          this.page.title = 'C++ Primer阅读笔记';
+          this.page.title = 'C++ Primer阅读笔记一';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sinceq.disqus.com/embed.js';
