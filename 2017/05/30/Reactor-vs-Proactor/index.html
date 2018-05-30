@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="Reactor反应堆  The reactor design pattern is an event handling pattern for handling service requests delivered concurrently to a service handler by one or more inputs. The service handler then demultiple">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-30T16:04:06.203Z">
+<meta property="og:updated_time" content="2018-05-30T16:20:16.382Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Reactor vs. Proactor">
 <meta name="twitter:description" content="Reactor反应堆  The reactor design pattern is an event handling pattern for handling service requests delivered concurrently to a service handler by one or more inputs. The service handler then demultiple">
@@ -410,6 +410,13 @@
 <li>The reactor pattern can be more difficult to debug than a procedural pattern due to the inverted flow of control.</li>
 </ul>
 <p>EWOULBLOCK/EAGAIN, meaning “not ready; try again later.”</p>
+<h4 id="Twisted"><a href="#Twisted" class="headerlink" title="Twisted"></a>Twisted</h4><p>Twisted是用Python实现的基于事件驱动的网络引擎框架。Twisted是一个事件驱动型的网络引擎。</p>
+<p>事件驱动变成是一种编程范式，这里程序的执行流由外部事件来决定。它的特点是包含一个时间循环，当外部事件发生时使用回调机制来触发相应的处理。另外两种常见的编程范式是同步以及多线程编程。</p>
+<p>回调是事件驱动编程模型中的基础，也是reactor通知应用程序事件已经处理完成的方式。随着程序规模不断扩大，基于时间驱动的程序需要同时处理事件成功和出错的情况，这使得程序变得越来越复杂。若没有注册一个合适的回调，程序就会阻塞，因为这个事件处理的过程绝不会发生。出现错误时需要通过应用程序不用层次从网络栈向上回调回调链。</p>
+<p>Deferred对象以抽象化的方式表达了一种思想，即结果还上不存在。它同样能够帮助管理产生这个结果所需要的回调链。当从函数中返回时，Deferred对象承诺在某个时刻函数将产生一个结果。返回的Deferred对象中包含所有注册到事件上的回调引用，因此在函数间只需要传递这个对象即可，跟踪这个对象比单独管理所有的回调要简单的多。</p>
+<p>Deferred对象包含一对回调链，一个是针对操作成功的回调，一个是针对操作失败的回调。初始状态下Deferred对象的两条链都为空。在事件处理的过程中，每个阶段都为其添加处理成功的回调和处理失败的回调。当一个异步结果到来时，Deferred对象就被“激活”，那么处理成功的回调和处理失败的回调就可以以合适的方式按照它们添加进来的顺序依次得到调用。</p>
+<p>Deferred是Twisted对Callback的实现方式，Deferred非常灵活，代表了“推迟”。</p>
+<p>当我们想执行一个异步操作时，我们可以使用Deferred来代替数据立即返回。Deferred的含义是：你想要的数据还没有到，不过你可以告诉我你接下来想要执行的操作，当我得到数据以后会调用你想要执行的函数。</p>
 <h3 id="Proactor"><a href="#Proactor" class="headerlink" title="Proactor"></a>Proactor</h3><ul>
 <li>Fully asynchronous</li>
 <li>Can rely heavily on operating system functionality </li>
@@ -447,10 +454,20 @@
 <li>Step 3) dispatch “Read-Completed” event to user handler (Proactor job)</li>
 <li>Step 4) process data (user handler job)</li>
 </ul>
+<p>Reactor实现了一个被动的事件分离和分发模型，服务等待请求事件的到来，再通过不受间断的同步处理事件，从而做出反应；</p>
+<p>Proactor实现了一个主动的事件分离和分发模型；这种设计允许多个任务并发的执行，从而提高吞吐量；并可执行耗时长的任务（各个任务间互不影响）</p>
+<h4 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h4><p>Reactor：同时接收多个服务请求，并且依次同步的处理它们的事件驱动程序； Proactor：异步接收和同时处理多个服务请求的事件驱动程序；</p>
 <h3 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h3><p><strong>Leader-Follower</strong> 模型，比如 Apache、PHP-FPM。</p>
 <p>基于Epoll实现，比如Nginx、Node.js、Erlang、Golang。</p>
+<p>异步编程为什么可以带来性能的提高？答案在于I/O。</p>
+<p>程序运行所消耗的时间分为两部分：占用CPU进行计算的时间和等待I/O操作完成的时间。</p>
+<p>同步和异步模型在前一种场景中的行为是相同的，区别在于后者，当用户进程执行I/O操作时，基于同步模型的程序被系统调用阻塞（Kernel，操作系统执行进程切换），直到I/O操作完成，驱动程序通知内核，用户进程得以从内核态返回；而基于异步模型的用户进程执行非阻塞的I/O系统调用，直接从内核态返回，但这时I/O的数据并没有准备好，用户进程可以继续进行其他的计算工作，当I/O数据准备好时，用户进程通过异步通知（aio或I/O多路复用）的机制获取数据执行数据处理操作。</p>
+<p>异步编程利用等待I/O的时间去做其他工作，更加充分利用CPU资源。</p>
+<p>（异步编程模型意味着你需要把原本连续的流程切分为多个不被阻塞的小代码块，然后以一种非常反人类的逻辑流程编写代码来换取计算机执行的高性能。）</p>
+<p>多线程／多进程模型使得程序可以更加高效的利用多核的优势，和同步、异步模型并不冲突。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://www.artima.com/articles/io_design_patternsP.html" target="_blank" rel="noopener">https://www.artima.com/articles/io_design_patternsP.html</a></p>
 <p><a href="https://stackoverflow.com/questions/9138294/what-is-th-difference-between-event-driven-model-and-reactor-pattern" target="_blank" rel="noopener">https://stackoverflow.com/questions/9138294/what-is-th-difference-between-event-driven-model-and-reactor-pattern</a></p>
+<p><a href="https://likebeta.gitbooks.io/twisted-intro-cn/zh/" target="_blank" rel="noopener">https://likebeta.gitbooks.io/twisted-intro-cn/zh/</a></p>
 
       
     </div>
@@ -633,7 +650,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor"><span class="nav-number">1.</span> <span class="nav-text">Reactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proactor"><span class="nav-number">2.</span> <span class="nav-text">Proactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor-vs-Proactor"><span class="nav-number">3.</span> <span class="nav-text">Reactor vs. Proactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Others"><span class="nav-number">4.</span> <span class="nav-text">Others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor"><span class="nav-number">1.</span> <span class="nav-text">Reactor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Twisted"><span class="nav-number">1.1.</span> <span class="nav-text">Twisted</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proactor"><span class="nav-number">2.</span> <span class="nav-text">Proactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor-vs-Proactor"><span class="nav-number">3.</span> <span class="nav-text">Reactor vs. Proactor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#适用场景"><span class="nav-number">3.1.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Others"><span class="nav-number">4.</span> <span class="nav-text">Others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
