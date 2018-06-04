@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="Reactor反应堆  The reactor design pattern is an event handling pattern for handling service requests delivered concurrently to a service handler by one or more inputs. The service handler then demultiple">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-30T16:20:16.382Z">
+<meta property="og:updated_time" content="2018-05-31T12:00:15.382Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Reactor vs. Proactor">
 <meta name="twitter:description" content="Reactor反应堆  The reactor design pattern is an event handling pattern for handling service requests delivered concurrently to a service handler by one or more inputs. The service handler then demultiple">
@@ -417,6 +417,7 @@
 <p>Deferred对象包含一对回调链，一个是针对操作成功的回调，一个是针对操作失败的回调。初始状态下Deferred对象的两条链都为空。在事件处理的过程中，每个阶段都为其添加处理成功的回调和处理失败的回调。当一个异步结果到来时，Deferred对象就被“激活”，那么处理成功的回调和处理失败的回调就可以以合适的方式按照它们添加进来的顺序依次得到调用。</p>
 <p>Deferred是Twisted对Callback的实现方式，Deferred非常灵活，代表了“推迟”。</p>
 <p>当我们想执行一个异步操作时，我们可以使用Deferred来代替数据立即返回。Deferred的含义是：你想要的数据还没有到，不过你可以告诉我你接下来想要执行的操作，当我得到数据以后会调用你想要执行的函数。</p>
+<h4 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">for ( ;; ) &#123;</span><br><span class="line"></span><br><span class="line">    if (ngx_exiting) &#123;</span><br><span class="line">        if (ngx_event_no_timers_left() == NGX_OK) &#123;</span><br><span class="line">            ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &quot;exiting&quot;);</span><br><span class="line">            ngx_worker_process_exit(cycle);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ngx_log_debug0(NGX_LOG_DEBUG_EVENT, cycle-&gt;log, 0, &quot;worker cycle&quot;);</span><br><span class="line"></span><br><span class="line">    ngx_process_events_and_timers(cycle);</span><br><span class="line"></span><br><span class="line">    if (ngx_terminate) &#123;</span><br><span class="line">        ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &quot;exiting&quot;);</span><br><span class="line">        ngx_worker_process_exit(cycle);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (ngx_quit) &#123;</span><br><span class="line">        ngx_quit = 0;</span><br><span class="line">        ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0,</span><br><span class="line">                        &quot;gracefully shutting down&quot;);</span><br><span class="line">        ngx_setproctitle(&quot;worker process is shutting down&quot;);</span><br><span class="line"></span><br><span class="line">        if (!ngx_exiting) &#123;</span><br><span class="line">            ngx_exiting = 1;</span><br><span class="line">            ngx_set_shutdown_timer(cycle);</span><br><span class="line">            ngx_close_listening_sockets(cycle);</span><br><span class="line">            ngx_close_idle_connections(cycle);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (ngx_reopen) &#123;</span><br><span class="line">        ngx_reopen = 0;</span><br><span class="line">        ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &quot;reopening logs&quot;);</span><br><span class="line">        ngx_reopen_files(cycle, -1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Proactor"><a href="#Proactor" class="headerlink" title="Proactor"></a>Proactor</h3><ul>
 <li>Fully asynchronous</li>
 <li>Can rely heavily on operating system functionality </li>
@@ -595,7 +596,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -617,7 +618,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -650,7 +651,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor"><span class="nav-number">1.</span> <span class="nav-text">Reactor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Twisted"><span class="nav-number">1.1.</span> <span class="nav-text">Twisted</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proactor"><span class="nav-number">2.</span> <span class="nav-text">Proactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor-vs-Proactor"><span class="nav-number">3.</span> <span class="nav-text">Reactor vs. Proactor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#适用场景"><span class="nav-number">3.1.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Others"><span class="nav-number">4.</span> <span class="nav-text">Others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor"><span class="nav-number">1.</span> <span class="nav-text">Reactor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Twisted"><span class="nav-number">1.1.</span> <span class="nav-text">Twisted</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx"><span class="nav-number">1.2.</span> <span class="nav-text">Nginx</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proactor"><span class="nav-number">2.</span> <span class="nav-text">Proactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor-vs-Proactor"><span class="nav-number">3.</span> <span class="nav-text">Reactor vs. Proactor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#适用场景"><span class="nav-number">3.1.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Others"><span class="nav-number">4.</span> <span class="nav-text">Others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>

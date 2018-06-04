@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="cs," />
+  <meta name="keywords" content="链表," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="基于两种相关的机器语言：Intel IA32 和 x86-64。32位机器只能使用大概 4GB (2^32字节) 的随机访问存储器（即内存），而目前64位机器能够使用多达 256TB（2^48字节）的内存空间。 Intel 处理器系列俗称 x86, 经历了一个长期的、不断进化的发展过程。 Linux 使用了平坦寻址方式（flat addressing）。 对于机器级编程来说，其中两种抽象尤为重要。">
-<meta name="keywords" content="cs">
+<meta name="description" content="简介链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存在下一个的指针(Pointer)。  链表是一组数据项的集合，其中每个数据项都是一个节点的一部分，每个节点都包含指向下一个节点的链接。  由于不需要按照顺序存储，链表在插入的时候可以达到O(1)的复杂度。所以比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点">
+<meta name="keywords" content="链表">
 <meta property="og:type" content="article">
-<meta property="og:title" content="程序的机器级表示">
-<meta property="og:url" content="http://sinceq.com/2016/02/03/程序的机器级表示/index.html">
+<meta property="og:title" content="LinkedList">
+<meta property="og:url" content="http://sinceq.com/2016/06/05/LinkedList/index.html">
 <meta property="og:site_name" content="1llusion">
-<meta property="og:description" content="基于两种相关的机器语言：Intel IA32 和 x86-64。32位机器只能使用大概 4GB (2^32字节) 的随机访问存储器（即内存），而目前64位机器能够使用多达 256TB（2^48字节）的内存空间。 Intel 处理器系列俗称 x86, 经历了一个长期的、不断进化的发展过程。 Linux 使用了平坦寻址方式（flat addressing）。 对于机器级编程来说，其中两种抽象尤为重要。">
+<meta property="og:description" content="简介链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存在下一个的指针(Pointer)。  链表是一组数据项的集合，其中每个数据项都是一个节点的一部分，每个节点都包含指向下一个节点的链接。  由于不需要按照顺序存储，链表在插入的时候可以达到O(1)的复杂度。所以比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-07T13:32:19.613Z">
+<meta property="og:updated_time" content="2018-06-04T17:14:24.363Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="程序的机器级表示">
-<meta name="twitter:description" content="基于两种相关的机器语言：Intel IA32 和 x86-64。32位机器只能使用大概 4GB (2^32字节) 的随机访问存储器（即内存），而目前64位机器能够使用多达 256TB（2^48字节）的内存空间。 Intel 处理器系列俗称 x86, 经历了一个长期的、不断进化的发展过程。 Linux 使用了平坦寻址方式（flat addressing）。 对于机器级编程来说，其中两种抽象尤为重要。">
+<meta name="twitter:title" content="LinkedList">
+<meta name="twitter:description" content="简介链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存在下一个的指针(Pointer)。  链表是一组数据项的集合，其中每个数据项都是一个节点的一部分，每个节点都包含指向下一个节点的链接。  由于不需要按照顺序存储，链表在插入的时候可以达到O(1)的复杂度。所以比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://sinceq.com/2016/02/03/程序的机器级表示/"/>
+  <link rel="canonical" href="http://sinceq.com/2016/06/05/LinkedList/"/>
 
 
 
 
 
-  <title>程序的机器级表示 | 1llusion</title>
+  <title>LinkedList | 1llusion</title>
   
 
 
@@ -282,7 +282,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/02/03/程序的机器级表示/">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/06/05/LinkedList/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="一">
@@ -299,7 +299,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">程序的机器级表示</h1>
+          <h1 class="post-title" itemprop="name headline">LinkedList</h1>
         
 
         <div class="post-meta">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-03T00:01:45+08:00">
-                2016-02-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-05T00:22:01+08:00">
+                2016-06-05
               </time>
             
 
@@ -334,8 +334,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计算机系统/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机系统</span>
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
                   </a>
                 </span>
 
@@ -352,9 +352,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2016/02/03/程序的机器级表示/#comments" itemprop="discussionUrl">
+                <a href="/2016/06/05/LinkedList/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/02/03/程序的机器级表示/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2016/06/05/LinkedList/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,18 +382,40 @@
       
 
       
-        <h3 id="基于两种相关的机器语言：Intel-IA32-和-x86-64。"><a href="#基于两种相关的机器语言：Intel-IA32-和-x86-64。" class="headerlink" title="基于两种相关的机器语言：Intel IA32 和 x86-64。"></a>基于两种相关的机器语言：Intel IA32 和 x86-64。</h3><p>32位机器只能使用大概 4GB (2^32字节) 的随机访问存储器（即内存），而目前64位机器能够使用多达 256TB（2^48字节）的内存空间。</p>
-<p>Intel 处理器系列俗称 x86, 经历了一个长期的、不断进化的发展过程。</p>
-<p>Linux 使用了平坦寻址方式（flat addressing）。</p>
-<p>对于机器级编程来说，其中两种抽象尤为重要。第一种是机器级程序的格式和行为，定义为指令集体系结构（Instrucion set architecture，ISA），它定义了处理器状态、指令的格式，以及每条指令对状态的影响。第二种抽象是，机器级程序使用的存储器地址是虚拟地址，提供的存储器模型是一个非常大的字节数组。</p>
-<p>IA32 机器代码和原始的C代码差别非常大。一些通常对C语言程序猿隐蔽的处理器状态是可见的：</p>
-<ul>
-<li>程序计数器（在 IA32 中，通常称为“PC”，用%eip表示）指示将要执行的下一条指令在存储器中的地址。</li>
-<li>整数寄存器文件包含8个命名的位置，分别存储32位的值。这些寄存器可以存储地址（对英语C语言的指针）或整数数据。有的寄存器被用来记录某些重要的程序状态，而其他的寄存器则用来保存临时数据，例如过程的局部变量和函数的返回值。</li>
-<li>条件码寄存去保存着最近执行的算数或逻辑指令的状态信息。它们用来实现控制或数据流中的变化，比如说用来实现if和while语句。</li>
-<li>一组浮点寄存器存放浮点数据。</li>
-</ul>
-<p>程序存储器（program momery）包含：程序的可执行机器代码，操作系统需要的一些信息，用来管理过程调用和返回的运行时栈，以及用户分配的存储器块（比如malloc库函数分配的）。</p>
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存在下一个的指针(Pointer)。</p>
+<blockquote>
+<p><strong>链表</strong>是一组数据项的集合，其中每个数据项都是一个节点的一部分，每个节点都包含指向下一个节点的链接。</p>
+</blockquote>
+<p>由于不需要按照顺序存储，链表在插入的时候可以达到O(1)的复杂度。所以比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别为O(logn)和O(1). </p>
+<p>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。 </p>
+<p>链表最明显的好处就是，常规数组排列关联项目的方式可能不同于这些数据项目在记忆体或磁盘上顺序，数据的访问往往要在不同的排列顺序中转换。而链表是一种自我指示数据类型，因为它包含指向另一个相同类型的数据的指针。链表允许插入和移除表上任意位置上的结点，但是不允许随机存取。 </p>
+<p>删除节点x后的下一节点使用的语句是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x-&gt;next = x-&gt;next-&gt;next;</span><br></pre></td></tr></table></figure>
+<p>把节点t插入链表中节点x后的下一位置，我们使用语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">t-&gt;next = x-&gt;next; x-&gt;next=t;</span><br></pre></td></tr></table></figure>
+<h4 id="约瑟夫问题"><a href="#约瑟夫问题" class="headerlink" title="约瑟夫问题"></a>约瑟夫问题</h4><blockquote>
+<p>假设有N个人决定选出一个领导人，方法如下：所有人排成一个圆圈，按顺序数数，每隔第M的人出局，此时，他两边的人靠拢重新形成圆圈。问题是找出哪一个人将会是最后剩下的那个人。所选出的领导人的号码是一个N和M的函数，我们称之为约瑟夫函数（Jesephus function）。更为一般地，我们希望知道所有人出局的顺序。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">typedef struct node* link;</span><br><span class="line">struct node &#123;int item; link next;&#125;;</span><br><span class="line">main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    int i, N = atoi(argv[1]), M = atoi(argv[2]);</span><br><span class="line">    link t = malloc(sizeof *t), x=t;</span><br><span class="line">    t-&gt;item = 1; t-&gt;next = t;</span><br><span class="line">    for (i = 2; i &lt;= N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        x = (x-&gt;next = malloc(sizeof *x));</span><br><span class="line">        x-&gt;item = i; x-&gt;next = t;</span><br><span class="line">    &#125;</span><br><span class="line">    while (x != x-&gt;next)</span><br><span class="line">    &#123;</span><br><span class="line">        for (i = 1; i &lt; M; i++) x = x-&gt;next;</span><br><span class="line">        x-&gt;next = x-&gt;next-&gt;next;N--;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;%d\n&quot;, x-&gt;item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>链表有很多种不同的类型：单向链表，双向链表以及循环链表。 </p>
+<a id="more"></a>
+<h3 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h3><p>Singly LinkedList</p>
+<p>链表中最简单的一种，包含两个域，一个信息域和一个指针域。这个链接指向列表中的下一个结点，而最后一个结点则指向一个空值。 </p>
+<p>一个单向链表的节点被分为两个部分，第一个部分保存或者显示关于节点的信息，第二个部分存储下一个节点的地址。单向链表只可向一个方向遍历。 </p>
+<h3 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h3><p>Doubly LinkedList</p>
+<p>一种更复杂的链表是双向链表。每个节点有两个链接：一个指向前一个节点，而另一个指向下一个节点。 </p>
+<h3 id="循环链表"><a href="#循环链表" class="headerlink" title="循环链表"></a>循环链表</h3><p>首节点和末节点被连接在一起。 </p>
+<h3 id="块状链表"><a href="#块状链表" class="headerlink" title="块状链表"></a>块状链表</h3><p>本身是一种链表，但是链表存储的并不是一般的数据，而是由这些数据组成的顺序表，每一个块状链表的节点也就是顺序表，可以被叫做一个块。 </p>
+<h3 id="链表的应用"><a href="#链表的应用" class="headerlink" title="链表的应用"></a>链表的应用</h3><p>链表用来构建许多其他的数据结构，如堆栈，队列和它们的派生。 </p>
+<h3 id="Array-vs-Linked-List"><a href="#Array-vs-Linked-List" class="headerlink" title="Array vs. Linked List"></a>Array vs. Linked List</h3><p>计算机科学已经研究出一种定义新类型的成功方法。这种方法使用3个步骤来完成从抽象到具体的过程： </p>
+<ol>
+<li><p>为类型的属性和客队类型执行的操作提供一个抽象的描述。这个描述不应受任何特定实现的约束，甚至不应收到任何特定变成语言的约束。这样一种正式的抽象描述被称为抽象数据类型（ADT）。 </p>
+</li>
+<li><p>开发一个实现该ADT的编程接口。即说明如何存储数据并描述用于执行所需操作的函数集合。 </p>
+</li>
+<li>编写代码来实现这个接口。 </li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>算法：C语言实现</p>
 
       
     </div>
@@ -411,7 +433,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/cs/" rel="tag"># cs</a>
+            <a href="/tags/链表/" rel="tag"># 链表</a>
           
         </div>
       
@@ -424,8 +446,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/30/信息的表示和处理/" rel="next" title="信息的表示和处理">
-                <i class="fa fa-chevron-left"></i> 信息的表示和处理
+              <a href="/2016/05/15/Context-switch/" rel="next" title="Context switch">
+                <i class="fa fa-chevron-left"></i> Context switch
               </a>
             
           </div>
@@ -434,8 +456,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/03/31/关于MapReduce/" rel="prev" title="关于MapReduce">
-                关于MapReduce <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/22/计算机系统概述/" rel="prev" title="计算机系统概述">
+                计算机系统概述 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -582,7 +604,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于两种相关的机器语言：Intel-IA32-和-x86-64。"><span class="nav-number">1.</span> <span class="nav-text">基于两种相关的机器语言：Intel IA32 和 x86-64。</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#约瑟夫问题"><span class="nav-number">1.1.</span> <span class="nav-text">约瑟夫问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单向链表"><span class="nav-number">2.</span> <span class="nav-text">单向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双向链表"><span class="nav-number">3.</span> <span class="nav-text">双向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环链表"><span class="nav-number">4.</span> <span class="nav-text">循环链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块状链表"><span class="nav-number">5.</span> <span class="nav-text">块状链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表的应用"><span class="nav-number">6.</span> <span class="nav-text">链表的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array-vs-Linked-List"><span class="nav-number">7.</span> <span class="nav-text">Array vs. Linked List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">8.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
@@ -745,9 +767,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://sinceq.com/2016/02/03/程序的机器级表示/';
-          this.page.identifier = '2016/02/03/程序的机器级表示/';
-          this.page.title = '程序的机器级表示';
+          this.page.url = 'http://sinceq.com/2016/06/05/LinkedList/';
+          this.page.identifier = '2016/06/05/LinkedList/';
+          this.page.title = 'LinkedList';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sinceq.disqus.com/embed.js';

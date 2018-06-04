@@ -281,6 +281,210 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/03/31/关于MapReduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/31/关于MapReduce/" itemprop="url">关于MapReduce</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-31T23:14:57+08:00">
+                2016-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式系统/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/03/31/关于MapReduce/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/03/31/关于MapReduce/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="初识Hadoop"><a href="#初识Hadoop" class="headerlink" title="初识Hadoop"></a>初识Hadoop</h3><blockquote>
+<p>『大数据胜于好算法。』</p>
+</blockquote>
+<p>为什么不能用数据库来对大量硬盘上的大规模数据进行批量分析呢？我们为什么需要MapReduce?</p>
+<p>这两个问题的答案来自于计算机硬盘的另一个发展趋势：<strong>寻址时间的提升远远不敌于传输速率的提升。</strong>寻址是将磁头移动到特定硬盘位置进行读写操作的过程。它是导致硬盘操作延迟的主要原因，而传输速率取决于硬盘的带宽。</p>
+<p>如果数据访问模式中包含大量的硬盘寻址，那么读取大量数据集就必然会花更长的时间。另一方面，如果数据库系统只更新一小部分记录，那么传统的B树就更有优势。但数据库系统如果有大量数据更新时，B树的效率就明显落后于MapReduce，因为需要使用”排序/合并”（sort/merge）来重建数据库。</p>
+<p>MapReduce比较适合以批处理方式处理需要分析整个数据集的问题，尤其是动态分析。RDBMS适用于点查询和更新，数据集被索引之后，数据库系统能够提供低延迟的数据检索和快速的少量数据更新。MapReduce适合一次写入、多次读取数据的应用，关系型数据库则更适合持续更新的数据集。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>传统的关系型数据库</th>
+<th>MapReduce</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据大小</td>
+<td>GB</td>
+<td>PB</td>
+</tr>
+<tr>
+<td>数据存取</td>
+<td>交互式和批处理</td>
+<td>批处理</td>
+</tr>
+<tr>
+<td>更新</td>
+<td>多次读/写</td>
+<td>一次写入，多次读取</td>
+</tr>
+<tr>
+<td>结构</td>
+<td>静态模式</td>
+<td>动态模式</td>
+</tr>
+<tr>
+<td>完整性</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>横向扩展</td>
+<td>非线性的</td>
+<td>线性的</td>
+</tr>
+</tbody>
+</table>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/31/关于MapReduce/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/02/03/程序的机器级表示/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -566,7 +770,7 @@
 <figure class="highlight perl"><figcaption><span>d2h.pl</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env perl</span></span><br><span class="line"><span class="comment">#Convert list of decimal numbers into hex</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>($i = <span class="number">0</span>; $i &lt; @ARGV; $i++)&#123;</span><br><span class="line">	<span class="keyword">printf</span>(<span class="string">"%d\t=0x%x\n"</span>, $ARGV[$i], $ARGV[$i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/01/30/信息的表示和处理/#more" rel="contents">
+            <a class="btn" href="/2016/01/30/信息的表示和处理/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -731,7 +935,7 @@
 <li>链接阶段。请注意，hello程序调用了printf函数，它是每个C编译器都会提供的标准C库中的一个函数。printf函数存在于一个名为printf.o的单独的预编译好了的目标文件中，而这个文件必须以某种方式合并到我们的hello.o程序中。连接器（ld）就负责处理这种合并。结果就得到hello文件，它是一个可执行目标文件，可以被加载到内存中，由系统执行。
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/01/24/计算机漫游/#more" rel="contents">
+            <a class="btn" href="/2016/01/24/计算机漫游/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -978,7 +1182,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1000,7 +1204,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
