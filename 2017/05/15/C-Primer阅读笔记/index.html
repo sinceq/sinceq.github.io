@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="类型算数类型   类型 含义 最小尺寸     bool 布尔类型 未定义   char 字符 8位   wchar_t 宽字符 16位   char16_t Unicode字符 16位   char32_t Unicode字符 32位   short 短整型 16位   int 整型 16位   long 长整型 32位   long long 长整型 64位   float 单精度浮点数 6位">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-29T16:22:09.132Z">
+<meta property="og:updated_time" content="2018-07-02T17:57:24.216Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++ Primer阅读笔记一">
 <meta name="twitter:description" content="类型算数类型   类型 含义 最小尺寸     bool 布尔类型 未定义   char 字符 8位   wchar_t 宽字符 16位   char16_t Unicode字符 16位   char32_t Unicode字符 32位   short 短整型 16位   int 整型 16位   long 长整型 32位   long long 长整型 64位   float 单精度浮点数 6位">
@@ -504,8 +504,14 @@
 </blockquote>
 <h5 id="const的引用"><a href="#const的引用" class="headerlink" title="const的引用"></a>const的引用</h5><p>可以把引用绑定到const对象上，就像绑定到了其他对象上一样，我们称之为<strong>对常量的引用（reference to const）</strong>。与普通引用不同的是，对常量的引用不能被用作修改它所绑定的对象。</p>
 <h5 id="指针和const"><a href="#指针和const" class="headerlink" title="指针和const"></a>指针和const</h5><p>与引用一样，也可以令指针指向变量或非变量。类似于常量引用，<strong>指向常量的指针（pointer to const）</strong>不能用于改变其所指对象的值。要想存放常量对象的地址，只能使用指向常量的指针。</p>
-<h4 id="处理类型"><a href="#处理类型" class="headerlink" title="处理类型"></a>处理类型</h4><h5 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h5><p><strong>类型别名（type alias）</strong>是一个名字，它是某种类型的同义词。</p>
-<h5 id="auto类型说明符"><a href="#auto类型说明符" class="headerlink" title="auto类型说明符"></a>auto类型说明符</h5><h5 id="decltype类型指示"><a href="#decltype类型指示" class="headerlink" title="decltype类型指示"></a>decltype类型指示</h5><h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="What-is-the-difference-between-i-and-i"><a href="#What-is-the-difference-between-i-and-i" class="headerlink" title="What is the difference between ++i and i++?"></a><a href="https://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i" target="_blank" rel="noopener">What is the difference between ++i and i++?</a></h4><p>++i 等价于i=i+1。递增运算将运算对象的值增加1.</p>
+<h4 id="处理类型"><a href="#处理类型" class="headerlink" title="处理类型"></a>处理类型</h4><h5 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h5><p><strong>类型别名（type alias）</strong>是一个名字，它是某种类型的同义词。使用类型别名有很多好处，它让复杂的类型名字变得简单明了、易于理解和使用，还有助于程序员清楚地知道使用该类型的真实目的。</p>
+<p>有两种方法可用于定义类型别名。传统的方法是使用关键字<strong>typedef</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typedef double wages;</span><br></pre></td></tr></table></figure>
+<p>新标准规定了一种新的方法，使用<strong>别名生命（alias declaration）</strong>来定义类型的别名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using SI = Sales_item; // SI是Sales_item的同义词</span><br></pre></td></tr></table></figure>
+<h5 id="auto类型说明符"><a href="#auto类型说明符" class="headerlink" title="auto类型说明符"></a>auto类型说明符</h5><p>C++11新标准引入了<strong>auto</strong>类型说明符，用它就能让编译器替我们去分析表达式所属的类型。</p>
+<h5 id="decltype类型指示"><a href="#decltype类型指示" class="headerlink" title="decltype类型指示"></a>decltype类型指示</h5><p>C++11新标准引入了第二种类型说明符<strong>decltype</strong>，它的作用是选择并返回操作数的数据类型。在此过程中，编译器分析表达式并得到它的类型，却不实际计算表达式的值。</p>
+<h3 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h3><h4 id="What-is-the-difference-between-i-and-i"><a href="#What-is-the-difference-between-i-and-i" class="headerlink" title="What is the difference between ++i and i++?"></a><a href="https://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i" target="_blank" rel="noopener">What is the difference between ++i and i++?</a></h4><p>++i 等价于i=i+1。递增运算将运算对象的值增加1.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = 1;</span><br><span class="line">j = ++i;</span><br><span class="line">(i is 2, j is 2)</span><br></pre></td></tr></table></figure>
 <p>i++ 同样会自增i，但是返回的是原来的值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = 1;</span><br><span class="line">j = i++;</span><br><span class="line">(i is 2, j is 1)</span><br></pre></td></tr></table></figure>
@@ -669,7 +675,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -691,7 +697,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
