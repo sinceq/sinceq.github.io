@@ -384,8 +384,7 @@
 
       
         
-          
-            <h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><blockquote>
+          <h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><blockquote>
 <p>有时候我们希望定义这样一种变量，它的值不能被改变。为了满足这一要求，可以用关键字<strong>const</strong>对变量的类型加以限定。</p>
 </blockquote>
 <p><strong>因为const对象一旦创建后其值就不能再改变，所以const对象必须初始化。</strong></p>
@@ -399,35 +398,13 @@
 <p>引用的类型必须与其引用对象的类型一致，但是有两个例外。</p>
 <p>第一种例外情况就是在初始化常量引用的时允许用任意表达式作为初始值，只要该表达式的结果能转换成应用的类型即可。尤其，允许为一个常量引用绑定非常量的对象</p>
 <p><strong>对const的引用可能引用一个并非const的对象</strong></p>
-<h3 id="指针和const"><a href="#指针和const" class="headerlink" title="指针和const"></a>指针和const</h3><p><strong>指向常量的指针（pointer to const）</strong>不能用于改变其所指对象的值。要想存放常量对象的地址，只能使用指向常量的指针。</p>
-<p>指针的类型必须与其所指对象的类型一致，但是有两个例外。第一种例外情况是允许令一个指向常量的指针指向一个非常量对象。</p>
-<blockquote>
-<p>所谓指向常量的指针或引用，不过是指针或引用“自以为是”罢了，它们觉得自己指向了常量，所以自觉地不去改变所指对象的值。</p>
-</blockquote>
-<h4 id="const指针"><a href="#const指针" class="headerlink" title="const指针"></a>const指针</h4><p><strong>常量指针（const pointer）</strong></p>
-<h3 id="顶层const"><a href="#顶层const" class="headerlink" title="顶层const"></a>顶层const</h3><p>指针本身是不是常量以及指针所指的是不是一个常量就是两个相互独立的问题。用名词<strong>顶层const</strong>（top-level const）表示指针本身是个常量，而用名词<strong>底层const</strong>（low-level const）表示指针所指的对象是一个常量。</p>
-<h3 id="constexpr"><a href="#constexpr" class="headerlink" title="constexpr"></a>constexpr</h3><p><strong>常量表达式（const expression）</strong>是指值不会改变并且在编译过程就能得到计算结果的表达式。</p>
-<h3 id="const-method"><a href="#const-method" class="headerlink" title="const method"></a>const method</h3><p>当你用const关键字修饰一个method，这个指针就会变成一个指向const object，你就不能改变任何成员数据。（除非你使用mutable）。</p>
-<p>例子引用自stackoverflow：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class CL2</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    void const_method() const;</span><br><span class="line">    void method();</span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line">    int x;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const CL2 co;</span><br><span class="line">CL2 o;</span><br><span class="line"></span><br><span class="line">co.const_method();  // legal</span><br><span class="line">co.method();        // illegal, can&apos;t call regular method on const object</span><br><span class="line">o.const_method();   // legal, can call const method on a regulard object</span><br><span class="line">o.method();         // legal</span><br></pre></td></tr></table></figure>
-<h3 id="Java-final-vs-C-Const"><a href="#Java-final-vs-C-Const" class="headerlink" title="Java final vs. C++ Const"></a>Java final vs. C++ Const</h3><p>Java final</p>
-<ol>
-<li>修饰变量：变量不可修改</li>
-<li>修饰方法：方法不可以重载</li>
-<li>修饰类：类不可继承</li>
-</ol>
-<h3 id="Clockwise-Spiral-Rule"><a href="#Clockwise-Spiral-Rule" class="headerlink" title="Clockwise/Spiral Rule"></a>Clockwise/Spiral Rule</h3><p>顺时针阅读法，简单的说，就是从变量名开始，顺时针螺旋阅读类型。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int * pointer to int</span><br><span class="line">int const * pointer to const int</span><br><span class="line">int * const const pointer to int</span><br><span class="line">int const * const const pointer to const int</span><br></pre></td></tr></table></figure>
-<p>const char <em> vs. char </em> const </p>
-<blockquote>
-<p>The difference is that const char <em> is a pointer to a const char, while char </em> const is a constant pointer  to a char. </p>
-</blockquote>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>C++ Primer第五版</p>
-<p><a href="https://cdecl.org/" target="_blank" rel="noopener">https://cdecl.org/</a></p>
-<p><a href="https://stackoverflow.com/questions/751681/meaning-of-const-last-in-a-function-declaration-of-a-class" target="_blank" rel="noopener">https://stackoverflow.com/questions/751681/meaning-of-const-last-in-a-function-declaration-of-a-class</a></p>
-<p><a href="https://stackoverflow.com/questions/4971286/javas-final-vs-cs-const" target="_blank" rel="noopener">https://stackoverflow.com/questions/4971286/javas-final-vs-cs-const</a></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/05/Const限定符/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
