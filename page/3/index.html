@@ -281,6 +281,235 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/07/11/Java-Annotation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="一">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1llusion">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/11/Java-Annotation/" itemprop="url">Java Annotation</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-11T00:21:31+08:00">
+                2016-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/07/11/Java-Annotation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/07/11/Java-Annotation/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h3><p>要了解注解前提要了解有关元数据的一些概念。</p>
+<p><strong>元数据</strong>是关于数据的数据。在编程语言上下文中，元数据是添加到程序元素如方法、字段、类和包上的额外信息。对数据进行说明描述的数据。 </p>
+<p>一般来说，元数据可以用于创建文档，跟踪代码中的依赖性，执行编译时检查，代码分析。 </p>
+<h3 id="什么是注解"><a href="#什么是注解" class="headerlink" title="什么是注解"></a>什么是注解</h3><p>注解Annotation就是java平台的元数据，该机制允许在Java代码中添加自定义注释，并允许通过反射（Reflection），以编程方式访问元数据注释。通过提供为程序元素（类、方法等）附加额外数据的标准方法，元数据功能具有简化和改进许多应用程序开发领域的潜在能力，其中包括配置管理、框架实现和代码生成。 </p>
+<blockquote>
+<p>Annotations are primarily used by code that is inspecting other code. They are often used for modifying (i.e. decorating or wrapping) existing classes at run-time to change their behavior. </p>
+<p>Annotations are meta-meta-objects which can be used to describe other meta-objects. Meta-objects are classes, fields and methods. Asking an object for its meta-object (e.g. anObj.getClass() ) is called introspection. The introspection can go further and we can ask a meta-object what are its annotations (e.g. aClass.getAnnotations). Introspection and annotations belong to what is called reflection and meta-programming.</p>
+</blockquote>
+<p>注解需要以某种方式解释才能有用。注解可是在开发时由IDE或编译器解释，也可以在运行时由框架解释。</p>
+<p>注解是一种非常强大的机制，可以用很多不同的方法：</p>
+<ul>
+<li>描述一个元素的约束或用法：例如@Deprecated、@Override或@NotNull。</li>
+<li>描述元素的“性质”，例如@Entity， @TestCase， @WebService</li>
+<li>描述元素的行为:@Statefull， @Transaction</li>
+<li>描述如何处理元素:@Column， @XmlElement</li>
+</ul>
+<h3 id="注解分类"><a href="#注解分类" class="headerlink" title="注解分类"></a>注解分类</h3><p>There are 3 categories of Annotations:</p>
+<ol>
+<li>Marker Annotation</li>
+<li>Single Value Annotation</li>
+<li>Full Annotation</li>
+</ol>
+<p>Java defines seven built-in annotations.</p>
+<ul>
+<li>Four are imported from java.lang.annotation: @Retention, @Documented, @Target, and @Inherited.</li>
+<li>Three are included in java.lang: @Deprecated, @Override and @SuppressWarnings</li>
+</ul>
+<p>@Target </p>
+<ul>
+<li>ANNOTATION_TYPE  </li>
+<li>CONSTRUCTOR </li>
+<li>FIELD </li>
+<li>LOCAL_VARIABLE </li>
+<li>METHOD </li>
+<li>PACKAGE </li>
+<li>PARAMETER </li>
+<li>TYPE</li>
+</ul>
+<p>@Retention </p>
+<ul>
+<li>SOURCE </li>
+<li>CLASS </li>
+<li>RUNTIME</li>
+</ul>
+<h3 id="注解的提取"><a href="#注解的提取" class="headerlink" title="注解的提取"></a>注解的提取</h3><p>正确检阅注解，使用反射。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public boolean isAnnotationPresent(Class&lt;? extends Annotation&gt; annotationClass) &#123;&#125;</span><br><span class="line"></span><br><span class="line">public &lt;A extends Annotation&gt; A getAnnotation(Class&lt;A&gt; annotationClass) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="注解的使用场景"><a href="#注解的使用场景" class="headerlink" title="注解的使用场景"></a>注解的使用场景</h3><ul>
+<li>文档,例如XDoclet</li>
+<li>编译</li>
+<li>IDE</li>
+<li>测试框架,例如JUnit</li>
+<li>IoC容器，如弹簧</li>
+<li>XML序列化,例如</li>
+<li>面向方面的编程(AOP)，例如Spring AOP。</li>
+<li>应用服务器，例如EJB容器、Web服务</li>
+<li>对象关系映射(ORM)，例如Hibernate、JPA</li>
+<li>和更多的……</li>
+</ul>
+<blockquote>
+<p>Annotations can be used for many different purposes, the most common ones are:</p>
+<p><strong>Information for the compiler</strong>: Annotations can be used by the compiler to produce warnings or even errors based on different rules. One example of this kind of usage is the Java 8 @FunctionalInterface annotation. This one makes the compiler to validate the annotated class and check if it is a correct functional interface or not.</p>
+<p>编译器可以利用注解来探测错误和警告信息</p>
+<p><strong>Documentation</strong>: Annotations can be used by software applications to measure the quality of the code like FindBugs or PMD do or generate reports automatically like Jenkins, Jira or Teamcity.</p>
+<p><strong>Code generation</strong>: annotations can be used to generate code or XML files automatically using metadata information present in the code. A good example of this is the JAXB library.</p>
+<p>软件工具可以用来利用注解信息来生成代码、文档或者做其他相应处理</p>
+<p><strong>Runtime processing:</strong> Annotations that are examined in runtime can be used for different objectives like unit testing (Junit), dependency injection (Spring), validation, logging (Log4J) ,data access (Hibernate) etc.</p>
+<p>某些注解可以在程序运行的时候接受代码的提取</p>
+</blockquote>
+<h3 id="用户定义-定制注解"><a href="#用户定义-定制注解" class="headerlink" title="用户定义/定制注解"></a>用户定义/定制注解</h3><p><strong>User-defined/Custom Annotations</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Syntax of Declaration</span><br><span class="line">[Access Specifier] @interface&lt;AnnotationName&gt;</span><br><span class="line">&#123;</span><br><span class="line">	DataType &lt;Method Name&gt;() [default value];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Spring注解"><a href="#Spring注解" class="headerlink" title="Spring注解"></a>Spring注解</h3><ul>
+<li>@Component:表示此注释标记的元素，在本例中为类，是自动检测的候选对象。这意味着带注释的类可能是bean，应该由Spring容器考虑。</li>
+<li>@Autowired: Spring容器将尝试在这个setter方法上执行byType自动连接(这是一种使用元素类型的属性匹配)。它也可以应用于构造函数和属性，Spring容器在这些情况下采取的操作是不同的。</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://zhuanlan.zhihu.com/p/27643133" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/27643133</a></p>
+<p><a href="https://stackoverflow.com/questions/1372876/how-and-where-are-annotations-used-in-java/1918154" target="_blank" rel="noopener">https://stackoverflow.com/questions/1372876/how-and-where-are-annotations-used-in-java/1918154</a></p>
+<p><a href="https://stackoverflow.com/questions/94361/when-do-you-use-javas-override-annotation-and-why" target="_blank" rel="noopener">https://stackoverflow.com/questions/94361/when-do-you-use-javas-override-annotation-and-why</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/06/24/虚拟机监控和分析工具/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1842,161 +2071,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/01/24/62/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="一">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="1llusion">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/01/24/62/" itemprop="url">62</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-24T22:00:16+08:00">
-                2016-01-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/1llusion/" itemprop="url" rel="index">
-                    <span itemprop="name">1llusion</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/01/24/62/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/01/24/62/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>很多人在二三十岁的时候就死去了。因为一旦过了那个年龄，他们只是自己的影子，余生都会在模仿自己中度过。 ——罗曼·罗兰《约翰·克里斯多夫》</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2051,7 +2125,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="工具是运用知识处理数据的手段。 JDK的命令行工具   名称 主要作用     jps JVM  Process Status Tool，显示指定系统内所有的HotSpot虚拟机进程   jstat JVM Statistics Monitoring Tool，用于收集HotSpot虚拟机各方面的运行数据   jinfo Configuration Info for Java，显示虚拟机配置信息">
+<meta name="description" content="元数据要了解注解前提要了解有关元数据的一些概念。 元数据是关于数据的数据。在编程语言上下文中，元数据是添加到程序元素如方法、字段、类和包上的额外信息。对数据进行说明描述的数据。  一般来说，元数据可以用于创建文档，跟踪代码中的依赖性，执行编译时检查，代码分析。  什么是注解注解Annotation就是java平台的元数据，该机制允许在Java代码中添加自定义注释，并允许通过反射（Reflectio">
 <meta property="og:type" content="article">
-<meta property="og:title" content="虚拟机监控和分析工具">
-<meta property="og:url" content="http://sinceq.com/2016/06/24/虚拟机监控和分析工具/index.html">
+<meta property="og:title" content="Java Annotation">
+<meta property="og:url" content="http://sinceq.com/2016/07/11/Java-Annotation/index.html">
 <meta property="og:site_name" content="1llusion">
-<meta property="og:description" content="工具是运用知识处理数据的手段。 JDK的命令行工具   名称 主要作用     jps JVM  Process Status Tool，显示指定系统内所有的HotSpot虚拟机进程   jstat JVM Statistics Monitoring Tool，用于收集HotSpot虚拟机各方面的运行数据   jinfo Configuration Info for Java，显示虚拟机配置信息">
+<meta property="og:description" content="元数据要了解注解前提要了解有关元数据的一些概念。 元数据是关于数据的数据。在编程语言上下文中，元数据是添加到程序元素如方法、字段、类和包上的额外信息。对数据进行说明描述的数据。  一般来说，元数据可以用于创建文档，跟踪代码中的依赖性，执行编译时检查，代码分析。  什么是注解注解Annotation就是java平台的元数据，该机制允许在Java代码中添加自定义注释，并允许通过反射（Reflectio">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-24T03:16:08.170Z">
+<meta property="og:updated_time" content="2018-07-10T16:28:41.071Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="虚拟机监控和分析工具">
-<meta name="twitter:description" content="工具是运用知识处理数据的手段。 JDK的命令行工具   名称 主要作用     jps JVM  Process Status Tool，显示指定系统内所有的HotSpot虚拟机进程   jstat JVM Statistics Monitoring Tool，用于收集HotSpot虚拟机各方面的运行数据   jinfo Configuration Info for Java，显示虚拟机配置信息">
+<meta name="twitter:title" content="Java Annotation">
+<meta name="twitter:description" content="元数据要了解注解前提要了解有关元数据的一些概念。 元数据是关于数据的数据。在编程语言上下文中，元数据是添加到程序元素如方法、字段、类和包上的额外信息。对数据进行说明描述的数据。  一般来说，元数据可以用于创建文档，跟踪代码中的依赖性，执行编译时检查，代码分析。  什么是注解注解Annotation就是java平台的元数据，该机制允许在Java代码中添加自定义注释，并允许通过反射（Reflectio">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://sinceq.com/2016/06/24/虚拟机监控和分析工具/"/>
+  <link rel="canonical" href="http://sinceq.com/2016/07/11/Java-Annotation/"/>
 
 
 
 
 
-  <title>虚拟机监控和分析工具 | 1llusion</title>
+  <title>Java Annotation | 1llusion</title>
   
 
 
@@ -281,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/06/24/虚拟机监控和分析工具/">
+    <link itemprop="mainEntityOfPage" href="http://sinceq.com/2016/07/11/Java-Annotation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="一">
@@ -298,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">虚拟机监控和分析工具</h1>
+          <h1 class="post-title" itemprop="name headline">Java Annotation</h1>
         
 
         <div class="post-meta">
@@ -310,8 +310,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-24T10:35:34+08:00">
-                2016-06-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-11T00:21:31+08:00">
+                2016-07-11
               </time>
             
 
@@ -351,9 +351,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2016/06/24/虚拟机监控和分析工具/#comments" itemprop="discussionUrl">
+                <a href="/2016/07/11/Java-Annotation/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/06/24/虚拟机监控和分析工具/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2016/07/11/Java-Annotation/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -386,120 +386,83 @@
       
 
       
-        <p>工具是运用知识处理数据的手段。</p>
-<h3 id="JDK的命令行工具"><a href="#JDK的命令行工具" class="headerlink" title="JDK的命令行工具"></a>JDK的命令行工具</h3><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>主要作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jps</td>
-<td>JVM  Process Status Tool，显示指定系统内所有的HotSpot虚拟机进程</td>
-</tr>
-<tr>
-<td>jstat</td>
-<td>JVM Statistics Monitoring Tool，用于收集HotSpot虚拟机各方面的运行数据</td>
-</tr>
-<tr>
-<td>jinfo</td>
-<td>Configuration Info for Java，显示虚拟机配置信息</td>
-</tr>
-<tr>
-<td>jmap</td>
-<td>Memory map for Java，生成虚拟机的内存转储快照（heapdump文件）</td>
-</tr>
-<tr>
-<td>jhat</td>
-<td>JVM Heap Dump Browser，用于分许heapdump文件，它会建立一个HTTP/HTML服务器，让用户可以在浏览器上查看分析结果</td>
-</tr>
-<tr>
-<td>jstack</td>
-<td>Stack Trace for Java，显示虚拟机的线程快照</td>
-</tr>
-</tbody>
-</table>
-<h4 id="jps：虚拟机进程状况工具"><a href="#jps：虚拟机进程状况工具" class="headerlink" title="jps：虚拟机进程状况工具"></a>jps：虚拟机进程状况工具</h4><p>可以列出正在运行的虚拟机进程，并显示虚拟机执行主类（Main Class，main()函数所在的类）的名称，以及这些进程的本地虚拟机的唯一ID（LVMID，Local Virtual Machine Identifier）。</p>
-<p>对于本地虚拟机进程来说，LVMID与操作系统的进程ID（PID，Process Identifier）是一致的。</p>
+        <h3 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h3><p>要了解注解前提要了解有关元数据的一些概念。</p>
+<p><strong>元数据</strong>是关于数据的数据。在编程语言上下文中，元数据是添加到程序元素如方法、字段、类和包上的额外信息。对数据进行说明描述的数据。 </p>
+<p>一般来说，元数据可以用于创建文档，跟踪代码中的依赖性，执行编译时检查，代码分析。 </p>
+<h3 id="什么是注解"><a href="#什么是注解" class="headerlink" title="什么是注解"></a>什么是注解</h3><p>注解Annotation就是java平台的元数据，该机制允许在Java代码中添加自定义注释，并允许通过反射（Reflection），以编程方式访问元数据注释。通过提供为程序元素（类、方法等）附加额外数据的标准方法，元数据功能具有简化和改进许多应用程序开发领域的潜在能力，其中包括配置管理、框架实现和代码生成。 </p>
 <blockquote>
-<p>​       The jps command supports a number of options that modify the output of the command.  These options are subject to change or removal in the future.</p>
-<p>​       -q             Suppress the output of the class name, JAR file name, and arguments passed to the main method, producing only a list of local VM identifiers.</p>
-<p>​       -m             Output the arguments passed to the main method. The output may be null for embedded JVMs.</p>
-<p>​       -l             Output the full package name for the application’s main class or the full path name to the application’s JAR file.</p>
-<p>​       -v             Output the arguments passed to the JVM.</p>
-<p>​       -V             Output the arguments passed to the JVM through the flags file (the .hotspotrc file or the file  specified  by  the  -XX:Flags=<filename>argument).</filename></p>
-<p>​       -Joption       Pass option to the java launcher called by javac. For example, -J-Xms48m sets the startup memory to 48 megabytes. It is a common convention for -J to pass options to the underlying VM executing applications written in Java.</p>
+<p>Annotations are primarily used by code that is inspecting other code. They are often used for modifying (i.e. decorating or wrapping) existing classes at run-time to change their behavior. </p>
+<p>Annotations are meta-meta-objects which can be used to describe other meta-objects. Meta-objects are classes, fields and methods. Asking an object for its meta-object (e.g. anObj.getClass() ) is called introspection. The introspection can go further and we can ask a meta-object what are its annotations (e.g. aClass.getAnnotations). Introspection and annotations belong to what is called reflection and meta-programming.</p>
 </blockquote>
-<a id="more"></a>
-<h4 id="jstat：虚拟机统计信息监视工具"><a href="#jstat：虚拟机统计信息监视工具" class="headerlink" title="jstat：虚拟机统计信息监视工具"></a>jstat：虚拟机统计信息监视工具</h4><p>用于监视虚拟机各种运行状态信息的命令行工具。它可以显示本地或远程虚拟机进程中的类装载、内存、垃圾收集、JIT编译等运行数据。它是运行期定位虚拟机性能问题的首选工具</p>
-<h4 id="jinfo：Java配置信息工具"><a href="#jinfo：Java配置信息工具" class="headerlink" title="jinfo：Java配置信息工具"></a>jinfo：Java配置信息工具</h4><p>作用是实时地查看和调整虚拟机的各项参数。</p>
+<p>注解需要以某种方式解释才能有用。注解可是在开发时由IDE或编译器解释，也可以在运行时由框架解释。</p>
+<p>注解是一种非常强大的机制，可以用很多不同的方法：</p>
+<ul>
+<li>描述一个元素的约束或用法：例如@Deprecated、@Override或@NotNull。</li>
+<li>描述元素的“性质”，例如@Entity， @TestCase， @WebService</li>
+<li>描述元素的行为:@Statefull， @Transaction</li>
+<li>描述如何处理元素:@Column， @XmlElement</li>
+</ul>
+<h3 id="注解分类"><a href="#注解分类" class="headerlink" title="注解分类"></a>注解分类</h3><p>There are 3 categories of Annotations:</p>
+<ol>
+<li>Marker Annotation</li>
+<li>Single Value Annotation</li>
+<li>Full Annotation</li>
+</ol>
+<p>Java defines seven built-in annotations.</p>
+<ul>
+<li>Four are imported from java.lang.annotation: @Retention, @Documented, @Target, and @Inherited.</li>
+<li>Three are included in java.lang: @Deprecated, @Override and @SuppressWarnings</li>
+</ul>
+<p>@Target </p>
+<ul>
+<li>ANNOTATION_TYPE  </li>
+<li>CONSTRUCTOR </li>
+<li>FIELD </li>
+<li>LOCAL_VARIABLE </li>
+<li>METHOD </li>
+<li>PACKAGE </li>
+<li>PARAMETER </li>
+<li>TYPE</li>
+</ul>
+<p>@Retention </p>
+<ul>
+<li>SOURCE </li>
+<li>CLASS </li>
+<li>RUNTIME</li>
+</ul>
+<h3 id="注解的提取"><a href="#注解的提取" class="headerlink" title="注解的提取"></a>注解的提取</h3><p>正确检阅注解，使用反射。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public boolean isAnnotationPresent(Class&lt;? extends Annotation&gt; annotationClass) &#123;&#125;</span><br><span class="line"></span><br><span class="line">public &lt;A extends Annotation&gt; A getAnnotation(Class&lt;A&gt; annotationClass) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="注解的使用场景"><a href="#注解的使用场景" class="headerlink" title="注解的使用场景"></a>注解的使用场景</h3><ul>
+<li>文档,例如XDoclet</li>
+<li>编译</li>
+<li>IDE</li>
+<li>测试框架,例如JUnit</li>
+<li>IoC容器，如弹簧</li>
+<li>XML序列化,例如</li>
+<li>面向方面的编程(AOP)，例如Spring AOP。</li>
+<li>应用服务器，例如EJB容器、Web服务</li>
+<li>对象关系映射(ORM)，例如Hibernate、JPA</li>
+<li>和更多的……</li>
+</ul>
 <blockquote>
-<p>jinfo [ option ] pid</p>
-<p>jinfo [ option ] executable core</p>
-<p>jinfo [ option ][ server-id@ ] remote-hostname-or-IP</p>
+<p>Annotations can be used for many different purposes, the most common ones are:</p>
+<p><strong>Information for the compiler</strong>: Annotations can be used by the compiler to produce warnings or even errors based on different rules. One example of this kind of usage is the Java 8 @FunctionalInterface annotation. This one makes the compiler to validate the annotated class and check if it is a correct functional interface or not.</p>
+<p>编译器可以利用注解来探测错误和警告信息</p>
+<p><strong>Documentation</strong>: Annotations can be used by software applications to measure the quality of the code like FindBugs or PMD do or generate reports automatically like Jenkins, Jira or Teamcity.</p>
+<p><strong>Code generation</strong>: annotations can be used to generate code or XML files automatically using metadata information present in the code. A good example of this is the JAXB library.</p>
+<p>软件工具可以用来利用注解信息来生成代码、文档或者做其他相应处理</p>
+<p><strong>Runtime processing:</strong> Annotations that are examined in runtime can be used for different objectives like unit testing (Junit), dependency injection (Spring), validation, logging (Log4J) ,data access (Hibernate) etc.</p>
+<p>某些注解可以在程序运行的时候接受代码的提取</p>
 </blockquote>
-<h4 id="jmap：Java内存映射工具"><a href="#jmap：Java内存映射工具" class="headerlink" title="jmap：Java内存映射工具"></a>jmap：Java内存映射工具</h4><p>用于生成堆转储快照（一般称为headdump或者dump文件）。还可以查询finalize执行队列，Java堆和永久代的详细信息，如空间使用率、当前用的是哪种收集器等。</p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-dump</td>
-<td>生成Java堆转储快照。格式为：-dump:[live,]format-b,file=<filename>，其中live子参数说明是否只dump出存活的对象</filename></td>
-</tr>
-<tr>
-<td>-finalizerinfo</td>
-<td>显示在F-Queue中等待Finalizer线程执行finalize方法的对象</td>
-</tr>
-<tr>
-<td>-heap</td>
-<td>显示Java堆详细信息，如使用哪些回收器、参数配置、分代状况等。</td>
-</tr>
-<tr>
-<td>-histo</td>
-<td>显示堆中对象统计信息，包括类、实例数量和合计容量</td>
-</tr>
-<tr>
-<td>-permstat</td>
-<td>以ClassLoader为统计口径显示永久代内存状态</td>
-</tr>
-<tr>
-<td>-F</td>
-<td>当虚拟机进程堆-dump选项没有响应时，可使用这个选项强制生成dump快照</td>
-</tr>
-</tbody>
-</table>
-<h4 id="jhat：虚拟机堆转储快照分析工具"><a href="#jhat：虚拟机堆转储快照分析工具" class="headerlink" title="jhat：虚拟机堆转储快照分析工具"></a>jhat：虚拟机堆转储快照分析工具</h4><p>分析jmap生成的堆转储快照</p>
-<h4 id="jstack：Java堆栈跟踪工具"><a href="#jstack：Java堆栈跟踪工具" class="headerlink" title="jstack：Java堆栈跟踪工具"></a>jstack：Java堆栈跟踪工具</h4><p>用于生成虚拟机当前时刻的线程快照（一般称为threaddump或javacore文件）。线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是定位线程主线长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待等都是导致线程长时间停顿的常见原因。</p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-F</td>
-<td>当正常输出的请求不被响应时，强制输出线程堆栈</td>
-</tr>
-<tr>
-<td>-l</td>
-<td>除堆栈外，显示关于锁的附加信息</td>
-</tr>
-<tr>
-<td>-m</td>
-<td>如果调用到本地方法的话，可以显示C/C++的堆栈</td>
-</tr>
-</tbody>
-</table>
-<h3 id="JDK的可视化工具"><a href="#JDK的可视化工具" class="headerlink" title="JDK的可视化工具"></a>JDK的可视化工具</h3><h4 id="JConsole：Java监视和管理控制台"><a href="#JConsole：Java监视和管理控制台" class="headerlink" title="JConsole：Java监视和管理控制台"></a>JConsole：Java监视和管理控制台</h4><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>深入理解Java虚拟机：JVM高级特性与最佳实践</p>
+<h3 id="用户定义-定制注解"><a href="#用户定义-定制注解" class="headerlink" title="用户定义/定制注解"></a>用户定义/定制注解</h3><p><strong>User-defined/Custom Annotations</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Syntax of Declaration</span><br><span class="line">[Access Specifier] @interface&lt;AnnotationName&gt;</span><br><span class="line">&#123;</span><br><span class="line">	DataType &lt;Method Name&gt;() [default value];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Spring注解"><a href="#Spring注解" class="headerlink" title="Spring注解"></a>Spring注解</h3><ul>
+<li>@Component:表示此注释标记的元素，在本例中为类，是自动检测的候选对象。这意味着带注释的类可能是bean，应该由Spring容器考虑。</li>
+<li>@Autowired: Spring容器将尝试在这个setter方法上执行byType自动连接(这是一种使用元素类型的属性匹配)。它也可以应用于构造函数和属性，Spring容器在这些情况下采取的操作是不同的。</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://zhuanlan.zhihu.com/p/27643133" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/27643133</a></p>
+<p><a href="https://stackoverflow.com/questions/1372876/how-and-where-are-annotations-used-in-java/1918154" target="_blank" rel="noopener">https://stackoverflow.com/questions/1372876/how-and-where-are-annotations-used-in-java/1918154</a></p>
+<p><a href="https://stackoverflow.com/questions/94361/when-do-you-use-javas-override-annotation-and-why" target="_blank" rel="noopener">https://stackoverflow.com/questions/94361/when-do-you-use-javas-override-annotation-and-why</a></p>
 
       
     </div>
@@ -553,8 +516,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/05/LinkedList/" rel="next" title="LinkedList">
-                <i class="fa fa-chevron-left"></i> LinkedList
+              <a href="/2016/06/24/虚拟机监控和分析工具/" rel="next" title="虚拟机监控和分析工具">
+                <i class="fa fa-chevron-left"></i> 虚拟机监控和分析工具
               </a>
             
           </div>
@@ -563,8 +526,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/07/11/Java-Annotation/" rel="prev" title="Java Annotation">
-                Java Annotation <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/22/计算机系统概述/" rel="prev" title="计算机系统概述">
+                计算机系统概述 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -711,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK的命令行工具"><span class="nav-number">1.</span> <span class="nav-text">JDK的命令行工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#jps：虚拟机进程状况工具"><span class="nav-number">1.1.</span> <span class="nav-text">jps：虚拟机进程状况工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jstat：虚拟机统计信息监视工具"><span class="nav-number">1.2.</span> <span class="nav-text">jstat：虚拟机统计信息监视工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jinfo：Java配置信息工具"><span class="nav-number">1.3.</span> <span class="nav-text">jinfo：Java配置信息工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jmap：Java内存映射工具"><span class="nav-number">1.4.</span> <span class="nav-text">jmap：Java内存映射工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jhat：虚拟机堆转储快照分析工具"><span class="nav-number">1.5.</span> <span class="nav-text">jhat：虚拟机堆转储快照分析工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jstack：Java堆栈跟踪工具"><span class="nav-number">1.6.</span> <span class="nav-text">jstack：Java堆栈跟踪工具</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK的可视化工具"><span class="nav-number">2.</span> <span class="nav-text">JDK的可视化工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JConsole：Java监视和管理控制台"><span class="nav-number">2.1.</span> <span class="nav-text">JConsole：Java监视和管理控制台</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#元数据"><span class="nav-number">1.</span> <span class="nav-text">元数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是注解"><span class="nav-number">2.</span> <span class="nav-text">什么是注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注解分类"><span class="nav-number">3.</span> <span class="nav-text">注解分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注解的提取"><span class="nav-number">4.</span> <span class="nav-text">注解的提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注解的使用场景"><span class="nav-number">5.</span> <span class="nav-text">注解的使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户定义-定制注解"><span class="nav-number">6.</span> <span class="nav-text">用户定义/定制注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring注解"><span class="nav-number">7.</span> <span class="nav-text">Spring注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">8.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
@@ -894,9 +857,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://sinceq.com/2016/06/24/虚拟机监控和分析工具/';
-          this.page.identifier = '2016/06/24/虚拟机监控和分析工具/';
-          this.page.title = '虚拟机监控和分析工具';
+          this.page.url = 'http://sinceq.com/2016/07/11/Java-Annotation/';
+          this.page.identifier = '2016/07/11/Java-Annotation/';
+          this.page.title = 'Java Annotation';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sinceq.disqus.com/embed.js';
