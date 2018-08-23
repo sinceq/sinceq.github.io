@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="1llusion">
 <meta property="og:description" content="简介泛型程序设计是程序设计语言的一种风格或范式。允许程序员在强类型程序设计语言中编写代码时使用一些以后才指定的类型，在实例化时作为参数指明这些类型。 Java generics 是JDK 5中引入的一个新特性，允许在定义类和接口的时候使用类型参数（type parameter）。声明的类型参数在使用时用具体的类型来替换。 从好的方面来说，泛型的引入可以解决之前的集合类框架在使用过程中通常会出现的运">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-17T02:59:54.155Z">
+<meta property="og:updated_time" content="2018-07-19T08:58:19.713Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java generics">
 <meta name="twitter:description" content="简介泛型程序设计是程序设计语言的一种风格或范式。允许程序员在强类型程序设计语言中编写代码时使用一些以后才指定的类型，在实例化时作为参数指明这些类型。 Java generics 是JDK 5中引入的一个新特性，允许在定义类和接口的时候使用类型参数（type parameter）。声明的类型参数在使用时用具体的类型来替换。 从好的方面来说，泛型的引入可以解决之前的集合类框架在使用过程中通常会出现的运">
@@ -389,6 +389,8 @@
         <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>泛型程序设计是程序设计语言的一种风格或范式。允许程序员在强类型程序设计语言中编写代码时使用一些以后才指定的类型，在实例化时作为参数指明这些类型。</p>
 <p>Java generics 是JDK 5中引入的一个新特性，允许在定义类和接口的时候使用类型参数（type parameter）。声明的类型参数在使用时用具体的类型来替换。</p>
 <p>从好的方面来说，泛型的引入可以解决之前的集合类框架在使用过程中通常会出现的运行时候类型错误，因为编译器可以在编译时刻就发现很多明显的错误。</p>
+<p>泛型的本质是参数化类型（ Parameterized Type）的应用，也就是说所操作的数据类型被指定为一个参数。这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口和泛型方法。</p>
+<p>Java语言中的泛型只在程序源码中存在，在编译后的字节码文件中，就已经被替换为原来的原生类型（Raw Type）了，并且在响应的地方插入了强制转型代码，Java语言中的泛型实现方法称为类型擦除，基于这种方法实现的泛型被称为伪泛型。</p>
 <h3 id="Why-use-generics"><a href="#Why-use-generics" class="headerlink" title="Why use generics?"></a>Why use generics?</h3><p>In a nutshell, generics enable types (classes and interfaces) to be parameters when defining classes, interfaces and methods. Much like the more familiar formal parameters used in method declarations, type parameters provide a way for you to re-use the same code with different inputs. The difference is that the inputs to formal parameters are values, while the inputs to type parameters are types.</p>
 <h3 id="Generic-Types"><a href="#Generic-Types" class="headerlink" title="Generic Types"></a>Generic Types</h3><p>The most commonly used type parameter names are:</p>
 <ul>
@@ -586,7 +588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
